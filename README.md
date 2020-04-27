@@ -23,7 +23,7 @@ This README would normally document whatever steps are necessary to get your app
 * Code review
 * Other guidelines
 
-### Who do I talk to? ###
+### Project members ###
 
-* Repo owner or admin
-* Other community or team contact
+* [Tim Weise (Admin)](tim.weise@studmail.htw-aalen.de)
+* [Pascal Schlaak](pascal.schlaak@studmail.htw-aalen.de)
