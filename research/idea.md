@@ -8,7 +8,7 @@ Central management tool for suppoting creative music developing process. App sho
 ## Problem
 Current music managing tools focus on commercial point of music developing.
 
-## Competetive analysis
+## Competitive analysis
 
 ### Songspace
 [Songspace](https://songspace.com/) catalog stores all of your music, lyrics, collaborations and information around your songs in one place. Keep track of ideas, songs and any versions added from collaborators. Import voice memos from your phone and save lyrics whenever inspiration strikes.

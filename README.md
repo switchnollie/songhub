@@ -27,3 +27,4 @@ This README would normally document whatever steps are necessary to get your app
 
 * [Tim Weise (Admin)](tim.weise@studmail.htw-aalen.de)
 * [Pascal Schlaak](pascal.schlaak@studmail.htw-aalen.de)
+* Rebecca Straub
