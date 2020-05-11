@@ -30,13 +30,15 @@
 
 3. Share songs with other people (producers)
 
-4. Audio playback for recodings: Play, Pause, Navigate
-
-5. Discuss with participants on recordings
+4. Discuss with participants on recordings
 
 - Comment with text -> displayed next to profile avatar („chat style“)
 
 ### Prio B:
+
+5. Audio playback for recodings: Play, Pause, Navigate
+
+### Prio C:
 
 6. Get notified on new uploads and comments
 
