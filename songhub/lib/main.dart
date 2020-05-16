@@ -1,13 +1,27 @@
-// Copyright 2018 The Flutter team. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(Songhub());
 
-class MyApp extends StatelessWidget {
+class Main extends State<Songhub> {
   // Mainscreen widget
+
+  // Bottom navigation
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  
+  final List<Widget> _children = [
+    SongElements(),
+    PlaceholderWidget("Notifications"),
+    PlaceholderWidget("Account")
+ ];
+
+  // Bottom navigation onTap
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,67 +32,62 @@ class MyApp extends StatelessWidget {
         fontFamily: "Roboto",
         textTheme: TextTheme(),
       ),
-      home: SongElements(),
+      home: Scaffold(
+        body: _children[_selectedIndex],//_buildOverview(),
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Color(0xFFF2F5FA),
+          selectedItemColor: Theme.of(context).accentColor,
+          unselectedItemColor: Color(0xFFD2D4DC),
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.queue_music,
+              ),
+              title: Text(
+                "Songs",
+              ),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.notifications,
+              ),
+              title: Text(
+                "Notifications",
+              ),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person,
+              ),
+              title: Text(
+                "Account",
+              ),
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+        ),
+      ),
     );
   }
 }
 
+class Songhub extends StatefulWidget {
+  @override
+  Main createState() => Main();
+}
+
 class SongOverview extends State<SongElements> {
-  // Bottom navigation
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
+  
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _buildList(),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color(0xFFF2F5FA),
-        selectedItemColor: Theme.of(context).accentColor,
-        unselectedItemColor: Color(0xFFD2D4DC),
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.queue_music,
-            ),
-            title: Text(
-              "Songs",
-            ),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.notifications,
-            ),
-            title: Text(
-              "Notifications",
-            ),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
-            ),
-            title: Text(
-              "Account",
-            ),
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-      ),
-    );
+    return _buildOverview();
   }
 
-  Widget _buildList() => ListView(
-        // Example list items! Should be fetched from database later!
+  Widget _buildOverview() => ListView(
         children: [
           _header(),
+          // TODO: Example list items! Should be fetched from database later!
           for (int i = 0; i < 15; i++)
             Column(
               children: <Widget>[
@@ -174,21 +183,13 @@ class SongElements extends StatefulWidget {
 }
 
 class SongDetails extends StatelessWidget {
+  
   final String titleText;
   final String artist;
   final String imagePath;
   final List<String> participants;
 
-  SongDetails({
-    String title,
-    @required this.titleText,
-    String art,
-    @required this.artist,
-    String image,
-    @required this.imagePath,
-    List participant,
-    @required this.participants,
-  });
+  SongDetails({this.titleText, this.artist, this.imagePath, this.participants});
 
   @override
   Widget build(BuildContext context) {
@@ -199,18 +200,17 @@ class SongDetails extends StatelessWidget {
           color: Color(0xFFD2D4DC),
         ),
       ),
-      body: _songInformations(context),
+      body: _informationHeader(context),
     );
   }
 
-  Widget _songInformations(BuildContext context) => Padding (
+  Widget _informationHeader(BuildContext context) => Padding (
     
     padding: const EdgeInsets.symmetric(horizontal: 16),
 
         // Song overview header
         child: Column(
           children: <Widget>[
-
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -267,16 +267,22 @@ class SongDetails extends StatelessWidget {
                   )),
             ],
           ),
-          DefaultTabController(
-            length: 2,
+          Container(
             child: Column(
               children: <Widget>[
-                Container(
-                  constraints: BoxConstraints.expand(height: 50),
-                  child: TabBar(tabs: [
-                    Tab(text: "FILES"),
-                    Tab(text: "DISCUSSION"),
-                  ]),
+                DefaultTabController(
+                  length: 2,
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        constraints: BoxConstraints.expand(height: 50),
+                        child: TabBar(tabs: [
+                          Tab(text: "FILES"),
+                          Tab(text: "DISCUSSION"),
+                        ]),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -284,4 +290,37 @@ class SongDetails extends StatelessWidget {
         ],
       ),
   );
+
+  Widget _filesView() => GridView.count(
+
+    padding: const EdgeInsets.all(16.0),
+    crossAxisSpacing: 16.0,
+    mainAxisSpacing: 16.0,
+    crossAxisCount: 2,
+
+    children: <Widget>[
+      for (var i=0; i<8; i++)
+      Container(
+        child: Text("File"),
+        color: Color(0xFFF2F5FA),
+      )
+    ],
+  );
+  
+  Widget _discussionView() => Container(
+    child: Text("Discussion here"),
+  );
+}
+
+class PlaceholderWidget extends StatelessWidget {
+ final String text;
+
+ PlaceholderWidget(this.text);
+
+ @override
+ Widget build(BuildContext context) {
+   return Container(
+     child: Text(this.text),
+   );
+ }
 }
