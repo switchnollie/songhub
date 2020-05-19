@@ -1,11 +1,7 @@
-import 'package:app/components/buttons.dart';
-import 'package:app/components/images.dart';
 import 'package:app/screens/details.dart';
 import 'package:app/screens/placeholder.dart';
 import "package:flutter/material.dart";
 import "constants.dart";
-import "components/user.dart";
-import "components/lists.dart";
 import "screens/overview.dart";
 
 void main() => runApp(Songhub());
@@ -19,7 +15,7 @@ class Main extends State<Songhub> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   final List<Widget> _children = [
-    SongElements(),
+    SongOverview(),
     PlaceholderScreen("Notifications"),
     PlaceholderScreen("Account")
   ];
@@ -85,18 +81,6 @@ class Songhub extends StatefulWidget {
   Main createState() => Main();
 }
 
-class SongOverview extends State<SongElements> {
-  @override
-  Widget build(BuildContext context) {
-    return ListGenerator(context: context);
-  }
-}
-
-class SongElements extends StatefulWidget {
-  @override
-  SongOverview createState() => SongOverview();
-}
-
 class SongDetails extends StatelessWidget {
   final String titleText;
   final String artist;
@@ -114,7 +98,12 @@ class SongDetails extends StatelessWidget {
           color: Color(0xFFD2D4DC),
         ),
       ),
-      body: InformationContainer(imagePath: imagePath, titleText: titleText, artist: artist, participants: participants, context: context),
+      body: InformationContainer(
+          imagePath: imagePath,
+          titleText: titleText,
+          artist: artist,
+          participants: participants,
+          context: context),
     );
   }
 }

@@ -1,14 +1,13 @@
-import 'package:app/components/buttons.dart';
-import 'package:app/components/images.dart';
-import 'package:app/components/user.dart';
+import 'package:app/components/avatar.dart';
+import 'package:app/components/cover.dart';
 import 'package:flutter/material.dart';
 
-
 class SongTitle extends StatelessWidget {
-  
   final String titleText;
 
-  SongTitle({@required this.titleText,});
+  SongTitle({
+    @required this.titleText,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +25,6 @@ class SongTitle extends StatelessWidget {
 }
 
 class Artist extends StatelessWidget {
-  
   final String artist;
 
   Artist({@required this.artist});
@@ -44,7 +42,6 @@ class Artist extends StatelessWidget {
 }
 
 class InformationContainer extends StatelessWidget {
-  
   final String imagePath;
   final String titleText;
   final String artist;
@@ -70,7 +67,10 @@ class InformationContainer extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                CoverLarge(imagePath: imagePath),
+                Cover(
+                  img: imagePath,
+                  size: CoverSize.LARGE,
+                ),
                 Padding(
                     padding: const EdgeInsets.only(left: 16.0),
                     child: Column(
@@ -78,8 +78,13 @@ class InformationContainer extends StatelessWidget {
                       children: <Widget>[
                         SongTitle(titleText: titleText),
                         Artist(artist: artist),
-                        Participants(participants: participants),
-                        Settings(),
+                        AvatarRow(imgs: participants),
+                        IconButton(
+                          icon: Icon(
+                            Icons.more_horiz,
+                          ),
+                          onPressed: () {},
+                        ),
                       ],
                     )),
               ],
@@ -91,7 +96,6 @@ class InformationContainer extends StatelessWidget {
 }
 
 class BodyTabs extends StatelessWidget {
-  
   @override
   Widget build(BuildContext context) {
     return Container(

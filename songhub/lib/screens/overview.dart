@@ -1,35 +1,40 @@
+import 'package:app/components/song_list.dart';
+import 'package:app/components/screen_header.dart';
+import 'package:app/models/song.dart';
 import 'package:flutter/material.dart';
 
+List<Song> createMockSongs(int count) {
+  List<Song> songs = [];
+  for (int i = 0; i < count; i++) {
+    songs.add(
+      Song(
+          artist: "Sarah Corner",
+          title: "Lorem ipsum dolor sit amet",
+          img: "assets/example_cover.jpg",
+          participants: [
+            "assets/example_participant_1.jpg",
+            "assets/example_participant_2.jpg",
+            "assets/example_participant_3.jpg"
+          ]),
+    );
+  }
+  return songs;
+}
 
-class ScreenHeader extends StatelessWidget {
-
-  final String title;
-
-  ScreenHeader({this.title});
-  
+class SongOverview extends StatefulWidget {
   @override
-  Widget build(BuildContext context) => Container(
-        // Song overview header
-        margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 28.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text(
-              title,
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 32,
-              ),
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.add,
-                size: 38,
-              ),
-              color: Color(0xFFD2D4DC),
-              onPressed: () {},
-            )
-          ],
-        ),
-      );
+  _SongOverviewState createState() => _SongOverviewState();
+}
+
+class _SongOverviewState extends State<SongOverview> {
+  List<Song> songs = createMockSongs(15);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // TODO: Use ScreenHeader as app bar
+      appBar: AppBar(title: Text('Songs')),
+      body: SongList(songs: songs),
+    );
+  }
 }
