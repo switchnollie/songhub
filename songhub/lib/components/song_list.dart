@@ -1,6 +1,6 @@
 import 'package:app/components/cover.dart';
 import 'package:app/components/avatar.dart';
-import 'package:app/main.dart';
+import 'package:app/routing.dart';
 import "package:flutter/material.dart";
 import "package:app/models/song.dart";
 
@@ -12,6 +12,8 @@ class SongList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
       itemCount: songs.length,
       itemBuilder: (context, index) {
         return Column(
@@ -58,16 +60,11 @@ class SongListEntry extends StatelessWidget {
       trailing: AvatarRow(imgs: participants),
       contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
       onTap: () {
-        //TODO: Extract routes
-        Navigator.push(
+        // TODO: pass real ID
+        Navigator.pushNamed(
           context,
-          MaterialPageRoute(
-            builder: (context) => SongDetails(
-                titleText: title,
-                artist: artist,
-                imagePath: img,
-                participants: participants),
-          ),
+          "/songs/details",
+          arguments: SongDetailsRouteParams(songId: "fakeId"),
         );
       });
 }

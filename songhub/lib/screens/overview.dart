@@ -31,10 +31,11 @@ class _SongOverviewState extends State<SongOverview> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // TODO: Use ScreenHeader as app bar
-      appBar: AppBar(title: Text('Songs')),
-      body: SongList(songs: songs),
-    );
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          ScreenHeader(title: "Song Overview"),
+          SongList(songs: songs),
+        ]);
   }
 }

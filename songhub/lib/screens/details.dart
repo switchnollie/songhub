@@ -1,5 +1,6 @@
 import 'package:app/components/avatar.dart';
 import 'package:app/components/cover.dart';
+import 'package:app/routing.dart';
 import 'package:flutter/material.dart';
 
 class SongTitle extends StatelessWidget {
@@ -117,6 +118,36 @@ class BodyTabs extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class SongDetails extends StatelessWidget {
+  final String titleText;
+  final String artist;
+  final String imagePath;
+  final List<String> participants;
+
+  SongDetails({this.titleText, this.artist, this.imagePath, this.participants});
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: Use song id to dynamically fetch the song data
+    final SongDetailsRouteParams args =
+        ModalRoute.of(context).settings.arguments;
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0.0,
+        leading: BackButton(
+          color: Color(0xFFD2D4DC),
+        ),
+      ),
+      body: InformationContainer(
+          imagePath: imagePath,
+          titleText: titleText,
+          artist: artist,
+          participants: participants,
+          context: context),
     );
   }
 }
