@@ -31,11 +31,11 @@ class _SongOverviewState extends State<SongOverview> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          ScreenHeader(title: "Song Overview"),
-          SongList(songs: songs),
-        ]);
+    return Container(
+      child: Column(children: <Widget>[
+        ScreenHeader(title: "Song Overview"),
+        Expanded(child: SongList(songs: songs)),
+      ]),
+    );
   }
 }

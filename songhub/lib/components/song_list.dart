@@ -13,8 +13,8 @@ class SongList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       scrollDirection: Axis.vertical,
-      shrinkWrap: true,
       itemCount: songs.length,
+      padding: EdgeInsets.zero,
       itemBuilder: (context, index) {
         return Column(
           children: <Widget>[
