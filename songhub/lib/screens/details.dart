@@ -1,5 +1,6 @@
 import 'package:app/components/avatar.dart';
 import 'package:app/components/cover.dart';
+import 'package:app/models/song.dart';
 import 'package:app/routing.dart';
 import 'package:flutter/material.dart';
 
@@ -123,16 +124,8 @@ class BodyTabs extends StatelessWidget {
 }
 
 class SongDetails extends StatelessWidget {
-  final String titleText;
-  final String artist;
-  final String imagePath;
-  final List<String> participants;
-
-  SongDetails({this.titleText, this.artist, this.imagePath, this.participants});
-
   @override
   Widget build(BuildContext context) {
-    // TODO: Use song id to dynamically fetch the song data
     final SongDetailsRouteParams args =
         ModalRoute.of(context).settings.arguments;
     return Scaffold(
@@ -143,10 +136,10 @@ class SongDetails extends StatelessWidget {
         ),
       ),
       body: InformationContainer(
-          imagePath: imagePath,
-          titleText: titleText,
-          artist: artist,
-          participants: participants,
+          imagePath: args.song.img,
+          titleText: args.song.title,
+          artist: args.song.artist,
+          participants: args.song.participants,
           context: context),
     );
   }

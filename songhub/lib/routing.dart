@@ -1,11 +1,12 @@
+import 'package:app/models/song.dart';
 import 'package:app/screens/details.dart';
 import 'package:app/screens/overview.dart';
 import 'package:app/screens/placeholder.dart';
 import 'package:flutter/material.dart';
 
 class SongDetailsRouteParams {
-  final String songId;
-  SongDetailsRouteParams({this.songId});
+  final Song song;
+  SongDetailsRouteParams({this.song});
 }
 
 Map<String, Widget Function(BuildContext)> routes = {

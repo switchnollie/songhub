@@ -20,11 +20,7 @@ class SongList extends StatelessWidget {
           children: <Widget>[
             Divider(),
             SongListEntry(
-              context: context,
-              title: songs[index].title,
-              artist: songs[index].artist,
-              img: songs[index].img,
-              participants: songs[index].participants,
+              song: songs[index],
             ),
           ],
         );
@@ -34,37 +30,26 @@ class SongList extends StatelessWidget {
 }
 
 class SongListEntry extends StatelessWidget {
-  final BuildContext context;
-  final String title;
-  final String artist;
-  final String img;
-  final List<String> participants;
+  final Song song;
 
-  SongListEntry({
-    @required this.context,
-    @required this.title,
-    @required this.artist,
-    @required this.img,
-    @required this.participants,
-  });
+  SongListEntry({@required this.song});
 
   @override
   Widget build(BuildContext context) => ListTile(
       // Song entry widget
       leading: Cover(
-        img: img,
+        img: song.img,
         size: CoverSize.SMALL,
       ),
-      title: ListTitle(title: title),
-      subtitle: ListSubtitle(artist: artist),
-      trailing: AvatarRow(imgs: participants),
+      title: ListTitle(title: song.title),
+      subtitle: ListSubtitle(artist: song.artist),
+      trailing: AvatarRow(imgs: song.participants),
       contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
       onTap: () {
-        // TODO: pass real ID
         Navigator.pushNamed(
           context,
           "/songs/details",
-          arguments: SongDetailsRouteParams(songId: "fakeId"),
+          arguments: SongDetailsRouteParams(song: song),
         );
       });
 }
