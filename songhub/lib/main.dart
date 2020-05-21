@@ -1,5 +1,5 @@
-import 'package:app/app.dart';
-import 'package:app/routing.dart';
+import 'package:song_hub/app.dart';
+import 'package:song_hub/routing.dart';
 import "package:flutter/material.dart";
 import "constants.dart";
 

@@ -1,7 +1,6 @@
-import 'package:app/components/avatar.dart';
-import 'package:app/components/cover.dart';
-import 'package:app/models/song.dart';
-import 'package:app/routing.dart';
+import 'package:song_hub/components/avatar.dart';
+import 'package:song_hub/components/cover.dart';
+import 'package:song_hub/routing.dart';
 import 'package:flutter/material.dart';
 
 class SongTitle extends StatelessWidget {

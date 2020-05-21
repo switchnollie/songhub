@@ -1,4 +1,4 @@
-import 'package:app/models/song.dart';
+import 'package:song_hub/models/song.dart';
 
 Map<String, Song> createMockSongs(int count) {
   Map<String, Song> songs = {};

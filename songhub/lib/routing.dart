@@ -1,7 +1,7 @@
-import 'package:app/models/song.dart';
-import 'package:app/screens/details.dart';
-import 'package:app/screens/overview.dart';
-import 'package:app/screens/placeholder.dart';
+import 'package:song_hub/models/song.dart';
+import 'package:song_hub/screens/details.dart';
+import 'package:song_hub/screens/overview.dart';
+import 'package:song_hub/screens/placeholder.dart';
 import 'package:flutter/material.dart';
 
 class SongDetailsRouteParams {
