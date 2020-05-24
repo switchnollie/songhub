@@ -84,7 +84,9 @@ class InformationContainer extends StatelessWidget {
                           icon: Icon(
                             Icons.more_horiz,
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            buildShowModalBottomSheet(context);
+                          },
                         ),
                       ],
                     )),
@@ -94,6 +96,35 @@ class InformationContainer extends StatelessWidget {
           ],
         ),
       );
+
+  Future<void> buildShowModalBottomSheet(BuildContext context) {
+    return showModalBottomSheet<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+              height: 175,
+              margin: const EdgeInsets.all(16.0),
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    leading: Icon(Icons.edit),
+                    title: Text("Edit"),
+                    onTap: () {},
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.share),
+                    title: Text("Share"),
+                    onTap: () {},
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.cancel),
+                    title: Text("Cancel"),
+                    onTap: () {},
+                  ),
+                ],
+              ));
+        });
+  }
 }
 
 class BodyTabs extends StatelessWidget {

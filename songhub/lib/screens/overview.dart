@@ -17,7 +17,7 @@ class _SongOverviewState extends State<SongOverview> {
   Widget build(BuildContext context) {
     return Container(
       child: Column(children: <Widget>[
-        ScreenHeader(title: "Song Overview"),
+        ScreenHeader(title: "Songs"),
         Expanded(child: SongList(songs: songs)),
       ]),
     );

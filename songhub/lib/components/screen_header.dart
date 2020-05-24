@@ -6,9 +6,10 @@ class ScreenHeader extends StatelessWidget {
   ScreenHeader({this.title});
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) => SafeArea(
+    child: Container(
         // Song overview header
-        margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 28.0),
+        margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -29,5 +30,6 @@ class ScreenHeader extends StatelessWidget {
             )
           ],
         ),
-      );
+      ),
+  );
 }
