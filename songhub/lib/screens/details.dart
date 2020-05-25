@@ -135,7 +135,7 @@ class SongDetails extends StatelessWidget {
         ),
       ),
       body: InformationContainer(
-          imagePath: args.song.img,
+          imagePath: args.song.coverImg,
           titleText: args.song.title,
           artist: args.song.artist,
           participants: args.song.participants,

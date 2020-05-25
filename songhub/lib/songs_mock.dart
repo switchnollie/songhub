@@ -8,7 +8,7 @@ Map<String, Song> createMockSongs(int count) {
         id: id,
         artist: "Sarah Corner",
         title: "Lorem ipsum dolor sit amet",
-        img: "assets/example_cover.jpg",
+        coverImg: "assets/example_cover.jpg",
         participants: [
           "assets/example_participant_1.jpg",
           "assets/example_participant_2.jpg",

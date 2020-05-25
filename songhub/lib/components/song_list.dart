@@ -38,7 +38,7 @@ class SongListEntry extends StatelessWidget {
   Widget build(BuildContext context) => ListTile(
       // Song entry widget
       leading: Cover(
-        img: song.img,
+        img: song.coverImg,
         size: CoverSize.SMALL,
       ),
       title: ListTitle(title: song.title),
