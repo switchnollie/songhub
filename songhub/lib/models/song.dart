@@ -25,6 +25,7 @@ class Song {
         title: data["title"] ?? "",
         artist: data["artist"] ?? "",
         coverImg: data["coverImg"] ?? "",
+        participants: List.from(data["participants"]),
         lyrics: data["lyrics"] ?? "");
   }
 }
