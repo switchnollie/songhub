@@ -10,7 +10,7 @@ class SongOverview extends StatelessWidget {
     List<Song> songs = Provider.of<List<Song>>(context);
     return Container(
       child: Column(children: <Widget>[
-        ScreenHeader(title: "Song Overview"),
+        ScreenHeader(title: "Songs"),
         Expanded(child: SongList(songs: songs)),
       ]),
     );
