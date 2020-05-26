@@ -49,7 +49,7 @@ Compared features of competitors to clarify our added value.
 
 ### Integrate functionality
 
-<img src="./imgs/20200527_song_overview.png" alt="First functionality" style="zoom:67%;" />
+![First functionality](./imgs/20200527_song_overview.png)
 
 ## What hinderances/risks did/do we face?
 
