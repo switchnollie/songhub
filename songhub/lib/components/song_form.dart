@@ -1,8 +1,18 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
-class InformationsForm extends StatelessWidget {
+class NewSong extends StatelessWidget {
 
-  Widget build(BuildContext context) => Container (
-
-  );
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+      elevation: 0.0,
+        leading: BackButton(
+          color: Color(0xFFD2D4DC),
+        ),
+      ),
+      body: ,
+    );
+  }
 }

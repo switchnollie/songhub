@@ -101,51 +101,63 @@ class InformationContainer extends StatelessWidget {
     return showModalBottomSheet<void>(
         context: context,
         builder: (BuildContext context) {
-          return Container(
-              height: 175,
-              margin: const EdgeInsets.all(16.0),
-              child: Column(
-                children: <Widget>[
-                  ListTile(
-                    leading: Icon(Icons.edit),
-                    title: Text("Edit"),
-                    onTap: () {},
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.share),
-                    title: Text("Share"),
-                    onTap: () {},
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.cancel),
-                    title: Text("Cancel"),
-                    onTap: () {},
-                  ),
-                ],
-              ));
+          return EditSheet();
         });
+  }
+}
+
+class EditSheet extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: 175,
+        margin: const EdgeInsets.all(16.0),
+        child: Column(
+          children: <Widget>[
+            ListTile(
+              leading: Icon(Icons.edit),
+              title: Text("Edit"),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.share),
+              title: Text("Share"),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.close),
+              title: Text("Cancel"),
+              onTap: () {},
+            ),
+          ],
+        ));
   }
 }
 
 class BodyTabs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return DefaultTabController(
+      length: 2,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          DefaultTabController(
-            length: 2,
-            child: Column(
-              children: <Widget>[
-                Container(
-                  constraints: BoxConstraints.expand(height: 50),
-                  child: TabBar(tabs: [
-                    Tab(text: "FILES"),
-                    Tab(text: "DISCUSSION"),
-                  ]),
-                ),
-              ],
-            ),
+          Container(
+            constraints: BoxConstraints.expand(height: 50),
+            child: TabBar(tabs: [
+              Tab(text: "FILES"),
+              Tab(text: "DISCUSSION"),
+            ]),
+          ),          
+          Container(
+            //TODO: Set realtive Size (needed due to error of overflowed bottom)
+            height: 400,
+            child: TabBarView(
+                children: [
+                  Icon(Icons.file_upload),
+                  Icon(Icons.chat),
+                ],
+              ),
           ),
         ],
       ),
@@ -161,9 +173,9 @@ class SongDetails extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        leading: BackButton(
-          color: Color(0xFFD2D4DC),
-        ),
+        // leading: BackButton(
+        //   color: Color(0xFFD2D4DC),
+        // ),
       ),
       body: InformationContainer(
           imagePath: args.song.coverImg,

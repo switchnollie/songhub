@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:song_hub/routing.dart';
 
 class ScreenHeader extends StatelessWidget {
   final String title;
@@ -26,7 +27,13 @@ class ScreenHeader extends StatelessWidget {
                 size: 38,
               ),
               color: Color(0xFFD2D4DC),
-              onPressed: () {},
+              onPressed: () {
+        Navigator.pushNamed(
+          context,
+          "/songs/new",
+          arguments: SongDetailsRouteParams(),
+        );
+              },
             )
           ],
         ),
