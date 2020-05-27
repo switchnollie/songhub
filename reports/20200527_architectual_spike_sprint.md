@@ -61,8 +61,8 @@ Compared features of competitors to clarify our added value.
 
 Demo core functionality:
 
-* Integrate every UI element
-* Improve functionality
+* Integrate core feature(s)
+	* Add/edit song
+	* Prio B: Discussion
 * Add more dummy data
-* Specify design language (color palette, element shadows)
 
