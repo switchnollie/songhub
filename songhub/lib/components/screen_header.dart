@@ -31,7 +31,7 @@ class ScreenHeader extends StatelessWidget {
         Navigator.pushNamed(
           context,
           "/songs/new",
-          arguments: SongDetailsRouteParams(),
+          arguments: SongDetailsScreenRouteParams(),
         );
               },
             )

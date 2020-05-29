@@ -12,7 +12,7 @@ class _AppState extends State<App> {
   int _selectedIndex = 0;
 
   final List<Widget> _children = [
-    SongOverview(),
+    SongOverviewScreen(),
     PlaceholderScreen("Notifications"),
     PlaceholderScreen("Account")
   ];

@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class NewSong extends StatelessWidget {
+class AddSongModal extends StatelessWidget {
+  static const routeId = "/songs/new";
   @override
   Widget build(BuildContext context) {
     return Scaffold(

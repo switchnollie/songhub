@@ -165,10 +165,11 @@ class BodyTabs extends StatelessWidget {
   }
 }
 
-class SongDetails extends StatelessWidget {
+class SongDetailsScreen extends StatelessWidget {
+  static const routeId = "/songs/details";
   @override
   Widget build(BuildContext context) {
-    final SongDetailsRouteParams args =
+    final SongDetailsScreenRouteParams args =
         ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(

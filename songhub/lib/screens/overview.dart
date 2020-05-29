@@ -4,7 +4,8 @@ import 'package:song_hub/components/screen_header.dart';
 import 'package:song_hub/models/song.dart';
 import 'package:flutter/material.dart';
 
-class SongOverview extends StatelessWidget {
+class SongOverviewScreen extends StatelessWidget {
+  static const routeId = "/songs";
   @override
   Widget build(BuildContext context) {
     List<Song> songs = Provider.of<List<Song>>(context);
