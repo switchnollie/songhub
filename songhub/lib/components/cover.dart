@@ -13,14 +13,14 @@ class Cover extends StatelessWidget {
     return size == CoverSize.LARGE
         ? ClipRRect(
             borderRadius: BorderRadius.circular(5.0),
-            child: Image.asset(
+            child: Image.network(
               img,
               width: 125,
             ),
           )
         : ClipRRect(
             borderRadius: BorderRadius.circular(5.0),
-            child: Image.asset(img),
+            child: Image.network(img),
           );
   }
 }
