@@ -28,6 +28,9 @@ class AddSongModal extends StatelessWidget {
 class _AddSongFormState extends State<AddSongForm> {
   final _db = DatabaseService();
   final _titleController = TextEditingController();
+  final _artistController = TextEditingController();
+  final _lyricsController = TextEditingController();
+  final _moodController = TextEditingController();
   String currentStatus = "Initiation";
   List<String> statusValues = ["Initiation", "Idea", "Demo", "Release"];
 
@@ -44,28 +47,34 @@ class _AddSongFormState extends State<AddSongForm> {
         children: <Widget>[
           Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
             AddCoverImage(),
-            Padding(
-                padding: const EdgeInsets.only(left: 16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    //TODO: 2 Textfields
-                  ],
-                )),
+            Expanded(
+              child: Column(
+                children: <Widget>[
+                  SongFormEntry(
+                    titleController: _titleController,
+                    label: "Title",
+                    pad: 0.0,
+                  ),
+                  SongFormEntry(
+                    titleController: _artistController,
+                    label: "Artist",
+                  ),
+                ],
+              ),
+            ),
           ]),
           Padding(
             padding: const EdgeInsets.only(top: 16.0),
             child: buildStatusField(),
           ),
-          SongFormEntry(
-            titleController: _titleController,
-            label: "Title",
+          LyricsFormEntry(
+            titleController: _lyricsController,
           ),
           SongFormEntry(
-            titleController: _titleController,
-            label: "Artist",
+            titleController: _moodController,
+            label: "Mood",
           ),
-          AddSongButton(db: _db, titleController: _titleController),
+          AddSongButton(db: _db, titleController: _titleController, artistController: _artistController, statusValue: currentStatus, lyricsController: _lyricsController, moodController: _moodController,),
         ],
       ),
     );
@@ -112,17 +121,20 @@ class _AddSongFormState extends State<AddSongForm> {
 class AddCoverImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(5.0),
-      child: Container(
-        color: Color(0xFFF2F5FA),
-        width: 125,
-        height: 125,
-        alignment: Alignment.center,
-        child: IconButton(
-          icon: Icon(Icons.add),
-          color: Colors.black,
-          onPressed: () {},
+    return Padding(
+      padding: const EdgeInsets.only(right: 16.0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(5.0),
+        child: Container(
+          color: Color(0xFFF2F5FA),
+          width: 125,
+          height: 125,
+          alignment: Alignment.center,
+          child: IconButton(
+            icon: Icon(Icons.add),
+            color: Colors.black,
+            onPressed: () {},
+          ),
         ),
       ),
     );
@@ -131,11 +143,16 @@ class AddCoverImage extends StatelessWidget {
 
 class AddSongButton extends StatelessWidget {
   final DatabaseService db;
-  final TextEditingController titleController;
+  final TextEditingController titleController, artistController, lyricsController, moodController;
+  final String statusValue;
 
   const AddSongButton({
     this.db,
     this.titleController,
+    this.artistController,
+    this.statusValue,
+    this.lyricsController,
+    this.moodController
   });
 
   @override
@@ -144,6 +161,7 @@ class AddSongButton extends StatelessWidget {
       padding: EdgeInsets.only(top: 16.0),
       child: SizedBox(
           width: double.infinity,
+          height: 54,
           child: RaisedButton(
             textColor: Colors.white,
             child: Padding(
@@ -157,7 +175,9 @@ class AddSongButton extends StatelessWidget {
             ),
             color: Theme.of(context).accentColor,
             onPressed: () {
-              // db.addSongDocument(titleController.text);
+              db.addSongDocument(
+                titleController.text, artistController.text, statusValue, lyricsController.text, moodController.text
+                );
             },
           )),
     );
@@ -167,24 +187,28 @@ class AddSongButton extends StatelessWidget {
 class SongFormEntry extends StatelessWidget {
   final TextEditingController titleController;
   final String label;
+  final double pad;
 
-  const SongFormEntry({this.titleController, this.label});
+  const SongFormEntry({this.titleController, this.label, this.pad});
 
   final bool _validate = false;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 16.0),
-      child: TextField(
-        controller: titleController,
-        decoration: InputDecoration(
-          fillColor: Color(0xFFF2F5FA),
-          filled: true,
-          border: InputBorder.none,
-          // border: OutlineInputBorder(),
-          labelText: label,
-          errorText: _validate ? "Value can\'t be empty!" : null,
+      padding: EdgeInsets.only(top: pad == null ? 16.0 : pad),
+      child: Container(
+        height: 54,
+        child: TextField(
+          controller: titleController,
+          decoration: InputDecoration(
+            fillColor: Color(0xFFF2F5FA),
+            filled: true,
+            border: InputBorder.none,
+            // border: OutlineInputBorder(),
+            labelText: label,
+            errorText: _validate ? "Value can\'t be empty!" : null,
+          ),
         ),
       ),
     );
@@ -198,149 +222,35 @@ class AddSongForm extends StatefulWidget {
   }
 }
 
-// class _AddSongFormState extends State<AddSongForm> {
-//   final _formKey = GlobalKey<FormState>();
+class LyricsFormEntry extends StatelessWidget {
+  final TextEditingController titleController;
+  final double pad;
 
-//   String currentStatus = "Initiation";
-//   List<String> statusValues = ["Initiation", "Idea", "Demo", "Release"];
+  const LyricsFormEntry({this.titleController, this.pad});
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: EdgeInsets.symmetric(horizontal: 16.0),
-//       child: Column(
-//         children: <Widget>[
-//           Row(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: <Widget>[
-//               ClipRRect(
-//                 borderRadius: BorderRadius.circular(5.0),
-//                 child: Container(
-//                   color: Colors.grey[200],
-//                   width: 125,
-//                   height: 125,
-//                   alignment: Alignment.center,
-//                   child: IconButton(
-//                     icon: Icon(Icons.add),
-//                     color: Colors.black,
-//                     onPressed: () {},
-//                   ),
-//                 ),
-//               ),
-//               Padding(
-//                   padding: const EdgeInsets.only(left: 16.0),
-//                   child: Column(
-//                     crossAxisAlignment: CrossAxisAlignment.start,
-//                     children: <Widget>[],
-//                   )),
-//             ],
-//           ),
-//           Padding(
-//             padding: EdgeInsets.only(top: 16.0),
-//           ),
-//           DropdownButton<String>(
-//             value: currentStatus,
-//             hint: Text("Status"),
-//             isExpanded: true,
-//             underline: Container(
-//               height: 1,
-//               color: Colors.grey,
-//             ),
-//             onChanged: (String newValue) {
-//               setState(() {
-//                 currentStatus = newValue;
-//               });
-//             },
-//             items: statusValues.map<DropdownMenuItem<String>>((String value) {
-//               return DropdownMenuItem<String>(
-//                 value: value,
-//                 child: Text(value),
-//               );
-//             }).toList(),
-//           ),
-//           SongForm(formKey: _formKey),
-//           AppButton(formKey: _formKey, title: "", artist: "", imageUrl: "", status: currentStatus, lyrics: "", mood: ""),
-//         ],
-//       ),
-//     );
-//   }
-// }
+  final bool _validate = false;
 
-// class SongForm extends StatelessWidget {
-//   const SongForm({
-//     Key key,
-//     @required GlobalKey<FormState> formKey,
-//   })  : _formKey = formKey,
-//         super(key: key);
-
-//   final GlobalKey<FormState> _formKey;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Form(
-//       key: _formKey,
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: <Widget>[
-//           GeneralTextForm(label: "Lyrics"),
-//           GeneralTextForm(label: "Mood"),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// class AppButton extends StatelessWidget {
-
-//   final GlobalKey<FormState> formKey;
-//   final String title, artist, imageUrl, status, lyrics, mood;
-
-//   final db = DatabaseService();
-
-//   AppButton({this.formKey, this.title, this.artist, this.imageUrl, this.status, this.lyrics, this.mood});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: EdgeInsets.only(top: 16.0),
-//       child: SizedBox(
-//         width: double.infinity,
-//         child: RaisedButton(
-//           textColor: Colors.white,
-//           child: Text(
-//             "Create new song",
-//             style: new TextStyle(
-//               fontSize: 16.0,
-//             ),
-//           ),
-//           color: Theme.of(context).accentColor,
-//           onPressed: () {
-//             if (formKey.currentState.validate()) {
-//               var ref = db.addSongDocument(title, artist, imageUrl, status, lyrics, mood);
-//               print(ref);
-//             }
-//           },
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class GeneralTextForm extends StatelessWidget {
-//   final String label;
-
-//   const GeneralTextForm({this.label});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return TextFormField(
-//       decoration: InputDecoration(labelText: label),
-//       validator: (value) {
-//         if (value.isEmpty) {
-//           return 'Please enter some text';
-//         }
-//         return null;
-//       },
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(top: pad == null ? 16.0 : pad),
+      child: Container(
+        height: 54,
+        child: TextField(
+          controller: titleController,
+          keyboardType: TextInputType.multiline,
+          minLines: 1,
+          maxLines: null,
+          decoration: InputDecoration(
+            fillColor: Color(0xFFF2F5FA),
+            filled: true,
+            border: InputBorder.none,
+            // border: OutlineInputBorder(),
+            labelText: "Lyrics",
+            errorText: _validate ? "Value can\'t be empty!" : null,
+          ),
+        ),
+      ),
+    );
+  }
+}

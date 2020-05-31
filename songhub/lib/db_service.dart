@@ -32,12 +32,16 @@ class DatabaseService {
     });
   }
 
-  Future<DocumentReference> addSongDocument(String title) {
+  Future<DocumentReference> addSongDocument(String title, String artist, String status, String lyrics, String mood) {
     /*
     * Insert song document in Firestore "songs" collection.
     */
       return _db.collection('songs').add({
       title: title,
+      artist: artist,
+      status: status == null? null: status,
+      lyrics: lyrics == null? null: lyrics,
+      mood: mood == null? null: mood,
     });
   }
 }

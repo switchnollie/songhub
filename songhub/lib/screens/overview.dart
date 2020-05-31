@@ -13,7 +13,7 @@ class SongOverviewScreen extends StatelessWidget {
     return Container(
       child: Column(children: <Widget>[
         ScreenHeader(title: "Songs"),
-        //Expanded(child: SongList(songs: songs)),
+        Expanded(child: SongList(songs: songs)),
       ]),
     );
   }
