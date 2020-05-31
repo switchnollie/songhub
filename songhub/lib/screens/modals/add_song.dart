@@ -2,8 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:song_hub/components/text_input.dart';
-
-import '../../db_service.dart';
+import 'package:song_hub/services/db_service.dart';
 
 class AddSongModal extends StatelessWidget {
   static const routeId = "/songs/new";
@@ -51,15 +50,8 @@ class _AddSongFormState extends State<AddSongForm> {
             Expanded(
               child: Column(
                 children: <Widget>[
-                  SongFormEntry(
-                    titleController: _titleController,
-                    label: "Title",
-                    pad: 0.0,
-                  ),
-                  SongFormEntry(
-                    titleController: _artistController,
-                    label: "Artist",
-                  ),
+                  TextInput(controller: _titleController, label: "Title"),
+                  TextInput(controller: _artistController, label: "Artist"),
                 ],
               ),
             ),
@@ -68,13 +60,8 @@ class _AddSongFormState extends State<AddSongForm> {
             padding: const EdgeInsets.only(top: 16.0),
             child: buildStatusField(),
           ),
-          LyricsFormEntry(
-            titleController: _lyricsController,
-          ),
-          SongFormEntry(
-            titleController: _moodController,
-            label: "Mood",
-          ),
+          TextInput(controller: _lyricsController, label: "Lyrics"),
+          TextInput(controller: _moodController, label: "Mood"),
           AddSongButton(db: _db, titleController: _titleController, artistController: _artistController, statusValue: currentStatus, lyricsController: _lyricsController, moodController: _moodController,),
         ],
       ),
@@ -116,6 +103,13 @@ class _AddSongFormState extends State<AddSongForm> {
         );
       },
     );
+  }
+}
+
+class AddSongForm extends StatefulWidget {
+  @override
+  _AddSongFormState createState() {
+    return _AddSongFormState();
   }
 }
 
@@ -213,13 +207,6 @@ class SongFormEntry extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class AddSongForm extends StatefulWidget {
-  @override
-  _AddSongFormState createState() {
-    return _AddSongFormState();
   }
 }
 
