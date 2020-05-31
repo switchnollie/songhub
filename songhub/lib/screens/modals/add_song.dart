@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:song_hub/components/dropdown_field.dart';
 import 'package:song_hub/components/image_input.dart';
 import 'package:song_hub/components/text_input.dart';
 import 'package:song_hub/services/db_service.dart';
@@ -53,17 +54,26 @@ class _AddSongFormState extends State<AddSongForm> {
               child: Column(
                 children: <Widget>[
                   TextInput(controller: _titleController, label: "Title"),
-                  TextInput(controller: _artistController, label: "Artist"),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0),
+                    child: TextInput(controller: _artistController, label: "Artist"),
+                  ),
                 ],
               ),
             ),
           ]),
           Padding(
             padding: const EdgeInsets.only(top: 16.0),
-            child: buildStatusField(),
+            child: DropDownInput(),
           ),
-          TextInput(controller: _lyricsController, label: "Lyrics"),
-          TextInput(controller: _moodController, label: "Mood"),
+          Padding(
+            padding: const EdgeInsets.only(top: 16.0),
+            child: TextInput(controller: _lyricsController, label: "Lyrics"),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 16.0),
+            child: TextInput(controller: _moodController, label: "Mood"),
+          ),
           AddSongButton(
             db: _db,
             titleController: _titleController,
@@ -74,43 +84,6 @@ class _AddSongFormState extends State<AddSongForm> {
           ),
         ],
       ),
-    );
-  }
-
-  FormField<String> buildStatusField() {
-    return FormField<String>(
-      builder: (FormFieldState<String> state) {
-        return InputDecorator(
-          decoration: InputDecoration(
-            // labelStyle: textStyle,
-            errorStyle: TextStyle(color: Colors.redAccent, fontSize: 16.0),
-            hintText: 'Please select expense',
-            fillColor: Color(0xFFF2F5FA),
-            filled: true,
-            border: InputBorder.none,
-          ),
-          // OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
-          isEmpty: currentStatus == "",
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton<String>(
-              value: currentStatus,
-              isDense: true,
-              onChanged: (String newValue) {
-                setState(() {
-                  currentStatus = newValue;
-                  state.didChange(newValue);
-                });
-              },
-              items: statusValues.map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
-          ),
-        );
-      },
     );
   }
 }
@@ -167,89 +140,35 @@ class AddSongButton extends StatelessWidget {
   }
 }
 
-class SongFormEntry extends StatelessWidget {
-  final TextEditingController titleController;
-  final String label;
-  final double pad;
+// class LyricsFormEntry extends StatelessWidget {
+//   final TextEditingController titleController;
+//   final double pad;
 
-  const SongFormEntry({this.titleController, this.label, this.pad});
+//   const LyricsFormEntry({this.titleController, this.pad});
 
-  final bool _validate = false;
+//   final bool _validate = false;
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: pad == null ? 16.0 : pad),
-      child: Container(
-        height: 54,
-        child: TextField(
-          controller: titleController,
-          decoration: InputDecoration(
-            fillColor: Color(0xFFF2F5FA),
-            filled: true,
-            border: InputBorder.none,
-            // border: OutlineInputBorder(),
-            labelText: label,
-            errorText: _validate ? "Value can\'t be empty!" : null,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class LyricsFormEntry extends StatelessWidget {
-  final TextEditingController titleController;
-  final double pad;
-
-  const LyricsFormEntry({this.titleController, this.pad});
-
-  final bool _validate = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: pad == null ? 16.0 : pad),
-      child: Container(
-        height: 54,
-        child: TextField(
-          controller: titleController,
-          keyboardType: TextInputType.multiline,
-          minLines: 1,
-          maxLines: null,
-          decoration: InputDecoration(
-            fillColor: Color(0xFFF2F5FA),
-            filled: true,
-            border: InputBorder.none,
-            // border: OutlineInputBorder(),
-            labelText: "Lyrics",
-            errorText: _validate ? "Value can\'t be empty!" : null,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class AddCoverImage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 16.0),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(5.0),
-        child: Container(
-          color: Color(0xFFF2F5FA),
-          width: 125,
-          height: 125,
-          alignment: Alignment.center,
-          child: IconButton(
-            icon: Icon(Icons.add),
-            color: Colors.black,
-            onPressed: () {},
-          ),
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: EdgeInsets.only(top: pad == null ? 16.0 : pad),
+//       child: Container(
+//         height: 54,
+//         child: TextField(
+//           controller: titleController,
+//           keyboardType: TextInputType.multiline,
+//           minLines: 1,
+//           maxLines: null,
+//           decoration: InputDecoration(
+//             fillColor: Color(0xFFF2F5FA),
+//             filled: true,
+//             border: InputBorder.none,
+//             // border: OutlineInputBorder(),
+//             labelText: "Lyrics",
+//             errorText: _validate ? "Value can\'t be empty!" : null,
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
