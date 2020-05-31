@@ -10,7 +10,6 @@ import 'package:song_hub/models/song.dart';
 import 'package:song_hub/services/db_service.dart';
 import 'package:song_hub/services/storage_service.dart';
 
-
 class AddSongModal extends StatelessWidget {
   static const routeId = "/songs/new";
   @override
@@ -26,7 +25,6 @@ class AddSongModal extends StatelessWidget {
 }
 
 class _AddSongFormState extends State<AddSongForm> {
-  
   final _db = DatabaseService();
   final _storage = StorageService();
 
@@ -99,7 +97,7 @@ class _AddSongFormState extends State<AddSongForm> {
                         participants: [],
                         lyrics: _lyricsController.text,
                         mood: _moodController.text));
-                  Navigator.pop(context);
+                    Navigator.pop(context);
                   }),
             ),
           ],

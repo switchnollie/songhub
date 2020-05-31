@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:song_hub/components/buttons.dart';
 import 'package:song_hub/components/text_input.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -12,24 +13,42 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(title: Text('Login'),),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.0),
-        child: Form(child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(height: 20.0),
-            TextInput(
-              onChanged: (val) {},
+          padding: EdgeInsets.all(24.0),
+          child: Form(
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(height: 40.0),
+                      TextInput(
+                        onChanged: (val) {},
+                        icon: Icons.mail,
+                        hintText: "E-Mail",
+                      ),
+                      SizedBox(height: 20.0),
+                      TextInput(
+                        obscureText: true,
+                        icon: Icons.lock,
+                        onChanged: (val) {},
+                        hintText: "Password",
+                      ),
+                      SizedBox(height: 20.0),
+                      PrimaryButton(
+                        onPressed: () {},
+                        text: "Login",
+                      ),
+                    ],
+                  ),
+                ),
+                Text('New to Song Hub? Sign Up',
+                    style: Theme.of(context).textTheme.bodyText1),
+              ],
             ),
-            SizedBox(height: 20.0),
-            TextInput(
-              obscureText: true,
-              onChanged: (val) {},
-            ),
-          ],
-        ),)
-      ),
+          )),
     );
   }
 }

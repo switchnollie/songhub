@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:song_hub/app.dart';
 import 'package:song_hub/routing.dart';
 import "package:flutter/material.dart";
+import 'package:song_hub/screens/login.dart';
 import "constants.dart";
 import 'package:provider/provider.dart';
 import 'package:song_hub/services/db_service.dart';
@@ -24,10 +27,17 @@ class Main extends State<Songhub> {
           theme: ThemeData(
             primaryColor: Color(0xFFFFFFFF),
             accentColor: kAccentColor,
+            hintColor: kPlaceholderColor,
             fontFamily: "Roboto",
-            textTheme: TextTheme(),
+            textTheme: TextTheme(
+              bodyText1: TextStyle(
+                fontSize: 16.0,
+                color: kTextSecondary,
+              ),
+            ),
           ),
-          home: App(),
+          home: LoginScreen(),
+          initialRoute: LoginScreen.routeId,
           routes: routes,
         ));
   }
