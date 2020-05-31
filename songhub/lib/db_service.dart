@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'dart:async';
 import 'package:song_hub/models/song.dart';
 
@@ -20,5 +21,14 @@ class DatabaseService {
 
     return ref.snapshots().map((list) =>
         list.documents.map((doc) => Song.fromFirestore(doc)).toList());
+  }
+
+  Future<DocumentReference> addSongDocument(String title) {
+    /*
+    * Insert song document in Firestore "songs" collection.
+    */
+      return _db.collection('songs').add({
+      title: title,
+    });
   }
 }
