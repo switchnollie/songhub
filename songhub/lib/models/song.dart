@@ -28,4 +28,26 @@ class Song {
         participants: List.from(data["participants"]),
         lyrics: data["lyrics"] ?? "");
   }
+
+  factory Song.fromMap(Map<String, dynamic> map) {
+    return Song(
+        id: map['id'],
+        title: map['data']["title"] ?? "",
+        artist: map['data']["artist"] ?? "",
+        coverImg: map['data']["coverImg"] ?? "",
+        participants: List.from(map['data']["participants"]),
+        lyrics: map['data']["lyrics"] ?? "");
+  }
+
+  String toString() {
+    final String condensedLyrics =
+        lyrics != null && lyrics.length >= 18 ? lyrics.substring(0, 18) : '';
+    return '''
+    ID $id
+    Song $title by $artist
+    Lyrics $condensedLyrics
+    Image URL $coverImg
+    Participants IDs $participants
+    ''';
+  }
 }
