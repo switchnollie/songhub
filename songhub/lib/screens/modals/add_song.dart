@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:song_hub/components/image_input.dart';
 import 'package:song_hub/components/text_input.dart';
 import 'package:song_hub/services/db_service.dart';
 
@@ -46,7 +47,8 @@ class _AddSongFormState extends State<AddSongForm> {
       child: Column(
         children: <Widget>[
           Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-            AddCoverImage(),
+            // AddCoverImage(),
+            ImageInput(),
             Expanded(
               child: Column(
                 children: <Widget>[
@@ -62,7 +64,14 @@ class _AddSongFormState extends State<AddSongForm> {
           ),
           TextInput(controller: _lyricsController, label: "Lyrics"),
           TextInput(controller: _moodController, label: "Mood"),
-          AddSongButton(db: _db, titleController: _titleController, artistController: _artistController, statusValue: currentStatus, lyricsController: _lyricsController, moodController: _moodController,),
+          AddSongButton(
+            db: _db,
+            titleController: _titleController,
+            artistController: _artistController,
+            statusValue: currentStatus,
+            lyricsController: _lyricsController,
+            moodController: _moodController,
+          ),
         ],
       ),
     );
@@ -113,42 +122,21 @@ class AddSongForm extends StatefulWidget {
   }
 }
 
-class AddCoverImage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 16.0),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(5.0),
-        child: Container(
-          color: Color(0xFFF2F5FA),
-          width: 125,
-          height: 125,
-          alignment: Alignment.center,
-          child: IconButton(
-            icon: Icon(Icons.add),
-            color: Colors.black,
-            onPressed: () {},
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class AddSongButton extends StatelessWidget {
   final DatabaseService db;
-  final TextEditingController titleController, artistController, lyricsController, moodController;
+  final TextEditingController titleController,
+      artistController,
+      lyricsController,
+      moodController;
   final String statusValue;
 
-  const AddSongButton({
-    this.db,
-    this.titleController,
-    this.artistController,
-    this.statusValue,
-    this.lyricsController,
-    this.moodController
-  });
+  const AddSongButton(
+      {this.db,
+      this.titleController,
+      this.artistController,
+      this.statusValue,
+      this.lyricsController,
+      this.moodController});
 
   @override
   Widget build(BuildContext context) {
@@ -170,9 +158,9 @@ class AddSongButton extends StatelessWidget {
             ),
             color: Theme.of(context).accentColor,
             onPressed: () {
-              db.addSongDocument(
-                titleController.text, artistController.text, statusValue, lyricsController.text, moodController.text
-                );
+              // db.addSongDocument(
+              //   titleController.text, artistController.text, statusValue, lyricsController.text, moodController.text
+              //   );
             },
           )),
     );
@@ -236,6 +224,29 @@ class LyricsFormEntry extends StatelessWidget {
             // border: OutlineInputBorder(),
             labelText: "Lyrics",
             errorText: _validate ? "Value can\'t be empty!" : null,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class AddCoverImage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 16.0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(5.0),
+        child: Container(
+          color: Color(0xFFF2F5FA),
+          width: 125,
+          height: 125,
+          alignment: Alignment.center,
+          child: IconButton(
+            icon: Icon(Icons.add),
+            color: Colors.black,
+            onPressed: () {},
           ),
         ),
       ),
