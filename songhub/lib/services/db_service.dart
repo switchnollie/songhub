@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'dart:async';
 import 'package:song_hub/models/song.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:song_hub/storage_service.dart';
+import 'package:song_hub/services/storage_service.dart';
 
 class DatabaseService {
   final Firestore _db = Firestore.instance;

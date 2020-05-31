@@ -5,6 +5,7 @@ import 'package:song_hub/screens/login.dart';
 import 'package:song_hub/screens/overview.dart';
 import 'package:song_hub/screens/placeholder.dart';
 import 'package:flutter/material.dart';
+import 'package:song_hub/screens/registration.dart';
 
 class SongDetailsScreenRouteParams {
   final Song song;
@@ -18,5 +19,5 @@ Map<String, Widget Function(BuildContext)> routes = {
   LoginScreen.routeId: (context) => LoginScreen(),
   "/notifications": (context) => PlaceholderScreen("Notifications"),
   "/profile": (context) => PlaceholderScreen("Profile"),
-  "/login": (context) => LoginScreen(),
+  "/signup": (context) => RegistrationScreen(),
 };
