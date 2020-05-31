@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:song_hub/components/text_input.dart';
 
 class AddSongModal extends StatelessWidget {
   static const routeId = "/songs/new";
@@ -9,7 +10,7 @@ class AddSongModal extends StatelessWidget {
       appBar: AppBar(
         elevation: 0.0,
         actions: [
-          new FlatButton(
+          FlatButton(
             onPressed: () {
             },
             child: Text("SAVE"),
@@ -23,14 +24,13 @@ class AddSongModal extends StatelessWidget {
 
 class AddSongForm extends StatefulWidget {
   @override
-  InformationForm createState() {
-    return InformationForm();
+  _AddSongFormState createState() {
+    return _AddSongFormState();
   }
 }
 
-class InformationForm extends State<AddSongForm> {
+class _AddSongFormState extends State<AddSongForm> {
   final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,30 +40,11 @@ class InformationForm extends State<AddSongForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            GeneralTextForm(label: "Lyrics"),
-            GeneralTextForm(label: "Mood"),
+            TextInput(label: "Lyrics"),
+            TextInput(label: "Mood"),
           ],
         ),
       ),
-    );
-  }
-}
-
-class GeneralTextForm extends StatelessWidget {
-  final String label;
-
-  const GeneralTextForm({this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      decoration: InputDecoration(labelText: label),
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Please enter some text';
-        }
-        return null;
-      },
     );
   }
 }

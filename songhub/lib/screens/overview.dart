@@ -9,7 +9,6 @@ class SongOverviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Song> songs = Provider.of<List<Song>>(context);
-    print(songs[0].toString());
     return Container(
       child: Column(children: <Widget>[
         ScreenHeader(title: "Songs"),

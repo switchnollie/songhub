@@ -3,7 +3,7 @@ import 'package:song_hub/routing.dart';
 import "package:flutter/material.dart";
 import "constants.dart";
 import 'package:provider/provider.dart';
-import 'package:song_hub/db_service.dart';
+import 'package:song_hub/services/db_service.dart';
 import 'package:song_hub/models/song.dart';
 
 void main() => runApp(Songhub());
