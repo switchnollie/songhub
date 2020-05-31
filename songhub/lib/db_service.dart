@@ -1,32 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:async';
 import 'package:song_hub/models/song.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:song_hub/storage_service.dart';
 
 class DatabaseService {
   final Firestore _db = Firestore.instance;
-  final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  /// Get a stream of a single document
-  // Stream<User> streamUser(String id) {
-  //   return _db
-  //       .collection('users')
-  //       .document(id)
-  //       .snapshots()
-  //       .map((snap) => User.fromFirestore(snap));
-  // }
-  Future<Song> _getDataWithUrl(Map<String, dynamic> data, String id) {
-    final completer = Completer();
-    _storage
-        .ref()
-        .child(data['coverImg'])
-        .getDownloadURL()
-        .then((url) => completer.complete(Song.fromMap({
-              'id': id,
-              'data': {'coverImg': url, ...data}
-            })));
-    return completer.future;
+  Future<Song> _getDataWithUrl(DocumentSnapshot document) async {
+    final url = await StorageService.loadImage(document.data['coverImg']);
+    // copy the document as is
+    final Map<String, dynamic> mergedSongMap = {
+              'id': document.documentID,
+              'data': {...document.data}
+            };
+    // overwrite the path with the actual image url
+    mergedSongMap['data']['coverImg'] = url;
+    return Song.fromMap(mergedSongMap);
   }
 
   /// Query a subcollection
@@ -34,22 +24,8 @@ class DatabaseService {
     var ref = _db.collection('songs');
 
     return ref.snapshots().switchMap((dbSnapshot) {
-      final List<Map<String, dynamic>> coverImgPaths =
-          dbSnapshot.documents.map((doc) {
-        final result = {
-          'id': doc.documentID,
-          'coverPath': doc.data['coverImg']
-        };
-        print(result);
-        return result;
-      }).toList();
-      final mergedValues = Future.wait(coverImgPaths.map((pathMap) =>
-          _getDataWithUrl(
-              dbSnapshot.documents
-                  .where((doc) => doc.documentID == pathMap['id'])
-                  .toList()[0]
-                  .data,
-              pathMap['id'])));
+      final mergedValues =
+          Future.wait(dbSnapshot.documents.map((doc) => _getDataWithUrl(doc)));
       final result = Stream.fromFuture(mergedValues);
       return result;
     });

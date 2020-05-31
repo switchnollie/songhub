@@ -38,4 +38,16 @@ class Song {
         participants: List.from(map['data']["participants"]),
         lyrics: map['data']["lyrics"] ?? "");
   }
+
+  String toString() {
+    final String condensedLyrics =
+        lyrics != null && lyrics.length >= 18 ? lyrics.substring(0, 18) : '';
+    return '''
+    ID $id
+    Song $title by $artist
+    Lyrics $condensedLyrics
+    Image URL $coverImg
+    Participants IDs $participants
+    ''';
+  }
 }
