@@ -2,15 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:song_hub/components/buttons.dart';
 import 'package:song_hub/components/link.dart';
 import 'package:song_hub/components/text_input.dart';
-import 'package:song_hub/screens/login.dart';
+import 'package:song_hub/screens/authentication/registration.dart';
+import 'package:song_hub/services/auth_service.dart';
 
-class RegistrationScreen extends StatefulWidget {
-  static const String routeId = "/signup";
+class LoginScreen extends StatefulWidget {
+  static const String routeId = "/login";
   @override
-  _RegistrationScreenState createState() => _RegistrationScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _RegistrationScreenState extends State<RegistrationScreen> {
+class _LoginScreenState extends State<LoginScreen> {
+  final AuthService _auth = AuthService();
+  // text field state
+  String email = '';
+  String password = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,25 +30,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          Text(
-                            'Let\'s get started!',
-                            style: Theme.of(context).textTheme.headline3,
-                          ),
-                          SizedBox(
-                            height: 5.0,
-                          ),
-                          Text(
-                            'Create an account to get access',
-                            style: Theme.of(context).textTheme.bodyText1,
-                          )
-                        ],
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                      ),
                       SizedBox(height: 40.0),
                       TextInput(
-                        onChanged: (val) {},
+                        onChanged: (val) {
+                          setState(() {
+                            email = val;
+                          });
+                        },
                         icon: Icons.mail,
                         hintText: "E-Mail",
                       ),
@@ -51,28 +44,25 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       TextInput(
                         obscureText: true,
                         icon: Icons.lock,
-                        onChanged: (val) {},
+                        onChanged: (val) {
+                          setState(() {
+                            password = val;
+                          });
+                        },
                         hintText: "Password",
-                      ),
-                      SizedBox(height: 20.0),
-                      TextInput(
-                        obscureText: true,
-                        icon: Icons.lock,
-                        onChanged: (val) {},
-                        hintText: "Confirm Password",
                       ),
                       SizedBox(height: 20.0),
                       PrimaryButton(
                         onPressed: () {},
-                        text: "Sign Up",
+                        text: "Login",
                       ),
                     ],
                   ),
                 ),
                 Link(
-                  to: LoginScreen.routeId,
+                  to: RegistrationScreen.routeId,
                   child: Text(
-                    'Already signed up? Log In',
+                    'New to Song Hub? Sign Up',
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ),

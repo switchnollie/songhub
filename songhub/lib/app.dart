@@ -1,6 +1,6 @@
 //import 'package:song_hub/constants.dart';
-import 'package:song_hub/screens/overview.dart';
-import 'package:song_hub/screens/placeholder.dart';
+import 'package:song_hub/screens/app/overview.dart';
+import 'package:song_hub/screens/app/placeholder.dart';
 import 'package:flutter/material.dart';
 
 class App extends StatefulWidget {
@@ -9,6 +9,7 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  // Navigation State
   int _selectedIndex = 0;
 
   final List<Widget> _children = [

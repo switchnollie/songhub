@@ -1,9 +1,9 @@
 import 'dart:ui';
-
-import 'package:song_hub/app.dart';
+import 'package:song_hub/models/user.dart';
 import 'package:song_hub/routing.dart';
 import "package:flutter/material.dart";
-import 'package:song_hub/screens/login.dart';
+import 'package:song_hub/screens/authGuard.dart';
+import 'package:song_hub/services/auth_service.dart';
 import "constants.dart";
 import 'package:provider/provider.dart';
 import 'package:song_hub/services/db_service.dart';
@@ -13,13 +13,15 @@ void main() => runApp(Songhub());
 
 class Main extends State<Songhub> {
   final db = DatabaseService();
+  final auth = AuthService();
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          StreamProvider<List<Song>>.value(value: db.streamSongs()),
+          StreamProvider<List<Song>>.value(value: db.songs),
+          StreamProvider<User>.value(value: auth.user),
         ],
 
         // All data will be available in this child and descendents
@@ -41,8 +43,7 @@ class Main extends State<Songhub> {
               ),
             ),
           ),
-          home: LoginScreen(),
-          initialRoute: LoginScreen.routeId,
+          home: AuthGuard(),
           routes: routes,
         ));
   }

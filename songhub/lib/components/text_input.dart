@@ -8,16 +8,18 @@ class TextInput extends StatelessWidget {
   final String placeholder;
   final Function onChanged;
   final IconData icon;
+  final Function validator;
 
-  TextInput(
-      {this.controller,
-      this.label,
-      this.placeholder,
-      this.onChanged,
-      this.obscureText,
-      this.icon,
-      this.hintText
-      });
+  TextInput({
+    this.controller,
+    this.label,
+    this.placeholder,
+    this.onChanged,
+    this.obscureText,
+    this.icon,
+    this.hintText,
+    this.validator,
+  });
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -44,12 +46,7 @@ class TextInput extends StatelessWidget {
         ),
         hintText: hintText,
       ),
-      validator: (value) {
-        if (value.isEmpty) {
-          return placeholder ?? 'Please enter some text';
-        }
-        return null;
-      },
+      validator: validator,
       controller: controller,
     );
   }

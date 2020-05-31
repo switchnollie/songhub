@@ -1,11 +1,11 @@
 import 'package:song_hub/screens/modals/add_song.dart';
 import 'package:song_hub/models/song.dart';
-import 'package:song_hub/screens/details.dart';
-import 'package:song_hub/screens/login.dart';
-import 'package:song_hub/screens/overview.dart';
-import 'package:song_hub/screens/placeholder.dart';
+import 'package:song_hub/screens/app/details.dart';
+import 'package:song_hub/screens/authentication/login.dart';
+import 'package:song_hub/screens/app/overview.dart';
+import 'package:song_hub/screens/app/placeholder.dart';
 import 'package:flutter/material.dart';
-import 'package:song_hub/screens/registration.dart';
+import 'package:song_hub/screens/authentication/registration.dart';
 
 class SongDetailsScreenRouteParams {
   final Song song;
