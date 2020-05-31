@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:song_hub/components/buttons.dart';
+import 'package:song_hub/components/link.dart';
 import 'package:song_hub/components/text_input.dart';
+import 'package:song_hub/screens/registration.dart';
 
 class LoginScreen extends StatefulWidget {
-  static const String routeId = "login_screen";
+  static const String routeId = "/login";
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -44,8 +46,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                 ),
-                Text('New to Song Hub? Sign Up',
-                    style: Theme.of(context).textTheme.bodyText1),
+                Link(
+                  to: RegistrationScreen.routeId,
+                  child: Text(
+                    'New to Song Hub? Sign Up',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                ),
               ],
             ),
           )),

@@ -19,5 +19,5 @@ Map<String, Widget Function(BuildContext)> routes = {
   LoginScreen.routeId: (context) => LoginScreen(),
   "/notifications": (context) => PlaceholderScreen("Notifications"),
   "/profile": (context) => PlaceholderScreen("Profile"),
-  "/signup": (context) => RegistrationScreen(),
+  RegistrationScreen.routeId: (context) => RegistrationScreen(),
 };

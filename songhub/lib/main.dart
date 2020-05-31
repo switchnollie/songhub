@@ -34,6 +34,11 @@ class Main extends State<Songhub> {
                 fontSize: 16.0,
                 color: kTextSecondary,
               ),
+              headline3: TextStyle(
+                fontSize: 22.0,
+                color: kAccentColor,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
           home: LoginScreen(),
