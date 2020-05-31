@@ -8,19 +8,26 @@ class Cover extends StatelessWidget {
 
   Cover({@required this.img, @required this.size});
 
+  bool _isValidUrl(String imgUrl) {
+    return Uri.parse(imgUrl).isAbsolute;
+  }
+
   @override
   Widget build(BuildContext context) {
     return size == CoverSize.LARGE
         ? ClipRRect(
             borderRadius: BorderRadius.circular(5.0),
-            child: Image.network(
-              img,
-              width: 125,
-            ),
+            child: (() => _isValidUrl(img)
+                ? Image.network(
+                    img,
+                    width: 125,
+                  )
+                : Image.asset(img, width: 125))(),
           )
         : ClipRRect(
             borderRadius: BorderRadius.circular(5.0),
-            child: Image.network(img),
+            child: (() =>
+                _isValidUrl(img) ? Image.network(img) : Image.asset(img))(),
           );
   }
 }

@@ -4,7 +4,14 @@ class StorageService {
   static final FirebaseStorage _storage = FirebaseStorage.instance;
 
   static Future<String> loadImage(String image) async {
-    return await _storage.ref().child(image).getDownloadURL();
+    var result;
+    try {
+      result = await _storage.ref().child(image).getDownloadURL();
+    } catch (err) {
+      print(err);
+      result = 'assets/placeholderCover.png';
+    }
+    return result;
   }
 
   Future uploadFile(String collection, _image) async {    
