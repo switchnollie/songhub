@@ -64,7 +64,7 @@ class _AddSongFormState extends State<AddSongForm> {
           ]),
           Padding(
             padding: const EdgeInsets.only(top: 16.0),
-            child: DropDownInput(),
+            child: DropDownInput(statusItems: ["Initiation", "Idea", "Demo", "Release"]),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 16.0),

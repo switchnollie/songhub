@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 class _DropDownInputState extends State<DropDownInput> {
+  
   String value = "Initiation";
-  List<String> statusItems = ["Initiation", "Idea", "Demo", "Release"];
+  List<String> statusItems;
+
+  _DropDownInputState({this.statusItems});
 
   @override
   Widget build(BuildContext context) {
@@ -37,5 +40,10 @@ class _DropDownInputState extends State<DropDownInput> {
 }
 
 class DropDownInput extends StatefulWidget {
-  _DropDownInputState createState() => _DropDownInputState();
+
+  List<String> statusItems;
+
+  DropDownInput({this.statusItems});
+
+  _DropDownInputState createState() => _DropDownInputState(statusItems: statusItems);
 }
