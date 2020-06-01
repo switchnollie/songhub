@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:song_hub/models/song.dart';
 import 'package:rxdart/rxdart.dart';
@@ -32,16 +33,14 @@ class DatabaseService {
     });
   }
 
-  Future<DocumentReference> addSongDocument(String title, String artist, String status, String lyrics, String mood) {
-    /*
-    * Insert song document in Firestore "songs" collection.
-    */
-      return _db.collection('songs').add({
-      title: title,
-      artist: artist,
-      status: status == null? null: status,
-      lyrics: lyrics == null? null: lyrics,
-      mood: mood == null? null: mood,
-    });
+  Future addSongDocument(Song song) async {
+    try {
+      await _db.collection("songs").add(song.toMap());
+    } catch (e) {
+      if (e is PlatformException) {
+        return e.message;
+      }
+      return e.toString();
+    }
   }
 }

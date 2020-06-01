@@ -41,7 +41,7 @@ class _DropDownInputState extends State<DropDownInput> {
 
 class DropDownInput extends StatefulWidget {
 
-  List<String> statusItems;
+  final List<String> statusItems;
 
   DropDownInput({this.statusItems});
 

@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class _ImageInputState extends State<ImageInput> {
+  
   Future<File> imageFile;
+
+  _ImageInputState({this.imageFile});
 
   pickImageFromGallery(ImageSource source) {
     setState(() {
@@ -67,5 +70,10 @@ class _ImageInputState extends State<ImageInput> {
 }
 
 class ImageInput extends StatefulWidget {
-  _ImageInputState createState() => _ImageInputState();
+
+  final Future<File> imageFile;
+
+  ImageInput({this.imageFile});
+  
+  _ImageInputState createState() => _ImageInputState(imageFile: imageFile);
 }

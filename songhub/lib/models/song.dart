@@ -7,15 +7,17 @@ class Song {
   final String lyrics;
   final String artist;
   final String coverImg;
+  final String mood;
   final List<String> participants;
 
   Song(
       {this.id,
+      this.title,
       this.artist,
       this.coverImg,
-      this.lyrics,
       this.participants,
-      this.title});
+      this.lyrics,
+      this.mood});
 
   factory Song.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data;
@@ -49,5 +51,16 @@ class Song {
     Image URL $coverImg
     Participants IDs $participants
     ''';
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "title": title,
+      "artist": artist,
+      "coverImg": coverImg,
+      "participants": participants,
+      "lyrics": lyrics,
+      "mood": mood,
+    };
   }
 }
