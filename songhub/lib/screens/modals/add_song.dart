@@ -35,7 +35,8 @@ class _AddSongFormState extends State<AddSongForm> {
 
   String currentStatus = "Initiation";
   List<String> statusValues = ["Initiation", "Idea", "Demo", "Release"];
-
+  
+  ImageInput img;
   Future<File> imageFile;
 
   void dispose() {
@@ -57,15 +58,14 @@ class _AddSongFormState extends State<AddSongForm> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   // AddCoverImage(),
-                  ImageInput(imageFile: imageFile),
+                  img = ImageInput(imageFile: imageFile),
                   Expanded(
                     child: Column(
                       children: <Widget>[
-                        TextInput(controller: _titleController, label: "Title"),
+                        TextInput(controller: _titleController, label: "Title", icon: Icons.title,),
                         Padding(
                           padding: const EdgeInsets.only(top: 16.0),
-                          child: TextInput(
-                              controller: _artistController, label: "Artist"),
+                          child: TextInput(controller: _artistController, label: "Artist", icon: Icons.person,),
                         ),
                       ],
                     ),
@@ -74,26 +74,26 @@ class _AddSongFormState extends State<AddSongForm> {
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
               child: DropDownInput(
-                  statusItems: ["Initiation", "Idea", "Demo", "Release"]),
+                  statusItems: ["Initiation", "Idea", "Demo", "Release"], icon: Icons.label,),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
-              child: TextInput(controller: _lyricsController, label: "Lyrics"),
+              child: TextInput(controller: _lyricsController, label: "Lyrics", icon: Icons.subject,),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
-              child: TextInput(controller: _moodController, label: "Mood"),
+              child: TextInput(controller: _moodController, label: "Mood", icon: Icons.mood,),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
               child: PrimaryButton(
                   text: "Create",
                   onPressed: () {
-                    // _storage.uploadFile(collection, _image),
+                    Future<dynamic> imageUrl = _storage.uploadFile("covers", img.imageFile);
                     _db.addSongDocument(Song(
                         title: _titleController.text,
                         artist: _artistController.text,
-                        coverImg: "",
+                        coverImg: imageUrl.toString(),
                         participants: [],
                         lyrics: _lyricsController.text,
                         mood: _moodController.text));

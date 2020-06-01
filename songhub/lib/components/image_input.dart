@@ -34,7 +34,8 @@ class _ImageInputState extends State<ImageInput> {
                 icon: Icon(Icons.add),
                 color: Colors.black,
                 onPressed: () {
-                  pickImageFromGallery(ImageSource.gallery);
+                  // pickImageFromGallery(ImageSource.gallery);
+                  pickImageFromGallery(ImageSource.camera);
                 },
               ),
             );
@@ -58,11 +59,6 @@ class _ImageInputState extends State<ImageInput> {
               imagePreview(),
             ],
           ),
-          // child: IconButton(
-          //   icon: Icon(Icons.add),
-          //   color: Colors.black,
-          //   onPressed: () {},
-          // ),
         ),
       ),
     );
