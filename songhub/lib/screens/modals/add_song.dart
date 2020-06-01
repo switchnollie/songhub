@@ -58,7 +58,7 @@ class _AddSongFormState extends State<AddSongForm> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   // AddCoverImage(),
-                  img = ImageInput(imageFile: imageFile),
+                  ImageInput(),
                   Expanded(
                     child: Column(
                       children: <Widget>[
@@ -89,7 +89,7 @@ class _AddSongFormState extends State<AddSongForm> {
               child: PrimaryButton(
                   text: "Create",
                   onPressed: () {
-                    Future<dynamic> imageUrl = _storage.uploadFile("covers", img.imageFile);
+                    Future<dynamic> imageUrl = _storage.uploadFile("covers", imageFile);
                     _db.addSongDocument(Song(
                         title: _titleController.text,
                         artist: _artistController.text,

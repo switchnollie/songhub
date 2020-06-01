@@ -3,62 +3,39 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class _ImageInputState extends State<ImageInput> {
-  
-  Future<File> imageFile;
 
-  _ImageInputState({this.imageFile});
+  File imageFile;
+  final picker = ImagePicker();
 
-  pickImageFromGallery(ImageSource source) {
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+
     setState(() {
-      imageFile = ImagePicker.pickImage(source: source);
+      imageFile = File(pickedFile.path);
     });
-  }
-
-  Widget imagePreview() {
-    return FutureBuilder<File>(
-        future: imageFile,
-        builder: (BuildContext context, AsyncSnapshot<File> snapchot) {
-          if (snapchot.connectionState == ConnectionState.done &&
-              snapchot.data != null) {
-            return Image.file(
-              snapchot.data,
-              width: 125,
-              height: 125,
-            );
-          } else {
-            return Container(
-              color: Theme.of(context).accentColor.withAlpha(0x22),
-              width: 125,
-              height: 125,
-              child: IconButton(
-                icon: Icon(Icons.add),
-                color: Colors.black,
-                onPressed: () {
-                  // pickImageFromGallery(ImageSource.gallery);
-                  pickImageFromGallery(ImageSource.camera);
-                },
-              ),
-            );
-          }
-        });
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 16.0),
+      padding: EdgeInsets.only(right: 16.0),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(5.0),
-        child: Container(
-          color: Color(0xFFF2F5FA),
-          width: 125,
-          height: 125,
-          alignment: Alignment.center,
-          child: Column(
-            children: <Widget>[
-              imagePreview(),
-            ],
-          ),
+        child: Center(
+          child: imageFile == null
+              ? Container(
+                  color: Theme.of(context).accentColor.withAlpha(0x22),
+                  width: 125,
+                  height: 125,
+                  child: IconButton(
+                    icon: Icon(Icons.add),
+                    color: Colors.black,
+                    onPressed: () {
+                      getImage();
+                    },
+                  ),
+                )
+              : Image.file(imageFile),
         ),
       ),
     );
@@ -66,10 +43,6 @@ class _ImageInputState extends State<ImageInput> {
 }
 
 class ImageInput extends StatefulWidget {
-
-  final Future<File> imageFile;
-
-  ImageInput({this.imageFile});
-  
-  _ImageInputState createState() => _ImageInputState(imageFile: imageFile);
+  @override
+  _ImageInputState createState() => _ImageInputState();
 }
