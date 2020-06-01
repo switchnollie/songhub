@@ -31,10 +31,12 @@ class TextInput extends StatelessWidget {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(8.0)),
         ),
-        prefixIcon: Icon(
-          icon,
-          color: Theme.of(context).hintColor,
-        ),
+        prefixIcon: icon != null
+            ? Icon(
+                icon,
+                color: Theme.of(context).hintColor,
+              )
+            : null,
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(width: 2.0, color: Colors.transparent),
           borderRadius: BorderRadius.all(Radius.circular(8.0)),
