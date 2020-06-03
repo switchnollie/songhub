@@ -1,19 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
-class _ImageInputState extends State<ImageInput> {
+class ImageInput extends StatelessWidget {
+  final File imageFile;
+  final Function callback;
 
-  File imageFile;
-  final picker = ImagePicker();
-
-  Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
-
-    setState(() {
-      imageFile = File(pickedFile.path);
-    });
-  }
+  ImageInput({@required this.imageFile, @required this.callback});
 
   @override
   Widget build(BuildContext context) {
@@ -30,19 +22,16 @@ class _ImageInputState extends State<ImageInput> {
                   child: IconButton(
                     icon: Icon(Icons.add),
                     color: Colors.black,
-                    onPressed: () {
-                      getImage();
-                    },
+                    onPressed: callback,
                   ),
                 )
-              : Image.file(imageFile),
+              : Container(
+                  width: 125,
+                  height: 125,
+                  child: FittedBox(
+                      fit: BoxFit.fill, child: Image.file(imageFile))),
         ),
       ),
     );
   }
-}
-
-class ImageInput extends StatefulWidget {
-  @override
-  _ImageInputState createState() => _ImageInputState();
 }
