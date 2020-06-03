@@ -15,12 +15,12 @@ class StorageService {
     return result;
   }
 
-  Future uploadFile(String collection, _image) async {    
+  Future<String> uploadFile(String collection, _image) async {    
     
     StorageReference ref = _storage.ref().child('$collection/${basename(_image.path)}}');    
     StorageUploadTask uploadTask = ref.putFile(_image);    
     await uploadTask.onComplete;
     
-    return  ref.getDownloadURL();
+    return await ref.getDownloadURL() as String;
   }  
 }
