@@ -148,16 +148,16 @@ class BodyTabs extends StatelessWidget {
               Tab(text: "FILES"),
               Tab(text: "DISCUSSION"),
             ]),
-          ),          
+          ),
           Container(
             //TODO: Set realtive Size (needed due to error of overflowed bottom)
             height: 400,
             child: TabBarView(
-                children: [
-                  Icon(Icons.file_upload),
-                  Icon(Icons.chat),
-                ],
-              ),
+              children: [
+                Icon(Icons.file_upload),
+                Icon(Icons.chat),
+              ],
+            ),
           ),
         ],
       ),
@@ -172,11 +172,9 @@ class SongDetailsScreen extends StatelessWidget {
     final SongDetailsScreenRouteParams args =
         ModalRoute.of(context).settings.arguments;
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0.0,
-        // leading: BackButton(
-        //   color: Color(0xFFD2D4DC),
-        // ),
       ),
       body: InformationContainer(
           imagePath: args.song.coverImg,
