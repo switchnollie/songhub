@@ -17,6 +17,10 @@ class AddSongModal extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.close, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         elevation: 0.0,
       ),
       body: AddSongForm(),
@@ -53,7 +57,7 @@ class _AddSongFormState extends State<AddSongForm> {
   void _handleSubmit() async {
     if (_formKey.currentState.validate()) {
       String imageUrl = await _storage.uploadFile("covers", imageFile);
-      _db.addSongDocument(Song(
+      _db.add(Song(
           title: _titleController.text,
           artist: _artistController.text,
           coverImg: imageUrl,
@@ -144,10 +148,10 @@ class _AddSongFormState extends State<AddSongForm> {
                 padding: const EdgeInsets.only(top: 16.0),
                 child: PrimaryButton(
                   text: "Create",
-                  onPressed: () { 
+                  onPressed: () {
                     _handleSubmit();
                     Navigator.pop(context);
-                    },
+                  },
                 ),
               ),
             ],

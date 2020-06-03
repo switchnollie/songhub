@@ -110,14 +110,20 @@ class EditSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 175,
+        height: 168,
         margin: const EdgeInsets.all(16.0),
         child: Column(
           children: <Widget>[
             ListTile(
               leading: Icon(Icons.edit),
               title: Text("Edit"),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  "/songs/new",
+                  arguments: SongDetailsScreenRouteParams(),
+                );
+              },
             ),
             ListTile(
               leading: Icon(Icons.share),
@@ -127,7 +133,9 @@ class EditSheet extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.close),
               title: Text("Cancel"),
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+              },
             ),
           ],
         ));
