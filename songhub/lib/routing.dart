@@ -1,3 +1,4 @@
+import 'package:song_hub/screens/app/profile.dart';
 import 'package:song_hub/screens/modals/add_song.dart';
 import 'package:song_hub/models/song.dart';
 import 'package:song_hub/screens/app/details.dart';
@@ -18,6 +19,6 @@ Map<String, Widget Function(BuildContext)> routes = {
   AddSongModal.routeId: (context) => AddSongModal(),
   LoginScreen.routeId: (context) => LoginScreen(),
   "/notifications": (context) => PlaceholderScreen("Notifications"),
-  "/profile": (context) => PlaceholderScreen("Profile"),
+  ProfileScreen.routeId: (context) => ProfileScreen(),
   RegistrationScreen.routeId: (context) => RegistrationScreen(),
 };

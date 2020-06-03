@@ -2,6 +2,7 @@
 import 'package:song_hub/screens/app/overview.dart';
 import 'package:song_hub/screens/app/placeholder.dart';
 import 'package:flutter/material.dart';
+import 'package:song_hub/screens/app/profile.dart';
 
 class App extends StatefulWidget {
   App({Key key}) : super(key: key);
@@ -15,7 +16,7 @@ class _AppState extends State<App> {
   final List<Widget> _children = [
     SongOverviewScreen(),
     PlaceholderScreen("Notifications"),
-    PlaceholderScreen("Account")
+    ProfileScreen(),
   ];
 
   // Bottom navigation onTap
