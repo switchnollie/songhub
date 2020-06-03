@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:song_hub/components/buttons.dart';
 import 'package:song_hub/components/link.dart';
+import 'package:song_hub/components/spinner.dart';
 import 'package:song_hub/components/text_input.dart';
 import 'package:song_hub/screens/authentication/login.dart';
 import 'package:song_hub/services/auth_service.dart';
@@ -16,6 +17,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _formKey = GlobalKey<FormState>();
   // global form state
   String globalError = '';
+  bool loading = false;
   // field state
   final TextEditingController _password = TextEditingController();
   final TextEditingController _email = TextEditingController();
@@ -23,10 +25,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   void _handleSubmit() async {
     if (_formKey.currentState.validate()) {
+      setState(() => loading = true);
       var result =
           await _auth.registerWithEmailAndPassword(_email.text, _password.text);
       if (result == null) {
         setState(() {
+          loading = false;
           globalError = 'Registration request failed';
         });
       }
@@ -49,82 +53,84 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Padding(
-          padding: EdgeInsets.all(24.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: <Widget>[
-                Expanded(
+    return loading
+        ? Spinner()
+        : Scaffold(
+            backgroundColor: Colors.white,
+            body: Padding(
+                padding: EdgeInsets.all(24.0),
+                child: Form(
+                  key: _formKey,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          Text(
-                            'Let\'s get started!',
-                            style: Theme.of(context).textTheme.headline3,
-                          ),
-                          SizedBox(
-                            height: 5.0,
-                          ),
-                          Text(
-                            'Create an account to get access',
-                            style: Theme.of(context).textTheme.bodyText1,
-                          )
-                        ],
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Column(
+                              children: <Widget>[
+                                Text(
+                                  'Let\'s get started!',
+                                  style: Theme.of(context).textTheme.headline3,
+                                ),
+                                SizedBox(
+                                  height: 5.0,
+                                ),
+                                Text(
+                                  'Create an account to get access',
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                )
+                              ],
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                            ),
+                            SizedBox(height: 40.0),
+                            TextInput(
+                              controller: _email,
+                              icon: Icons.mail,
+                              hintText: "E-Mail",
+                              validator: (val) =>
+                                  val.isEmpty ? 'Enter an E-Mail.' : null,
+                            ),
+                            SizedBox(height: 20.0),
+                            TextInput(
+                              obscureText: true,
+                              icon: Icons.lock,
+                              controller: _password,
+                              validator: (val) => val.length < 6
+                                  ? 'Enter a Password with more than 6 characters.'
+                                  : null,
+                              hintText: "Password",
+                            ),
+                            SizedBox(height: 20.0),
+                            TextInput(
+                              obscureText: true,
+                              icon: Icons.lock,
+                              controller: _confirmPassword,
+                              validator: (val) => val != _password.text
+                                  ? "Passwords must match"
+                                  : null,
+                              hintText: "Confirm Password",
+                            ),
+                            SizedBox(height: 20.0),
+                            PrimaryButton(
+                              onPressed: _handleSubmit,
+                              text: "Sign Up",
+                            ),
+                            _buildPossibleError()
+                          ],
+                        ),
                       ),
-                      SizedBox(height: 40.0),
-                      TextInput(
-                        controller: _email,
-                        icon: Icons.mail,
-                        hintText: "E-Mail",
-                        validator: (val) =>
-                            val.isEmpty ? 'Enter an E-Mail.' : null,
+                      Link(
+                        to: LoginScreen.routeId,
+                        child: Text(
+                          'Already signed up? Log In',
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
                       ),
-                      SizedBox(height: 20.0),
-                      TextInput(
-                        obscureText: true,
-                        icon: Icons.lock,
-                        controller: _password,
-                        validator: (val) => val.length < 6
-                            ? 'Enter a Password with more than 6 characters.'
-                            : null,
-                        hintText: "Password",
-                      ),
-                      SizedBox(height: 20.0),
-                      TextInput(
-                        obscureText: true,
-                        icon: Icons.lock,
-                        controller: _confirmPassword,
-                        validator: (val) => val != _password.text
-                            ? "Passwords must match"
-                            : null,
-                        hintText: "Confirm Password",
-                      ),
-                      SizedBox(height: 20.0),
-                      PrimaryButton(
-                        onPressed: _handleSubmit,
-                        text: "Sign Up",
-                      ),
-                      _buildPossibleError()
                     ],
                   ),
-                ),
-                Link(
-                  to: LoginScreen.routeId,
-                  child: Text(
-                    'Already signed up? Log In',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                ),
-              ],
-            ),
-          )),
-    );
+                )),
+          );
   }
 }
