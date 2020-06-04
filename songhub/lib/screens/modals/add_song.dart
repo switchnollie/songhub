@@ -57,7 +57,7 @@ class _AddSongFormState extends State<AddSongForm> {
   void _handleSubmit() async {
     if (_formKey.currentState.validate()) {
       String imageUrl = await _storage.uploadFile("covers", imageFile);
-      _db.add(Song(
+      _db.addSong(Song(
           title: _titleController.text,
           artist: _artistController.text,
           coverImg: imageUrl,
