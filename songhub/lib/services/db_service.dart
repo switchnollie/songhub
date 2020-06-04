@@ -8,7 +8,9 @@ import 'package:song_hub/services/storage_service.dart';
 
 class DatabaseService {
   final Firestore _db = Firestore.instance;
+  final String uid;
 
+  DatabaseService({ this.uid });
   Future<Song> _getDataWithUrl(DocumentSnapshot document) async {
     final url = await StorageService.loadImage(document.data['coverImg']);
     // copy the document as is
@@ -50,12 +52,12 @@ class DatabaseService {
   }
 
   /// Get song data by id
-  Future get(String collection, String id) async {
-    return await _db.collection(collection).document(id).get();
+  Future getSong(String collection, String id) async {
+    return await _db.collection("songs").document(id).get();
   }
 
   /// Add data to firestore
-  Future add(Song song) async {
+  Future addSong(Song song) async {
     try {
       await _db.collection("songs").add(song.toMap());
     } catch (e) {
@@ -68,7 +70,7 @@ class DatabaseService {
   }
 
   /// Update data in firestore
-  Future update(Song song, String id) async {
+  Future updateSong(Song song, String id) async {
     try {
       await _db.collection("songs").document(id).updateData(song.toMap());
     } catch (e) {
@@ -78,5 +80,14 @@ class DatabaseService {
         return e.toString();
       }
     }
+  }
+
+  Future updateUserData(String firstName, String lastName, String stageName, String imgPath) async {
+    return await _db.collection('songs').document(uid).setData({
+      'firstName': firstName,
+      'lastName': lastName,
+      'stageName': stageName,
+      'profileImg': imgPath,
+    });
   }
 }
