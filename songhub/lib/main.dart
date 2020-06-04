@@ -3,16 +3,13 @@ import 'package:song_hub/models/user.dart';
 import 'package:song_hub/routing.dart';
 import "package:flutter/material.dart";
 import 'package:song_hub/screens/authGuard.dart';
-import 'package:song_hub/services/auth_service.dart';
 import "constants.dart";
+import 'package:song_hub/services/services.dart';
 import 'package:provider/provider.dart';
-import 'package:song_hub/services/db_service.dart';
-import 'package:song_hub/models/song.dart';
 
 void main() => runApp(Songhub());
 
 class Main extends State<Songhub> {
-  final db = DatabaseService();
   final auth = AuthService();
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
@@ -20,7 +17,6 @@ class Main extends State<Songhub> {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          StreamProvider<List<Song>>.value(value: db.songs),
           StreamProvider<User>.value(value: auth.user),
         ],
 

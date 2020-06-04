@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:song_hub/app.dart';
+import 'package:song_hub/screens/app/app.dart';
 import 'package:song_hub/models/user.dart';
 import 'package:song_hub/screens/authentication/login.dart';
 
