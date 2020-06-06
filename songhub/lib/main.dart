@@ -16,32 +16,33 @@ class Main extends State<Songhub> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [
-          StreamProvider<User>.value(value: auth.user),
-        ],
+      providers: [
+        StreamProvider<User>.value(value: auth.user),
+      ],
 
-        // All data will be available in this child and descendents
-        child: MaterialApp(
-          theme: ThemeData(
-            primaryColor: Color(0xFFFFFFFF),
-            accentColor: kAccentColor,
-            hintColor: kPlaceholderColor,
-            fontFamily: "Roboto",
-            textTheme: TextTheme(
-              bodyText1: TextStyle(
-                fontSize: 16.0,
-                color: kTextSecondary,
-              ),
-              headline3: TextStyle(
-                fontSize: 22.0,
-                color: kAccentColor,
-                fontWeight: FontWeight.w600,
-              ),
+      // All data will be available in this child and descendents
+      child: MaterialApp(
+        theme: ThemeData(
+          primaryColor: Color(0xFFFFFFFF),
+          accentColor: kAccentColor,
+          hintColor: kPlaceholderColor,
+          fontFamily: "Roboto",
+          textTheme: TextTheme(
+            bodyText1: TextStyle(
+              fontSize: 16.0,
+              color: kTextSecondary,
+            ),
+            headline3: TextStyle(
+              fontSize: 22.0,
+              color: kAccentColor,
+              fontWeight: FontWeight.w600,
             ),
           ),
-          home: AuthGuard(),
-          routes: routes,
-        ));
+        ),
+        home: AuthGuard(),
+        routes: routes,
+      ),
+    );
   }
 }
 

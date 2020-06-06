@@ -37,6 +37,9 @@ dependencies:
   path: 1.6.4
 
 dev_dependencies:
+  firebase_storage_mocks: ^0.1.0
+  cloud_firestore_mocks: ^0.4.4
+  mockito: ^4.1.1
   flutter_test:
     sdk: flutter
 
