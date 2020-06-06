@@ -9,6 +9,7 @@ class TextInput extends StatelessWidget {
   final Function onChanged;
   final IconData icon;
   final Function validator;
+  final String initialValue;
 
   TextInput({
     this.controller,
@@ -19,10 +20,12 @@ class TextInput extends StatelessWidget {
     this.icon,
     this.hintText,
     this.validator,
+    this.initialValue,
   });
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      initialValue: initialValue != null ? initialValue : null,
       obscureText: obscureText ?? false,
       decoration: InputDecoration(
         labelText: label,

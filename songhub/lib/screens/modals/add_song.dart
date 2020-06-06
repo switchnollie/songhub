@@ -30,22 +30,37 @@ class AddSongModal extends StatelessWidget {
 }
 
 class _AddSongFormState extends State<AddSongForm> {
+  final Song song;
+
+  _AddSongFormState({this.song});
+
   final _db = DatabaseService();
   final _storage = StorageService();
-
   final _formKey = GlobalKey<FormState>();
 
-  final _titleController = TextEditingController();
-  final _artistController = TextEditingController();
-  final _lyricsController = TextEditingController();
-  final _moodController = TextEditingController();
+  TextEditingController _titleController,
+      _artistController,
+      _lyricsController,
+      _moodController;
 
   String currentStatus = "Initiation";
   List<String> statusValues = ["Initiation", "Idea", "Demo", "Release"];
-
   File imageFile;
   bool valid;
 
+  /// Init state
+  @override
+  void initState() {
+    if (song != null) {
+      _titleController = TextEditingController(text: song.title);
+      _artistController = TextEditingController(text: song.artist);
+      _lyricsController = TextEditingController(text: song.lyrics);
+      _moodController = TextEditingController(text: song.mood);
+    }
+    super.initState();
+  }
+
+  /// Get image state
   Future getImage() async {
     var pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
 
@@ -54,6 +69,7 @@ class _AddSongFormState extends State<AddSongForm> {
     });
   }
 
+  /// Push data to firebase if forms are valid
   void _handleSubmit() async {
     if (_formKey.currentState.validate()) {
       String imageUrl = await _storage.uploadFile("covers", imageFile);
@@ -67,6 +83,7 @@ class _AddSongFormState extends State<AddSongForm> {
     }
   }
 
+  /// Dispose forms
   void dispose() {
     _titleController.dispose();
     _artistController.dispose();
