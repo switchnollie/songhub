@@ -1,5 +1,6 @@
 import 'package:song_hub/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:song_hub/services/db_service.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -14,6 +15,8 @@ class AuthService {
       AuthResult result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       FirebaseUser user = result.user;
+      // create a new User document for the newly created user in the db
+      await DatabaseService().updateUserData('tbd', 'tbd', 'tbd', 'profileImgs/placeholderProfileImg.png');
       return _userFromFirebaseUser(user);
     } catch (error) {
       print(error.toString());
