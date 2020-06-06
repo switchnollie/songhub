@@ -12,27 +12,30 @@ class DatabaseService {
 
   Future<Song> _getDataWithUrl(DocumentSnapshot document) async {
     final url = await StorageService.loadImage(document.data['coverImg']);
+    final List<String> participantImgUrls = document.data['participants'].map((user) async {
+      return await StorageService.loadImage('public/profileImgs/$user.jpg');
+    });
     // copy the document as is
     final Map<String, dynamic> mergedSongMap = {
       'id': document.documentID,
       'data': {...document.data}
     };
-    // overwrite the path with the actual image url
+    // overwrite the paths with the actual image urls
     mergedSongMap['data']['coverImg'] = url;
+    mergedSongMap['data']['participants'] = participantImgUrls;
     return Song.fromMap(mergedSongMap);
   }
 
   Stream<List<Song>> get songs {
     return _auth.onAuthStateChanged.switchMap((user) {
       if (user != null) {
-        return _db.collection('songs/$user').snapshots().switchMap((dbSnapshot) {
-          final mergedValues = Future.wait(
-              dbSnapshot.documents.map((doc) => _getDataWithUrl(doc)));
-          return Stream.fromFuture(mergedValues);
-        });
-      } else {
-        return Stream<List<Song>>.value(null);
+        return _db.collection('songs/$user').snapshots();
       }
+      return Stream.error(Exception());
+    }).switchMap((dbSnapshot) {
+      final mergedValues =
+          Future.wait(dbSnapshot.documents.map((doc) => _getDataWithUrl(doc)));
+      return Stream.fromFuture(mergedValues);
     });
   }
 
@@ -60,7 +63,10 @@ class DatabaseService {
   Future updateSong(Song song, String id) async {
     FirebaseUser user = await _auth.currentUser();
     try {
-      await _db.collection("songs/${user.uid}").document(id).updateData(song.toMap());
+      await _db
+          .collection("songs/${user.uid}")
+          .document(id)
+          .updateData(song.toMap());
     } catch (e) {
       if (e is PlatformException) {
         return e.message;
@@ -72,7 +78,7 @@ class DatabaseService {
 
   Future updateUserData(String firstName, String lastName, String stageName,
       String imgPath) async {
-        FirebaseUser user = await _auth.currentUser();
+    FirebaseUser user = await _auth.currentUser();
     return await _db.collection('songs').document(user.uid).setData({
       'firstName': firstName,
       'lastName': lastName,
