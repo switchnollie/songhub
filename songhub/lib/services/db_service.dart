@@ -10,18 +10,28 @@ class DatabaseService {
   final Firestore _db = Firestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<Song> _getDataWithUrl(DocumentSnapshot document) async {
-    final url = await StorageService.loadImage(document.data['coverImg']);
-    final List<String> participantImgUrls = document.data['participants'].map((user) async {
-      return await StorageService.loadImage('public/profileImgs/$user.jpg');
-    });
+  Future<String> _getParticipantImageUrl(dynamic participant) async {
+    return await StorageService.loadImage(
+        'public/profileImgs/$participant.jpg');
+  }
+
+  Future<Song> _getDataWithUrl(
+      Map<String, dynamic> songMap, String songId) async {
+    final coverUrl = await StorageService.loadImage(songMap['coverImg']);
+    final participantImgUrlFutures = songMap['participants']
+        .map<Future<String>>((participant) async =>
+            await _getParticipantImageUrl(participant))
+        .toList();
+    final List<String> participantImgUrls =
+        await Future.wait(participantImgUrlFutures);
+
     // copy the document as is
     final Map<String, dynamic> mergedSongMap = {
-      'id': document.documentID,
-      'data': {...document.data}
+      'id': songId,
+      'data': {...songMap}
     };
     // overwrite the paths with the actual image urls
-    mergedSongMap['data']['coverImg'] = url;
+    mergedSongMap['data']['coverImg'] = coverUrl;
     mergedSongMap['data']['participants'] = participantImgUrls;
     return Song.fromMap(mergedSongMap);
   }
@@ -29,12 +39,15 @@ class DatabaseService {
   Stream<List<Song>> get songs {
     return _auth.onAuthStateChanged.switchMap((user) {
       if (user != null) {
-        return _db.collection('songs/$user').snapshots();
+        return _db.collection('songs').document(user.uid).snapshots();
       }
-      return Stream.error(Exception());
+      return Stream.error(
+          Exception('Can\'t stream songs: User is not authenticated'));
     }).switchMap((dbSnapshot) {
-      final mergedValues =
-          Future.wait(dbSnapshot.documents.map((doc) => _getDataWithUrl(doc)));
+      List<Future<Song>> mergedValuesFutures = [];
+      dbSnapshot.data.forEach((songId, song) =>
+          mergedValuesFutures.add(_getDataWithUrl(song, songId)));
+      final mergedValues = Future.wait(mergedValuesFutures);
       return Stream.fromFuture(mergedValues);
     });
   }
@@ -42,31 +55,15 @@ class DatabaseService {
   /// Get song data by id
   Future getSong(String collection, String id) async {
     FirebaseUser user = await _auth.currentUser();
-    return await _db.collection("songs/${user.uid}").document(id).get();
+    final snapshot = await _db.collection("songs").document(user.uid).get();
+    return snapshot.data[id];
   }
 
-  /// Add data to firestore
-  Future addSong(Song song) async {
+  /// Add or update data in the firestore
+  Future upsertSong(Song song) async {
     FirebaseUser user = await _auth.currentUser();
     try {
-      await _db.collection("songs/${user.uid}").add(song.toMap());
-    } catch (e) {
-      if (e is PlatformException) {
-        return e.message;
-      } else {
-        return e.toString();
-      }
-    }
-  }
-
-  /// Update data in firestore
-  Future updateSong(Song song, String id) async {
-    FirebaseUser user = await _auth.currentUser();
-    try {
-      await _db
-          .collection("songs/${user.uid}")
-          .document(id)
-          .updateData(song.toMap());
+      await _db.collection("songs").document(user.uid).updateData(song.toMap());
     } catch (e) {
       if (e is PlatformException) {
         return e.message;

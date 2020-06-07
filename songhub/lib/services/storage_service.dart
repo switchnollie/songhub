@@ -6,6 +6,7 @@ class StorageService {
 
   static Future<String> loadImage(String image) async {
     var result;
+    print(image);
     try {
       result = await _storage.ref().child(image).getDownloadURL();
     } catch (err) {
