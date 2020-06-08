@@ -24,7 +24,7 @@ class SongOverviewScreen extends StatelessWidget {
             Navigator.pushNamed(
               context,
               "/songs/new",
-              arguments: SongDetailsScreenRouteParams(),
+              arguments: SongModalRouteParams(song: null),
             );
           },
         ),

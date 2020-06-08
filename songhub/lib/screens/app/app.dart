@@ -1,9 +1,6 @@
 //import 'package:song_hub/constants.dart';
-import 'package:provider/provider.dart';
-import 'package:song_hub/models/song.dart';
 import 'package:song_hub/screens/screens.dart';
 import 'package:flutter/material.dart';
-import 'package:song_hub/services/db_service.dart';
 
 class App extends StatefulWidget {
   App({Key key}) : super(key: key);

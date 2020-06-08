@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:song_hub/models/user.dart';
 
 class Song {
   final String id;

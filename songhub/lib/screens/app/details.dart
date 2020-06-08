@@ -4,7 +4,6 @@ import 'package:song_hub/components/cover.dart';
 import 'package:song_hub/models/song.dart';
 import 'package:song_hub/routing.dart';
 import 'package:flutter/material.dart';
-import 'package:song_hub/services/db_service.dart';
 
 class SongTitle extends StatelessWidget {
   final String titleText;
@@ -46,20 +45,9 @@ class Artist extends StatelessWidget {
 }
 
 class InformationContainer extends StatelessWidget {
-  final String imagePath;
-  final String titleText;
-  final String artist;
-  final List<String> participants;
-  final BuildContext context;
+  final Song song;
 
-  InformationContainer({
-    Key key,
-    @required this.imagePath,
-    @required this.titleText,
-    @required this.artist,
-    @required this.participants,
-    @required this.context,
-  });
+  InformationContainer({@required this.song});
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -72,7 +60,7 @@ class InformationContainer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Cover(
-                  img: imagePath,
+                  img: song.coverImg,
                   size: CoverSize.LARGE,
                 ),
                 Padding(
@@ -80,9 +68,9 @@ class InformationContainer extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        SongTitle(titleText: titleText),
-                        Artist(artist: artist),
-                        AvatarRow(imgs: participants),
+                        SongTitle(titleText: song.title),
+                        Artist(artist: song.artist),
+                        AvatarRow(imgs: song.participants),
                         IconButton(
                           icon: Icon(
                             Icons.more_horiz,
@@ -104,12 +92,16 @@ class InformationContainer extends StatelessWidget {
     return showModalBottomSheet<void>(
         context: context,
         builder: (BuildContext context) {
-          return EditSheet();
+          return EditSheet(song: song);
         });
   }
 }
 
 class EditSheet extends StatelessWidget {
+  final Song song;
+
+  EditSheet({@required this.song});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -124,7 +116,7 @@ class EditSheet extends StatelessWidget {
                 Navigator.pushNamed(
                   context,
                   "/songs/new",
-                  arguments: SongDetailsScreenRouteParams(),
+                  arguments: SongModalRouteParams(song: song),
                 );
               },
             ),
@@ -178,23 +170,18 @@ class BodyTabs extends StatelessWidget {
 
 class SongDetailsScreen extends StatelessWidget {
   static const routeId = "/songs/details";
-  
+
   @override
   Widget build(BuildContext context) {
     final SongDetailsScreenRouteParams args =
         ModalRoute.of(context).settings.arguments;
-    Song song = Provider.of<List<Song>>(context).firstWhere((songEl) => songEl.id == args.songId);
+    Song song = Provider.of<List<Song>>(context)
+        .firstWhere((songEl) => songEl.id == args.songId);
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 0.0,
-      ),
-      body: InformationContainer(
-          imagePath: song.coverImg,
-          titleText: song.title,
-          artist: song.artist,
-          participants: song.participants,
-          context: context),
-    );
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          elevation: 0.0,
+        ),
+        body: InformationContainer(song: song));
   }
 }
