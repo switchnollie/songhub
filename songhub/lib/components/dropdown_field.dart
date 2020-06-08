@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
 class _DropDownInputState extends State<DropDownInput> {
-  
-  String value = "Initiation";
+  String value;
   final IconData icon;
   final List<String> statusItems;
 
-  _DropDownInputState({this.statusItems, this.icon});
+  _DropDownInputState({this.statusItems, this.icon, this.value});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +27,7 @@ class _DropDownInputState extends State<DropDownInput> {
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           isDense: true,
-          value: value,
+          value: value != null ? value : "Initiation",
           onChanged: (String newValue) {
             setState(() {
               value = newValue;
@@ -47,11 +46,12 @@ class _DropDownInputState extends State<DropDownInput> {
 }
 
 class DropDownInput extends StatefulWidget {
-
   final List<String> statusItems;
   final IconData icon;
+  final String value;
 
-  DropDownInput({this.statusItems, this.icon});
+  DropDownInput({this.statusItems, this.icon, this.value});
 
-  _DropDownInputState createState() => _DropDownInputState(statusItems: statusItems, icon: icon);
+  _DropDownInputState createState() =>
+      _DropDownInputState(statusItems: statusItems, icon: icon, value: value);
 }

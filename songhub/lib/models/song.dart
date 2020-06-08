@@ -8,6 +8,7 @@ class Song {
   final String coverImg;
   final String mood;
   final List<String> participants;
+  final String status;
 
   Song(
       {this.id,
@@ -16,7 +17,8 @@ class Song {
       this.coverImg,
       this.participants,
       this.lyrics,
-      this.mood});
+      this.mood,
+      this.status});
 
   factory Song.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data;
@@ -27,7 +29,8 @@ class Song {
         artist: data["artist"] ?? "",
         coverImg: data["coverImg"] ?? "",
         participants: List.from(data["participants"]),
-        lyrics: data["lyrics"] ?? "");
+        lyrics: data["lyrics"] ?? "",
+        status: data["status"] ?? "");
   }
 
   factory Song.fromMap(Map<String, dynamic> map) {
@@ -37,7 +40,8 @@ class Song {
         artist: map['data']["artist"] ?? "",
         coverImg: map['data']["coverImg"] ?? "",
         participants: List.from(map['data']["participants"]),
-        lyrics: map['data']["lyrics"] ?? "");
+        lyrics: map['data']["lyrics"] ?? "",
+        status: map['data']["status"] ?? "");
   }
 
   String toString() {
@@ -49,6 +53,7 @@ class Song {
     Lyrics $condensedLyrics
     Image URL $coverImg
     Participants IDs $participants
+    Status $status
     ''';
   }
 
@@ -60,6 +65,7 @@ class Song {
       "participants": participants,
       "lyrics": lyrics,
       "mood": mood,
+      "status": status,
     };
   }
 }

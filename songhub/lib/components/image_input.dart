@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 class ImageInput extends StatelessWidget {
   final File imageFile;
   final Function callback;
+  final String imageUrl;
 
-  ImageInput({@required this.imageFile, @required this.callback});
+  ImageInput(
+      {@required this.imageFile, @required this.callback, this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,7 @@ class ImageInput extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(5.0),
         child: Center(
-          child: imageFile == null
+          child: imageFile == null && imageUrl == null
               ? Container(
                   color: Theme.of(context).accentColor.withAlpha(0x22),
                   width: 125,
@@ -26,10 +28,27 @@ class ImageInput extends StatelessWidget {
                   ),
                 )
               : Container(
+                  color: Theme.of(context).accentColor.withAlpha(0x22),
                   width: 125,
                   height: 125,
-                  child: FittedBox(
-                      fit: BoxFit.fill, child: Image.file(imageFile))),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: <Widget>[
+                      Opacity(
+                        opacity: 0.33,
+                        child: FittedBox(
+                            fit: BoxFit.fill,
+                            child: imageFile != null
+                                ? Image.file(imageFile)
+                                : Image.network(imageUrl)),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.add),
+                        color: Colors.black,
+                        onPressed: callback,
+                      ),
+                    ],
+                  )),
         ),
       ),
     );

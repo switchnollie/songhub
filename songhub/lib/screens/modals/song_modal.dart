@@ -11,7 +11,7 @@ import 'package:song_hub/models/song.dart';
 import 'package:song_hub/services/db_service.dart';
 import 'package:song_hub/services/storage_service.dart';
 
-import '../../routing.dart';
+import 'package:song_hub/routing.dart';
 
 class SongModal extends StatelessWidget {
   static const routeId = "/songs/new";
@@ -50,7 +50,7 @@ class _SongFormState extends State<SongForm> {
   List<String> statusValues = ["Initiation", "Idea", "Demo", "Release"];
   File imageFile;
   bool valid;
-  String buttonText;
+  String buttonText, dropDownStatus, imageUrl;
 
   /// Init state
   @override
@@ -61,6 +61,8 @@ class _SongFormState extends State<SongForm> {
       _artistController = TextEditingController(text: song.artist);
       _lyricsController = TextEditingController(text: song.lyrics);
       _moodController = TextEditingController(text: song.mood);
+      dropDownStatus = song.status;
+      imageUrl = song.coverImg;
     } else {
       buttonText = "CREATE";
     }
@@ -79,7 +81,9 @@ class _SongFormState extends State<SongForm> {
   /// Push data to firebase if forms are valid
   void _handleSubmit() async {
     if (_formKey.currentState.validate()) {
-      String imageUrl = await _storage.uploadFile("covers", imageFile);
+      if (imageFile != null) {
+        imageUrl = await _storage.uploadFile("covers", imageFile);
+      }
       _db.upsertSong(Song(
           title: _titleController.text,
           artist: _artistController.text,
@@ -112,7 +116,10 @@ class _SongFormState extends State<SongForm> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     // AddCoverImage(),
-                    ImageInput(imageFile: imageFile, callback: getImage),
+                    ImageInput(
+                        imageFile: imageFile,
+                        callback: getImage,
+                        imageUrl: imageUrl),
                     Expanded(
                       child: Column(
                         children: <Widget>[
@@ -150,6 +157,7 @@ class _SongFormState extends State<SongForm> {
                 child: DropDownInput(
                   statusItems: ["Initiation", "Idea", "Demo", "Release"],
                   icon: Icons.label,
+                  value: dropDownStatus,
                 ),
               ),
               Padding(
