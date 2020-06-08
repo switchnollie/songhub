@@ -13,6 +13,11 @@ class SongDetailsScreenRouteParams {
   SongDetailsScreenRouteParams({this.songId});
 }
 
+class SongModalRouteParams {
+  final Song song;
+  SongModalRouteParams({this.song});
+}
+
 Map<String, Widget Function(BuildContext)> routes = {
   SongOverviewScreen.routeId: (context) => SongOverviewScreen(),
   SongDetailsScreen.routeId: (context) => SongDetailsScreen(),

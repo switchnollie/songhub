@@ -11,7 +11,6 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  final _db = DatabaseService();
   // Navigation State
   int _selectedIndex = 0;
 
@@ -30,43 +29,40 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<List<Song>>.value(
-      value: _db.songs,
-      child: Scaffold(
-        body: _children[_selectedIndex], //_buildOverview(),
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Color(0xFFF2F5FA),
-          selectedItemColor: Theme.of(context).accentColor,
-          unselectedItemColor: Color(0xFFD2D4DC),
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.queue_music,
-              ),
-              title: Text(
-                "Songs",
-              ),
+    return Scaffold(
+      body: _children[_selectedIndex], //_buildOverview(),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Color(0xFFF2F5FA),
+        selectedItemColor: Theme.of(context).accentColor,
+        unselectedItemColor: Color(0xFFD2D4DC),
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.queue_music,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.notifications,
-              ),
-              title: Text(
-                "Notifications",
-              ),
+            title: Text(
+              "Songs",
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.person,
-              ),
-              title: Text(
-                "Account",
-              ),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.notifications,
             ),
-          ],
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-        ),
+            title: Text(
+              "Notifications",
+            ),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.person,
+            ),
+            title: Text(
+              "Account",
+            ),
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
   }
