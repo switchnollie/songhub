@@ -74,7 +74,9 @@ class _SongFormState extends State<SongForm> {
     var pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
 
     setState(() {
-      imageFile = File(pickedFile.path);
+      if (pickedFile != null) {
+        imageFile = File(pickedFile.path);
+      }
     });
   }
 
