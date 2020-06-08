@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:song_hub/screens/authentication/registration.dart';
 
 class SongDetailsScreenRouteParams {
-  final Song song;
-  SongDetailsScreenRouteParams({this.song});
+  final String songId;
+  SongDetailsScreenRouteParams({this.songId});
 }
 
 Map<String, Widget Function(BuildContext)> routes = {

@@ -15,7 +15,7 @@ class DatabaseService {
         'public/profileImgs/$participant.jpg');
   }
 
-  Future<Song> _getDataWithUrl(
+  Future<Song> _getDataWithUrls(
       Map<String, dynamic> songMap, String songId) async {
     final coverUrl = await StorageService.loadImage(songMap['coverImg']);
     final participantImgUrlFutures = songMap['participants']
@@ -46,7 +46,7 @@ class DatabaseService {
     }).switchMap((dbSnapshot) {
       List<Future<Song>> mergedValuesFutures = [];
       dbSnapshot.data.forEach((songId, song) =>
-          mergedValuesFutures.add(_getDataWithUrl(song, songId)));
+          mergedValuesFutures.add(_getDataWithUrls(song, songId)));
       final mergedValues = Future.wait(mergedValuesFutures);
       return Stream.fromFuture(mergedValues);
     });

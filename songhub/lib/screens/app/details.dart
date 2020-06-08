@@ -1,7 +1,10 @@
+import 'package:provider/provider.dart';
 import 'package:song_hub/components/avatar.dart';
 import 'package:song_hub/components/cover.dart';
+import 'package:song_hub/models/song.dart';
 import 'package:song_hub/routing.dart';
 import 'package:flutter/material.dart';
+import 'package:song_hub/services/db_service.dart';
 
 class SongTitle extends StatelessWidget {
   final String titleText;
@@ -175,20 +178,22 @@ class BodyTabs extends StatelessWidget {
 
 class SongDetailsScreen extends StatelessWidget {
   static const routeId = "/songs/details";
+  
   @override
   Widget build(BuildContext context) {
     final SongDetailsScreenRouteParams args =
         ModalRoute.of(context).settings.arguments;
+    Song song = Provider.of<List<Song>>(context).firstWhere((songEl) => songEl.id == args.songId);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0.0,
       ),
       body: InformationContainer(
-          imagePath: args.song.coverImg,
-          titleText: args.song.title,
-          artist: args.song.artist,
-          participants: args.song.participants,
+          imagePath: song.coverImg,
+          titleText: song.title,
+          artist: song.artist,
+          participants: song.participants,
           context: context),
     );
   }

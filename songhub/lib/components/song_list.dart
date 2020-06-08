@@ -49,7 +49,7 @@ class SongListEntry extends StatelessWidget {
         Navigator.pushNamed(
           context,
           "/songs/details",
-          arguments: SongDetailsScreenRouteParams(song: song),
+          arguments: SongDetailsScreenRouteParams(songId: song.id),
         );
       });
 }
