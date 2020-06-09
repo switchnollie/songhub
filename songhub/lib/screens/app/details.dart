@@ -1,10 +1,11 @@
 import 'package:provider/provider.dart';
 import 'package:song_hub/components/avatar.dart';
 import 'package:song_hub/components/cover.dart';
+import 'package:song_hub/components/discussion.dart';
+import 'package:song_hub/components/grid.dart';
 import 'package:song_hub/models/song.dart';
 import 'package:song_hub/routing.dart';
 import 'package:flutter/material.dart';
-import 'package:song_hub/services/db_service.dart';
 
 class SongTitle extends StatelessWidget {
   final String titleText;
@@ -51,13 +52,11 @@ class InformationContainer extends StatelessWidget {
   InformationContainer({@required this.song});
 
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-
-        // Song overview header
-        child: Column(
-          children: <Widget>[
-            Row(
+  Widget build(BuildContext context) => Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Cover(
@@ -84,11 +83,11 @@ class InformationContainer extends StatelessWidget {
                     )),
               ],
             ),
-            BodyTabs(
-              id: song.id,
-            ),
-          ],
-        ),
+          ),
+          BodyTabs(
+            id: song.id,
+          ),
+        ],
       );
 
   Future<void> buildShowModalBottomSheet(BuildContext context) {
@@ -150,127 +149,28 @@ class BodyTabs extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Container(
-            constraints: BoxConstraints.expand(height: 50),
-            child: TabBar(tabs: [
-              Tab(text: "FILES"),
-              Tab(text: "DISCUSSION"),
-            ]),
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height - 259.0,
-            child: TabBarView(
-              children: [
-                FilesGrid(id: id),
-                Icon(Icons.chat),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class FilesGrid extends StatelessWidget {
-  final String id;
-
-  FilesGrid({@required this.id});
-
-  final _db = DatabaseService();
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: _db.getRecords(id),
-        builder: (BuildContext context, AsyncSnapshot snapchot) {
-          if (!snapchot.hasData) {
-            return new Container();
-          }
-          // Map content = snapchot.data;
-          return GridView.builder(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              // itemCount: content.length,
-              itemCount: snapchot.data.documents.length + 1,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Container(
+              constraints: BoxConstraints.expand(height: 50),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: TabBar(tabs: [
+                  Tab(text: "FILES"),
+                  Tab(text: "DISCUSSION"),
+                ]),
               ),
-              itemBuilder: (BuildContext context, int index) {
-                if (index == 0) {
-                  return AddItemContainer();
-                }
-                return FileItemContainer(
-                  name: snapchot.data.documents[index - 1]["name"],
-                  version: snapchot.data.documents[index - 1]["version"],
-                );
-              });
-        });
-  }
-}
-
-class AddItemContainer extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(5.0),
-      child: Container(
-        color: Theme.of(context).accentColor.withAlpha(0x22),
-        child: Center(
-            child: IconButton(
-          icon: Icon(Icons.add),
-          // TODO: onTap function
-          onPressed: () => print("Add file"),
-        )),
-      ),
-    );
-  }
-}
-
-class FileItemContainer extends StatelessWidget {
-  final String version, name;
-
-  FileItemContainer({this.version, this.name});
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(5.0),
-      child: InkWell(
-        // TODO: onTap function
-        onTap: () => print("File tapped"),
-        child: Container(
-          color: Theme.of(context).accentColor.withAlpha(0x22),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(bottom: 8.0),
-                  child: Text(
-                    version,
-                    style: TextStyle(
-                      color: Theme.of(context).accentColor,
-                    ),
-                  ),
-                ),
-                Text(
-                  name,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                  ),
-                ),
-              ],
             ),
-          ),
-        ),
-      ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height - 259.0,
+              child: TabBarView(
+                children: [
+                  FilesGrid(id: id),
+                  Discussion(),
+                ],
+              ),
+            ),
+          ]),
     );
   }
 }
@@ -289,6 +189,6 @@ class SongDetailsScreen extends StatelessWidget {
         appBar: AppBar(
           elevation: 0.0,
         ),
-        body: InformationContainer(song: song));
+        body: SingleChildScrollView(child: InformationContainer(song: song)));
   }
 }

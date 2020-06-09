@@ -56,3 +56,93 @@ class TextInput extends StatelessWidget {
     );
   }
 }
+
+class MessageForm extends StatelessWidget {
+  final GlobalKey<FormState> formKey;
+  final TextEditingController controller;
+
+  MessageForm({@required this.formKey, @required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: FractionalOffset.bottomCenter,
+      child: Container(
+        padding: EdgeInsets.only(left: 8.0),
+        color: Theme.of(context).accentColor.withAlpha(0x2E),
+        child: Form(
+          key: formKey,
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: MessageInput(
+                  controller: controller,
+                  label: "Type message",
+                ),
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.send,
+                ),
+                onPressed: () {},
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class MessageInput extends StatelessWidget {
+  final bool obscureText;
+  final String label;
+  final String hintText;
+  final TextEditingController controller;
+  final String placeholder;
+  final Function onChanged;
+  final IconData icon;
+  final Function validator;
+  final String initialValue;
+
+  MessageInput({
+    this.controller,
+    this.label,
+    this.placeholder,
+    this.onChanged,
+    this.obscureText,
+    this.icon,
+    this.hintText,
+    this.validator,
+    this.initialValue,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 25,
+      child: TextFormField(
+        style: TextStyle(
+          color: Colors.black,
+        ),
+        initialValue: initialValue != null ? initialValue : null,
+        obscureText: obscureText ?? false,
+        decoration: InputDecoration(
+          labelText: label,
+          filled: true,
+          hintText: hintText,
+          fillColor: Colors.white.withAlpha(0),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5),
+            borderSide: BorderSide(
+              width: 0,
+              style: BorderStyle.none,
+            ),
+          ),
+        ),
+        validator: validator,
+        controller: controller,
+      ),
+    );
+  }
+}
