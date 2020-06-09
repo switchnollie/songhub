@@ -4,6 +4,7 @@ import 'package:song_hub/components/cover.dart';
 import 'package:song_hub/models/song.dart';
 import 'package:song_hub/routing.dart';
 import 'package:flutter/material.dart';
+import 'package:song_hub/services/db_service.dart';
 
 class SongTitle extends StatelessWidget {
   final String titleText;
@@ -83,7 +84,9 @@ class InformationContainer extends StatelessWidget {
                     )),
               ],
             ),
-            BodyTabs(),
+            BodyTabs(
+              id: song.id,
+            ),
           ],
         ),
       );
@@ -138,6 +141,10 @@ class EditSheet extends StatelessWidget {
 }
 
 class BodyTabs extends StatelessWidget {
+  final String id;
+
+  BodyTabs({@required this.id});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -152,17 +159,117 @@ class BodyTabs extends StatelessWidget {
               Tab(text: "DISCUSSION"),
             ]),
           ),
-          Container(
-            //TODO: Set realtive Size (needed due to error of overflowed bottom)
-            height: 400,
+          SizedBox(
+            height: MediaQuery.of(context).size.height - 259.0,
             child: TabBarView(
               children: [
-                Icon(Icons.file_upload),
+                FilesGrid(id: id),
                 Icon(Icons.chat),
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class FilesGrid extends StatelessWidget {
+  final String id;
+
+  FilesGrid({@required this.id});
+
+  final _db = DatabaseService();
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: _db.getRecords(id),
+        builder: (BuildContext context, AsyncSnapshot snapchot) {
+          if (!snapchot.hasData) {
+            return new Container();
+          }
+          // Map content = snapchot.data;
+          return GridView.builder(
+              padding: EdgeInsets.symmetric(vertical: 16.0),
+              // itemCount: content.length,
+              itemCount: snapchot.data.documents.length + 1,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+              ),
+              itemBuilder: (BuildContext context, int index) {
+                if (index == 0) {
+                  return AddItemContainer();
+                }
+                return FileItemContainer(
+                  name: snapchot.data.documents[index - 1]["name"],
+                  version: snapchot.data.documents[index - 1]["version"],
+                );
+              });
+        });
+  }
+}
+
+class AddItemContainer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(5.0),
+      child: Container(
+        color: Theme.of(context).accentColor.withAlpha(0x22),
+        child: Center(
+            child: IconButton(
+          icon: Icon(Icons.add),
+          // TODO: onTap function
+          onPressed: () => print("Add file"),
+        )),
+      ),
+    );
+  }
+}
+
+class FileItemContainer extends StatelessWidget {
+  final String version, name;
+
+  FileItemContainer({this.version, this.name});
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(5.0),
+      child: InkWell(
+        // TODO: onTap function
+        onTap: () => print("File tapped"),
+        child: Container(
+          color: Theme.of(context).accentColor.withAlpha(0x22),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(bottom: 8.0),
+                  child: Text(
+                    version,
+                    style: TextStyle(
+                      color: Theme.of(context).accentColor,
+                    ),
+                  ),
+                ),
+                Text(
+                  name,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

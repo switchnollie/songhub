@@ -19,8 +19,8 @@ class DatabaseService {
       Map<String, dynamic> songMap, String songId) async {
     final coverUrl = await StorageService.loadImage(songMap['coverImg']);
     final participantImgUrlFutures = songMap['participants']
-        .map<Future<String>>((participant) async =>
-            await _getParticipantImageUrl(participant))
+        .map<Future<String>>(
+            (participant) async => await _getParticipantImageUrl(participant))
         .toList();
     final List<String> participantImgUrls =
         await Future.wait(participantImgUrlFutures);
@@ -57,6 +57,23 @@ class DatabaseService {
     FirebaseUser user = await _auth.currentUser();
     final snapshot = await _db.collection("songs").document(user.uid).get();
     return snapshot.data[id];
+  }
+
+  Future getRecords(String id) async {
+    FirebaseUser user = await _auth.currentUser();
+    return await _db
+        .collection("songs")
+        .document(user.uid)
+        .collection("records")
+        .getDocuments();
+
+    // Map records = {};
+    // snapchot.documents.forEach(
+    //     (element) => records[element.documentID] = element.data) //["name"]);
+
+    // print(records);
+
+    // return records;
   }
 
   /// Add or update data in the firestore

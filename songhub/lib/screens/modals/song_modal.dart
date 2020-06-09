@@ -47,7 +47,6 @@ class _SongFormState extends State<SongForm> {
       _moodController;
 
   String currentStatus = "Initiation";
-  List<String> statusValues = ["Initiation", "Idea", "Demo", "Release"];
   File imageFile;
   bool valid;
   String buttonText, dropDownStatus, imageUrl;
