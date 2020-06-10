@@ -51,5 +51,5 @@ Feature complete:
 - Finish "Add Song" and "Edit Song"
 - Integrate file picker and upload
 - Integrate message upload and fetch
-- Integrate multi user cooperation
+- Optional: Integrate multi user cooperation
 

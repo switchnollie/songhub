@@ -12,15 +12,15 @@ class FilesGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: _db.getRecords(id),
-        builder: (BuildContext context, AsyncSnapshot snapchot) {
-          if (!snapchot.hasData) {
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (!snapshot.hasData) {
             return new Container();
           }
           // Map content = snapchot.data;
           return GridView.builder(
               padding: EdgeInsets.all(16.0),
               // itemCount: content.length,
-              itemCount: snapchot.data.documents.length + 1,
+              itemCount: snapshot.data.documents.length + 1,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 16,
@@ -31,9 +31,9 @@ class FilesGrid extends StatelessWidget {
                   return AddItemContainer();
                 }
                 return FileItemContainer(
-                  name: snapchot.data.documents[index - 1]["name"],
-                  version: snapchot.data.documents[index - 1]["version"],
-                  time: snapchot.data.documents[index - 1]["timestamp"],
+                  name: snapshot.data.documents[index - 1]["name"],
+                  version: snapshot.data.documents[index - 1]["version"],
+                  time: snapshot.data.documents[index - 1]["timestamp"],
                 );
               });
         });
