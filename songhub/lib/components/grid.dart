@@ -1,17 +1,43 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:song_hub/components/file_input.dart';
 import 'package:song_hub/services/db_service.dart';
 
-class FilesGrid extends StatelessWidget {
+class FilesGrid extends StatefulWidget {
   final String id;
 
   FilesGrid({@required this.id});
-  // TODO: Implement records stream instead of single request to render new files too
+
+  @override
+  _FilesGridState createState() => _FilesGridState();
+}
+
+class _FilesGridState extends State<FilesGrid> {
   final _db = DatabaseService();
+  File recordFile;
+
+  Future getFile() async {
+    File file = await FilePicker.getFile();
+
+    setState(() {
+      if (file != null) {
+        recordFile = File(file.path);
+        print("New file: $recordFile");
+        // TODO: Push and render file
+        // - Push storage
+        // - Return path in storage
+        // - Add record path in database
+        // - Update file grid
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: _db.getRecords(id),
+        future: _db.getRecords(widget.id),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
             return new Container();
@@ -28,7 +54,7 @@ class FilesGrid extends StatelessWidget {
               ),
               itemBuilder: (BuildContext context, int index) {
                 if (index == 0) {
-                  return AddItemContainer();
+                  return FileInput(callback: getFile);
                 }
                 return FileItemContainer(
                   name: snapshot.data.documents[index - 1]["name"],
@@ -37,26 +63,6 @@ class FilesGrid extends StatelessWidget {
                 );
               });
         });
-  }
-}
-
-class AddItemContainer extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(5.0),
-      child: Container(
-        color: Theme.of(context).accentColor.withAlpha(0x22),
-        child: Center(
-            child: IconButton(
-          icon: Icon(Icons.add),
-          // TODO: onTap function
-          // file_picker plugin
-          // + storage and database push (with timestamp)
-          onPressed: () => print("Add file"),
-        )),
-      ),
-    );
   }
 }
 
