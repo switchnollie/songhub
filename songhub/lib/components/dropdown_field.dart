@@ -9,36 +9,45 @@ class _DropDownInputState extends State<DropDownInput> {
 
   @override
   Widget build(BuildContext context) {
-    return InputDecorator(
-      decoration: InputDecoration(
-        errorStyle: TextStyle(color: Colors.redAccent, fontSize: 16.0),
-        hintText: 'Please select expense',
-        fillColor: Theme.of(context).accentColor.withAlpha(0x22),
-        filled: true,
-        border: InputBorder.none,
-        prefixIcon: icon != null
-            ? Icon(
-                icon,
-                color: Theme.of(context).hintColor,
-              )
-            : null,
-      ),
-      // OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          isDense: true,
-          value: value != null ? value : "Initiation",
-          onChanged: (String newValue) {
-            setState(() {
-              value = newValue;
-            });
-          },
-          items: statusItems.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
+    return Container(
+      child: InputDecorator(
+        decoration: InputDecoration(
+          errorStyle: TextStyle(color: Colors.redAccent, fontSize: 16.0),
+          fillColor: Theme.of(context).accentColor.withAlpha(0x22),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
+          filled: true,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5),
+            borderSide: BorderSide(
+              width: 0,
+              style: BorderStyle.none,
+            ),
+          ),
+          prefixIcon: icon != null
+              ? Icon(
+                  icon,
+                  color: Theme.of(context).hintColor,
+                )
+              : null,
+        ),
+        // OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton<String>(
+            isDense: true,
+            value: value != null ? value : "Initiation",
+            onChanged: (String newValue) {
+              setState(() {
+                value = newValue;
+              });
+            },
+            items: statusItems.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+          ),
         ),
       ),
     );

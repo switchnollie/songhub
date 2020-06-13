@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:song_hub/components/file_input.dart';
 import 'package:song_hub/services/db_service.dart';
+import 'package:song_hub/services/storage_service.dart';
 
 class FilesGrid extends StatefulWidget {
   final String id;
@@ -16,9 +17,11 @@ class FilesGrid extends StatefulWidget {
 
 class _FilesGridState extends State<FilesGrid> {
   final _db = DatabaseService();
+  final _storage = StorageService();
   File recordFile;
+  String recordUrl;
 
-  Future getFile() async {
+  void getFile() async {
     File file = await FilePicker.getFile();
 
     setState(() {
@@ -26,12 +29,16 @@ class _FilesGridState extends State<FilesGrid> {
         recordFile = File(file.path);
         print("New file: $recordFile");
         // TODO: Push and render file
-        // - Push storage
-        // - Return path in storage
+        // - X: Push storage
+        // - X: Return path in storage
         // - Add record path in database
         // - Update file grid
       }
     });
+
+    // if (recordFile != null) {
+    //   recordUrl = await _storage.uploadFile("records", recordFile);
+    // }
   }
 
   @override
@@ -42,7 +49,6 @@ class _FilesGridState extends State<FilesGrid> {
           if (!snapshot.hasData) {
             return new Container();
           }
-          // Map content = snapchot.data;
           return GridView.builder(
               padding: EdgeInsets.all(16.0),
               // itemCount: content.length,

@@ -34,6 +34,8 @@ class PrimaryButton extends StatelessWidget {
           ),
         ),
         color: Theme.of(context).accentColor,
+        shape: RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(5.0)),
         onPressed: onPressed,
       ),
     );
