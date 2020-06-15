@@ -70,7 +70,7 @@ class _SongFormState extends State<SongForm> {
 
   /// Get image state
   Future getImage() async {
-    var pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+    final pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
 
     setState(() {
       if (pickedFile != null) {
@@ -79,7 +79,7 @@ class _SongFormState extends State<SongForm> {
     });
   }
 
-  /// Push data to firebase if forms are valid
+  /// Push data to firebase if form fields are valid
   void _handleSubmit() async {
     if (_formKey.currentState.validate()) {
       if (imageFile != null) {

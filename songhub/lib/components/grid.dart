@@ -44,7 +44,7 @@ class _FilesGridState extends State<FilesGrid> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: _db.getRecords(widget.id),
+        future: _db.getRecordsBySongId(widget.id),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
             return new Container();

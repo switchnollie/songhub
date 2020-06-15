@@ -39,14 +39,15 @@ class DatabaseService {
   Stream<List<Song>> get songs {
     return _auth.onAuthStateChanged.switchMap((user) {
       if (user != null) {
-        return _db.collection('songs').document(user.uid).snapshots();
+        return _db.collectionGroup('songs').snapshots();
       }
       return Stream.error(
           Exception('Can\'t stream songs: User is not authenticated'));
     }).switchMap((dbSnapshot) {
       List<Future<Song>> mergedValuesFutures = [];
-      dbSnapshot.data.forEach((songId, song) =>
-          mergedValuesFutures.add(_getDataWithUrls(song, songId)));
+      (dbSnapshot as QuerySnapshot).documents.forEach((songDoc) =>
+          mergedValuesFutures
+              .add(_getDataWithUrls(songDoc.data, songDoc.documentID)));
       final mergedValues = Future.wait(mergedValuesFutures);
       return Stream.fromFuture(mergedValues);
     });
@@ -55,32 +56,34 @@ class DatabaseService {
   /// Get song data by id
   Future getSong(String collection, String id) async {
     FirebaseUser user = await _auth.currentUser();
-    final snapshot = await _db.collection("songs").document(user.uid).get();
-    return snapshot.data[id];
+    final snapshot = await _db
+        .collectionGroup("songs")
+        .where("ownedBy", isEqualTo: user.uid)
+        .getDocuments();
+    return snapshot.documents[0];
   }
 
-  Future getRecords(String id) async {
+  Future getRecordsBySongId(String songId) async {
     FirebaseUser user = await _auth.currentUser();
     return await _db
-        .collection("songs")
+        .collection("users")
         .document(user.uid)
+        .collection("songs")
+        .document(songId)
         .collection("records")
         .getDocuments();
-
-    // Map records = {};
-    // snapchot.documents.forEach(
-    //     (element) => records[element.documentID] = element.data) //["name"]);
-
-    // print(records);
-
-    // return records;
   }
 
   /// Add or update data in the firestore
   Future upsertSong(Song song) async {
     FirebaseUser user = await _auth.currentUser();
     try {
-      await _db.collection("songs").document(user.uid).updateData(song.toMap());
+      await _db
+          .collection("users")
+          .document(user.uid)
+          .collection("songs")
+          .document(song.id)
+          .updateData(song.toMap());
     } catch (e) {
       if (e is PlatformException) {
         return e.message;
@@ -93,7 +96,7 @@ class DatabaseService {
   Future updateUserData(String firstName, String lastName, String stageName,
       String imgPath) async {
     FirebaseUser user = await _auth.currentUser();
-    return await _db.collection('songs').document(user.uid).setData({
+    return await _db.collection("users").document(user.uid).setData({
       'firstName': firstName,
       'lastName': lastName,
       'stageName': stageName,
