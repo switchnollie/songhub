@@ -18,6 +18,7 @@ class DatabaseService {
   Future<Song> _getDataWithUrls(
       Map<String, dynamic> songMap, String songId) async {
     final coverUrl = await StorageService.loadImage(songMap['coverImg']);
+    print("coverUrl:$coverUrl");
     final participantImgUrlFutures = songMap['participants']
         .map<Future<String>>(
             (participant) async => await _getParticipantImageUrl(participant))
@@ -45,9 +46,12 @@ class DatabaseService {
           Exception('Can\'t stream songs: User is not authenticated'));
     }).switchMap((dbSnapshot) {
       List<Future<Song>> mergedValuesFutures = [];
-      (dbSnapshot as QuerySnapshot).documents.forEach((songDoc) =>
-          mergedValuesFutures
-              .add(_getDataWithUrls(songDoc.data, songDoc.documentID)));
+      (dbSnapshot as QuerySnapshot).documents.forEach((userSongMap) {
+        userSongMap.data.forEach((songId, songMap) {
+          mergedValuesFutures.add(_getDataWithUrls(songMap, songId));
+        });
+      });
+
       final mergedValues = Future.wait(mergedValuesFutures);
       return Stream.fromFuture(mergedValues);
     });
