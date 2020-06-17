@@ -7,7 +7,8 @@ class User {
   final String firstName;
   final String lastName;
   final String profileImg;
-  final UserRole role;
+  // final UserRole role;
+  final String role;
 
   User({this.id, this.firstName, this.lastName, this.profileImg, this.role});
   factory User.fromFirestore(DocumentSnapshot doc) {
@@ -19,5 +20,8 @@ class User {
         lastName: data['lastName'] ?? '',
         profileImg: data['profileImg'] ?? "",
         role: data['role'] ?? '');
+  }
+  String toString() {
+    return "$firstName $lastName, profileImgPath:$profileImg, role: $role, id: $id";
   }
 }

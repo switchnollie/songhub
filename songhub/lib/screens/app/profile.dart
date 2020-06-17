@@ -43,6 +43,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   title: ListTitle(title: "Logout"),
                   onTap: _handleLogoutTap,
                 ),
+                ListTile(
+                  leading: Icon(Icons.settings),
+                  title: ListTitle(title: "User Settings"),
+                  onTap: () {
+                    Navigator.pushNamed(context, "/profile/edit");
+                  },
+                ),
               ],
             ),
           );
