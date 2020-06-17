@@ -1,5 +1,5 @@
 import 'package:song_hub/screens/app/profile.dart';
-import 'package:song_hub/screens/modals/song_modal.dart';
+import 'package:song_hub/screens/modals/song_modals.dart';
 import 'package:song_hub/models/song.dart';
 import 'package:song_hub/screens/app/details.dart';
 import 'package:song_hub/screens/authentication/login.dart';
@@ -14,15 +14,16 @@ class SongDetailsScreenRouteParams {
   SongDetailsScreenRouteParams({this.songId});
 }
 
-class SongModalRouteParams {
+class EditSongModalRouteParams {
   final Song song;
-  SongModalRouteParams({this.song});
+  EditSongModalRouteParams({this.song});
 }
 
 Map<String, Widget Function(BuildContext)> routes = {
   SongOverviewScreen.routeId: (context) => SongOverviewScreen(),
   SongDetailsScreen.routeId: (context) => SongDetailsScreen(),
-  SongModal.routeId: (context) => SongModal(),
+  AddSongModal.routeId: (context) => AddSongModal(),
+  EditSongModal.routeId: (context) => EditSongModal(),
   LoginScreen.routeId: (context) => LoginScreen(),
   "/notifications": (context) => PlaceholderScreen("Notifications"),
   ProfileScreen.routeId: (context) => ProfileScreen(),

@@ -10,14 +10,12 @@ import 'package:song_hub/components/text_input.dart';
 import 'package:song_hub/models/song.dart';
 import 'package:song_hub/services/db_service.dart';
 import 'package:song_hub/services/storage_service.dart';
-
 import 'package:song_hub/routing.dart';
 
-class SongModal extends StatelessWidget {
-  static const routeId = "/songs/new";
+class AddSongModal extends StatelessWidget {
+  static const routeId = "/songs/add";
   @override
   Widget build(BuildContext context) {
-    final SongModalRouteParams args = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -26,7 +24,27 @@ class SongModal extends StatelessWidget {
         ),
         elevation: 0.0,
       ),
-      body: SongForm(song: args.song),
+      body: SongForm(song: null, isAdd: true),
+      backgroundColor: Colors.white,
+    );
+  }
+}
+
+class EditSongModal extends StatelessWidget {
+  static const routeId = "/songs/edit";
+  @override
+  Widget build(BuildContext context) {
+    final EditSongModalRouteParams args =
+        ModalRoute.of(context).settings.arguments;
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.close, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        elevation: 0.0,
+      ),
+      body: SongForm(song: args.song, isAdd: false),
       backgroundColor: Colors.white,
     );
   }
@@ -34,8 +52,9 @@ class SongModal extends StatelessWidget {
 
 class _SongFormState extends State<SongForm> {
   final Song song;
+  final bool isAdd;
 
-  _SongFormState({this.song});
+  _SongFormState({this.song, this.isAdd});
 
   final _db = DatabaseService();
   final _storage = StorageService();
@@ -55,15 +74,12 @@ class _SongFormState extends State<SongForm> {
   @override
   void initState() {
     if (song != null) {
-      buttonText = "SAVE";
       _titleController = TextEditingController(text: song.title);
       _artistController = TextEditingController(text: song.artist);
       _lyricsController = TextEditingController(text: song.lyrics);
       _moodController = TextEditingController(text: song.mood);
       dropDownStatus = song.status;
       imageUrl = song.coverImg;
-    } else {
-      buttonText = "CREATE";
     }
     super.initState();
   }
@@ -180,7 +196,7 @@ class _SongFormState extends State<SongForm> {
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),
                 child: PrimaryButton(
-                  text: buttonText,
+                  text: isAdd ? "CREATE" : "SAVE",
                   onPressed: () {
                     _handleSubmit();
                     Navigator.pop(context);
@@ -197,11 +213,12 @@ class _SongFormState extends State<SongForm> {
 
 class SongForm extends StatefulWidget {
   final Song song;
+  final bool isAdd;
 
-  SongForm({this.song});
+  SongForm({this.song, this.isAdd});
 
   @override
   _SongFormState createState() {
-    return _SongFormState(song: song);
+    return _SongFormState(song: song, isAdd: isAdd);
   }
 }

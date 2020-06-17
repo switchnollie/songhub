@@ -121,8 +121,8 @@ class EditSheet extends StatelessWidget {
               onTap: () {
                 Navigator.pushNamed(
                   context,
-                  "/songs/new",
-                  arguments: SongModalRouteParams(song: song),
+                  "/songs/edit",
+                  arguments: EditSongModalRouteParams(song: song),
                 );
               },
             ),

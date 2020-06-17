@@ -4,7 +4,6 @@ import 'package:song_hub/components/song_list.dart';
 import 'package:song_hub/components/screen_header.dart';
 import 'package:song_hub/models/song.dart';
 import 'package:flutter/material.dart';
-import 'package:song_hub/routing.dart';
 
 class SongOverviewScreen extends StatelessWidget {
   static const routeId = "/songs";
@@ -23,8 +22,7 @@ class SongOverviewScreen extends StatelessWidget {
           onPressed: () {
             Navigator.pushNamed(
               context,
-              "/songs/new",
-              arguments: SongModalRouteParams(song: null),
+              "/songs/add",
             );
           },
         ),
