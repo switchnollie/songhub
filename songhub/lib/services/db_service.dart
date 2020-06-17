@@ -18,7 +18,6 @@ class DatabaseService {
   Future<Song> _getDataWithUrls(
       Map<String, dynamic> songMap, String songId) async {
     final coverUrl = await StorageService.loadImage(songMap['coverImg']);
-    print("coverUrl:$coverUrl");
     final participantImgUrlFutures = songMap['participants']
         .map<Future<String>>(
             (participant) async => await _getParticipantImageUrl(participant))
@@ -46,10 +45,9 @@ class DatabaseService {
           Exception('Can\'t stream songs: User is not authenticated'));
     }).switchMap((dbSnapshot) {
       List<Future<Song>> mergedValuesFutures = [];
-      (dbSnapshot as QuerySnapshot).documents.forEach((userSongMap) {
-        userSongMap.data.forEach((songId, songMap) {
-          mergedValuesFutures.add(_getDataWithUrls(songMap, songId));
-        });
+      (dbSnapshot as QuerySnapshot).documents.forEach((songMap) {
+        mergedValuesFutures
+            .add(_getDataWithUrls(songMap.data, songMap.documentID));
       });
 
       final mergedValues = Future.wait(mergedValuesFutures);
@@ -69,13 +67,19 @@ class DatabaseService {
 
   Future getRecordsBySongId(String songId) async {
     FirebaseUser user = await _auth.currentUser();
-    return await _db
-        .collection("users")
-        .document(user.uid)
-        .collection("songs")
-        .document(songId)
-        .collection("records")
-        .getDocuments();
+    var data;
+    try {
+      data = await _db
+          .collection("users")
+          .document(user.uid)
+          .collection("songs")
+          .document(songId)
+          .collection("records")
+          .getDocuments();
+    } catch (err) {
+      print(err);
+    }
+    return data;
   }
 
   /// Add or update data in the firestore
