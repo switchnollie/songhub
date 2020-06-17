@@ -3,9 +3,9 @@ import 'package:intl/intl.dart';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:song_hub/components/file_input.dart';
-import 'package:song_hub/services/db_service.dart';
-import 'package:song_hub/services/storage_service.dart';
+import 'package:song_hub/models/recording.dart';
 
 class FilesGrid extends StatefulWidget {
   final String id;
@@ -17,8 +17,6 @@ class FilesGrid extends StatefulWidget {
 }
 
 class _FilesGridState extends State<FilesGrid> {
-  final _db = DatabaseService();
-  final _storage = StorageService();
   File recordFile;
   String recordUrl;
 
@@ -44,32 +42,26 @@ class _FilesGridState extends State<FilesGrid> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: _db.getRecordsBySongId(widget.id),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (!snapshot.hasData) {
-            return new Container();
+    List<Recording> recordings = Provider.of<List<Recording>>(context);
+    return GridView.builder(
+        padding: EdgeInsets.all(16.0),
+        // itemCount: content.length,
+        itemCount: recordings != null ? recordings.length + 1 : 0,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+        ),
+        itemBuilder: (BuildContext context, int index) {
+          if (index == 0) {
+            return FileInput(callback: getFile);
           }
-          return GridView.builder(
-              padding: EdgeInsets.all(16.0),
-              // itemCount: content.length,
-              itemCount: snapshot.data.documents.length + 1,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-              ),
-              itemBuilder: (BuildContext context, int index) {
-                if (index == 0) {
-                  return FileInput(callback: getFile);
-                }
-                return FileItemContainer(
-                  name: snapshot.data.documents[index - 1]["name"],
-                  version: snapshot.data.documents[index - 1]["version"],
-                  time: DateFormat("yyyy-MM-dd").format(
-                      snapshot.data.documents[index - 1]["timestamp"].toDate()),
-                );
-              });
+          return FileItemContainer(
+            name: recordings[index - 1].name,
+            version: recordings[index - 1].version,
+            time: DateFormat("yyyy-MM-dd")
+                .format(recordings[index - 1].timestamp.toDate()),
+          );
         });
   }
 }

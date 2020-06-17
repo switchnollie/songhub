@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:song_hub/models/recording.dart';
 import 'dart:async';
 import 'package:song_hub/models/song.dart';
 import 'package:rxdart/rxdart.dart';
@@ -52,6 +53,28 @@ class DatabaseService {
 
       final mergedValues = Future.wait(mergedValuesFutures);
       return Stream.fromFuture(mergedValues);
+    });
+  }
+
+  /// Recording stream
+  Stream<List<Recording>> getRecordings(String songId) {
+    return _auth.onAuthStateChanged.switchMap((user) {
+      if (user != null) {
+        return _db
+            .collection("users")
+            .document(user.uid)
+            .collection("songs")
+            .document(songId)
+            .collection("records")
+            .snapshots();
+      }
+      return Stream.error(
+          Exception('Can\'t stream records: User is not authenticated'));
+    }).map((dbSnapshot) {
+      return (dbSnapshot as QuerySnapshot)
+          .documents
+          .map((doc) => Recording.fromFirestore(doc))
+          .toList();
     });
   }
 
