@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -65,7 +66,8 @@ class _FilesGridState extends State<FilesGrid> {
                 return FileItemContainer(
                   name: snapshot.data.documents[index - 1]["name"],
                   version: snapshot.data.documents[index - 1]["version"],
-                  time: snapshot.data.documents[index - 1]["timestamp"],
+                  time: DateFormat("yyyy-MM-dd").format(
+                      snapshot.data.documents[index - 1]["timestamp"].toDate()),
                 );
               });
         });
