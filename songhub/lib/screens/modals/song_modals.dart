@@ -86,7 +86,8 @@ class _SongFormState extends State<SongForm> {
 
   /// Get image state
   Future getImage() async {
-    final pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+    final pickedFile = await ImagePicker()
+        .getImage(source: ImageSource.camera, maxHeight: 300, maxWidth: 300);
 
     setState(() {
       if (pickedFile != null) {
@@ -105,7 +106,11 @@ class _SongFormState extends State<SongForm> {
           title: _titleController.text,
           artist: _artistController.text,
           coverImg: imageUrl,
-          participants: [],
+          participants: [
+            // TODO: Add real participants
+            "ypVCXwADSWSToxsRpyspWWAHNfJ2",
+            "dMxDgggEyDTYgkcDW8O6MMOPNiD2"
+          ],
           lyrics: _lyricsController.text,
           mood: _moodController.text));
     }

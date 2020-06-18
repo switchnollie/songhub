@@ -40,7 +40,11 @@ class DatabaseService {
   Stream<List<Song>> get songs {
     return _auth.onAuthStateChanged.switchMap((user) {
       if (user != null) {
-        return _db.collectionGroup('songs').snapshots();
+        // Needed because each comparison value must meet the security rule constraints
+        return _db
+            .collectionGroup('songs')
+            .where("participants", arrayContains: user.uid)
+            .snapshots();
       }
       return Stream.error(
           Exception('Can\'t stream songs: User is not authenticated'));

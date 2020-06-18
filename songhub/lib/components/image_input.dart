@@ -36,6 +36,7 @@ class ImageInput extends StatelessWidget {
                     children: <Widget>[
                       Opacity(
                         opacity: 0.33,
+                        // TODO: Error hasSize
                         child: FittedBox(
                             fit: BoxFit.fill,
                             child: imageFile != null
