@@ -1,43 +1,62 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:path/path.dart';
+import 'package:song_hub/services/auth_service.dart';
 import 'dart:io';
+import 'package:uuid/uuid.dart';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:song_hub/components/file_input.dart';
 import 'package:song_hub/models/recording.dart';
+import 'package:song_hub/services/db_service.dart';
+import 'package:song_hub/services/storage_service.dart';
 
 class FilesGrid extends StatefulWidget {
-  final String id;
+  final String songId;
 
-  FilesGrid({@required this.id});
+  FilesGrid({@required this.songId});
 
   @override
-  _FilesGridState createState() => _FilesGridState();
+  _FilesGridState createState() => _FilesGridState(songId: songId);
 }
 
 class _FilesGridState extends State<FilesGrid> {
-  File recordFile;
-  String recordUrl;
+  final String songId;
+
+  _FilesGridState({this.songId});
+
+  File recordingFile;
+  String storagePath;
+  final _storage = StorageService();
+  final _db = DatabaseService();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void getFile() async {
     File file = await FilePicker.getFile();
+    FirebaseUser user = await _auth.currentUser();
 
-    setState(() {
-      if (file != null) {
-        recordFile = File(file.path);
-        print("New file: $recordFile");
-        // TODO: Push and render file
-        // - X: Push storage
-        // - X: Return path in storage
-        // - Add record path in database
-        // - Update file grid
-      }
-    });
-
-    // if (recordFile != null) {
-    //   recordUrl = await _storage.uploadFile("records", recordFile);
-    // }
+    if (file != null) {
+      recordingFile = File(file.path);
+      // TODO: Change UID?
+      final recordingId = Uuid().v4();
+      storagePath =
+          await _storage.uploadFile("recordings", recordingFile, recordingId);
+      final recording = Recording(
+        id: recordingId,
+        name: basename(recordingFile.path),
+        //TODO: Image path of creator uid
+        // image: user.uid,
+        image: null,
+        storagePath: storagePath,
+        timestamp: Timestamp.fromDate(DateTime.now().toUtc()),
+        // TODO: Version
+        version: "Initiation",
+      );
+      await _db.upsertRecording(songId, recording);
+    }
   }
 
   @override

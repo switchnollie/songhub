@@ -100,7 +100,9 @@ class _SongFormState extends State<SongForm> {
   void _handleSubmit() async {
     if (_formKey.currentState.validate()) {
       if (imageFile != null) {
-        imageUrl = await _storage.uploadFile("covers", imageFile);
+        // TODO: Change storage file name to unique id
+        imageUrl = await _storage.uploadFile(
+            "covers", imageFile, imageFile.toString());
       }
       _db.upsertSong(Song(
           title: _titleController.text,

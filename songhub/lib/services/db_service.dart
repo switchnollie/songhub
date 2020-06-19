@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
@@ -37,6 +39,13 @@ class DatabaseService {
     return Song.fromMap(mergedSongMap);
   }
 
+  /// Get recording creator image from Firebase Storage
+  // Future<Recording> getImageCreator(
+  //     String recordingId, Map<String, dynamic> recordingMap) async {
+  //       final imageUrl = await StorageService.loadImage("public/profileImgs/${recordingMap["image"]}");
+
+  //     }
+
   Stream<List<Song>> get songs {
     return _auth.onAuthStateChanged.switchMap((user) {
       if (user != null) {
@@ -62,6 +71,7 @@ class DatabaseService {
 
   /// Recording stream
   Stream<List<Recording>> getRecordings(String songId) {
+    //TODO: Fetch image of recording creator from storage cover folder
     return _auth.onAuthStateChanged.switchMap((user) {
       if (user != null) {
         return _db
@@ -69,7 +79,7 @@ class DatabaseService {
             .document(user.uid)
             .collection("songs")
             .document(songId)
-            .collection("records")
+            .collection("recordings")
             .snapshots();
       }
       return Stream.error(
@@ -119,6 +129,26 @@ class DatabaseService {
           .collection("songs")
           .document(song.id)
           .updateData(song.toMap());
+    } catch (e) {
+      if (e is PlatformException) {
+        return e.message;
+      } else {
+        return e.toString();
+      }
+    }
+  }
+
+  Future upsertRecording(String songId, Recording recording) async {
+    FirebaseUser user = await _auth.currentUser();
+    try {
+      await _db
+          .collection("users")
+          .document(user.uid)
+          .collection("songs")
+          .document(songId)
+          .collection("recordings")
+          .document(recording.id)
+          .setData(recording.toMap());
     } catch (e) {
       if (e is PlatformException) {
         return e.message;

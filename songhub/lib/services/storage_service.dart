@@ -1,8 +1,12 @@
+import 'dart:io';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
 
 class StorageService {
   static final FirebaseStorage _storage = FirebaseStorage.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   static Future<String> loadImage(String image) async {
     var result;
@@ -16,12 +20,25 @@ class StorageService {
     return result;
   }
 
-  Future<String> uploadFile(String collection, _image) async {    
-    
-    StorageReference ref = _storage.ref().child('$collection/${basename(_image.path)}}');    
-    StorageUploadTask uploadTask = ref.putFile(_image);    
+  /// Upload file to Firebase Storage
+  Future<String> uploadFile(String collection, File file, String name) async {
+    StorageReference ref;
+    FirebaseUser user = await _auth.currentUser();
+
+    // TODO: Name might miss file type
+    if (collection == "public") {
+      ref = _storage.ref().child("$collection/$name");
+    } else {
+      ref = _storage.ref().child("${user.uid}/$collection/$name");
+    }
+
+    // TODO: Add custom medatadata
+    StorageUploadTask uploadTask = ref.putFile(
+      file,
+    );
+
     await uploadTask.onComplete;
-    
-    return await ref.getDownloadURL() as String;
-  }  
+
+    return await ref.getPath();
+  }
 }

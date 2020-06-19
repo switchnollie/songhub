@@ -3,12 +3,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Recording {
   final String id;
   final String name;
-  final String participantImg;
+  String image;
+  final String storagePath;
   final Timestamp timestamp;
   final String version;
 
   Recording(
-      {this.id, this.name, this.participantImg, this.timestamp, this.version});
+      {this.id,
+      this.name,
+      this.image,
+      this.timestamp,
+      this.storagePath,
+      this.version});
 
   /// Create Records instance from Firestore DocumentSnapshot
   factory Recording.fromFirestore(DocumentSnapshot doc) {
@@ -16,7 +22,8 @@ class Recording {
     return Recording(
         id: doc.documentID,
         name: data["name"],
-        participantImg: data["participantImg"] ?? "",
+        image: data["image"] ?? "",
+        storagePath: data["storagePath"] ?? "",
         timestamp: data["timestamp"],
         version: data["version"]);
   }
@@ -26,8 +33,19 @@ class Recording {
     return Recording(
         id: map["id"],
         name: map["name"],
-        participantImg: map["participantImg"] ?? "",
+        image: map["image"] ?? "",
+        storagePath: map["storagePath"] ?? "",
         timestamp: map["timestamp"],
         version: map["version"]);
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "name": name,
+      "participantImg": image,
+      "storagePath": storagePath,
+      "timestamp": timestamp,
+      "version": version,
+    };
   }
 }

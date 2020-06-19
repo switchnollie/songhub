@@ -88,7 +88,7 @@ class InformationContainer extends StatelessWidget {
           ),
         ),
         BodyTabs(
-          id: song.id,
+          songId: song.id,
         ),
       ],
     );
@@ -144,9 +144,9 @@ class EditSheet extends StatelessWidget {
 }
 
 class BodyTabs extends StatelessWidget {
-  final String id;
+  final String songId;
 
-  BodyTabs({@required this.id});
+  BodyTabs({@required this.songId});
 
   @override
   Widget build(BuildContext context) {
@@ -169,7 +169,7 @@ class BodyTabs extends StatelessWidget {
               height: MediaQuery.of(context).size.height - 259.0,
               child: TabBarView(
                 children: [
-                  FilesGrid(id: id),
+                  FilesGrid(songId: songId),
                   Discussion(),
                 ],
               ),
