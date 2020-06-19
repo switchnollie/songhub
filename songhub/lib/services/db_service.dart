@@ -39,13 +39,6 @@ class DatabaseService {
     return Song.fromMap(mergedSongMap);
   }
 
-  /// Get recording creator image from Firebase Storage
-  // Future<Recording> getImageCreator(
-  //     String recordingId, Map<String, dynamic> recordingMap) async {
-  //       final imageUrl = await StorageService.loadImage("public/profileImgs/${recordingMap["image"]}");
-
-  //     }
-
   Stream<List<Song>> get songs {
     return _auth.onAuthStateChanged.switchMap((user) {
       if (user != null) {
@@ -90,6 +83,11 @@ class DatabaseService {
           .map((doc) => Recording.fromFirestore(doc))
           .toList();
     });
+  }
+
+  /// Get recording creator image from Firebase Storage
+  Future<String> getImageCreator(String image) async {
+    return await StorageService.loadImage("public/profileImgs/$image");
   }
 
   /// Get song data by id
