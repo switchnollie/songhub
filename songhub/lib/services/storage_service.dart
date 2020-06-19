@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:path/path.dart';
 
 class StorageService {
   static final FirebaseStorage _storage = FirebaseStorage.instance;
@@ -16,6 +15,17 @@ class StorageService {
     } catch (err) {
       print(err);
       result = 'assets/placeholderCover.png';
+    }
+    return result;
+  }
+
+  // TODO: Redundant but would like to return null if error; Placeholder wont load ether as network image!
+  static Future<String> loadRecordingCreatorImage(String image) async {
+    var result;
+    try {
+      result = await _storage.ref().child(image).getDownloadURL();
+    } catch (err) {
+      result = null;
     }
     return result;
   }

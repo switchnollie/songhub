@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
@@ -64,7 +62,6 @@ class DatabaseService {
 
   /// Recording stream
   Stream<List<Recording>> getRecordings(String songId) {
-    //TODO: Fetch image of recording creator from storage cover folder
     return _auth.onAuthStateChanged.switchMap((user) {
       if (user != null) {
         return _db
@@ -77,17 +74,29 @@ class DatabaseService {
       }
       return Stream.error(
           Exception('Can\'t stream records: User is not authenticated'));
-    }).map((dbSnapshot) {
-      return (dbSnapshot as QuerySnapshot)
-          .documents
-          .map((doc) => Recording.fromFirestore(doc))
-          .toList();
+    }).switchMap((dbSnapshot) {
+      List<Future<Recording>> mergedValues = [];
+      (dbSnapshot as QuerySnapshot).documents.forEach((recording) {
+        mergedValues.add(getImageCreator(recording.documentID, recording.data));
+      });
+      final values = Future.wait(mergedValues);
+
+      return Stream.fromFuture(values);
     });
   }
 
   /// Get recording creator image from Firebase Storage
-  Future<String> getImageCreator(String image) async {
-    return await StorageService.loadImage("public/profileImgs/$image");
+  Future<Recording> getImageCreator(
+      String recordingId, Map<String, dynamic> recordingMap) async {
+    final image = await StorageService.loadRecordingCreatorImage(
+        "public/profileImgs/${recordingMap["image"]}.jpg");
+    final Map<String, dynamic> mergedRecordingMap = {
+      'id': recordingId,
+      'data': {...recordingMap}
+    };
+    mergedRecordingMap["data"]["image"] = image;
+
+    return Recording.fromMap(mergedRecordingMap);
   }
 
   /// Get song data by id

@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
-import 'package:song_hub/services/auth_service.dart';
 import 'dart:io';
 import 'package:uuid/uuid.dart';
 
@@ -47,9 +46,8 @@ class _FilesGridState extends State<FilesGrid> {
       final recording = Recording(
         id: recordingId,
         name: basename(recordingFile.path),
-        //TODO: Image path of creator uid
-        // image: user.uid,
-        image: null,
+        //TODO: Could be improved?
+        image: user.uid,
         storagePath: storagePath,
         timestamp: Timestamp.fromDate(DateTime.now().toUtc()),
         // TODO: Version
@@ -80,6 +78,8 @@ class _FilesGridState extends State<FilesGrid> {
             version: recordings[index - 1].version,
             time: DateFormat("yyyy-MM-dd")
                 .format(recordings[index - 1].timestamp.toDate()),
+            image: recordings[index - 1].image,
+            // image: null,
           );
         });
   }
@@ -93,8 +93,6 @@ class FileItemContainer extends StatelessWidget {
       @required this.name,
       this.image,
       @required this.time});
-
-  // TODO: Fetch image url from path of image variable
 
   @override
   Widget build(BuildContext context) {
@@ -135,8 +133,13 @@ class FileItemContainer extends StatelessWidget {
                           ),
                         ],
                       ),
-                      image != null
-                          ? Image.network(image)
+                      image != ""
+                          ? CircleAvatar(
+                              child: ClipOval(
+                                child: Image.network(image),
+                              ),
+                              radius: 11,
+                            )
                           : Icon(
                               Icons.account_circle,
                               color: Colors.grey,

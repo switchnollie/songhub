@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Recording {
   final String id;
   final String name;
-  String image;
+  final String image;
   final String storagePath;
   final Timestamp timestamp;
   final String version;
@@ -32,17 +32,17 @@ class Recording {
   factory Recording.fromMap(Map<String, dynamic> map) {
     return Recording(
         id: map["id"],
-        name: map["name"],
-        image: map["image"] ?? "",
-        storagePath: map["storagePath"] ?? "",
-        timestamp: map["timestamp"],
-        version: map["version"]);
+        name: map["data"]["name"],
+        image: map["data"]["image"] ?? "",
+        storagePath: map["data"]["storagePath"] ?? "",
+        timestamp: map["data"]["timestamp"],
+        version: map["data"]["version"]);
   }
 
   Map<String, dynamic> toMap() {
     return {
       "name": name,
-      "participantImg": image,
+      "image": image,
       "storagePath": storagePath,
       "timestamp": timestamp,
       "version": version,
