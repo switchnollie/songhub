@@ -91,8 +91,9 @@ class _UserSettingsFormState extends State<UserSettingsForm> {
             children: <Widget>[
               ImageInput(
                 imageFile: _imageFile,
-                callback: getImage,
+                onPressed: getImage,
                 imageUrl: widget.user.profileImgUrl,
+                isAvatar: true,
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),

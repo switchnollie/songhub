@@ -78,7 +78,7 @@ class _FilesGridState extends State<FilesGrid> {
         ),
         itemBuilder: (BuildContext context, int index) {
           if (index == 0) {
-            return FileInput(callback: getFile);
+            return FileInput(onPressed: getFile);
           }
           return FileItemContainer(
             name: recordings[index - 1].name,

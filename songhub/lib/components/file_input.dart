@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class FileInput extends StatelessWidget {
-  final Function callback;
+  final Function onPressed;
 
-  FileInput({this.callback});
+  FileInput({this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class FileInput extends StatelessWidget {
           child: Center(
               child: IconButton(
             icon: Icon(Icons.add),
-            onPressed: () => callback(),
+            onPressed: () => onPressed(),
           )),
         ));
   }

@@ -141,7 +141,7 @@ class _SongFormState extends State<SongForm> {
                     // AddCoverImage(),
                     ImageInput(
                         imageFile: imageFile,
-                        callback: getImage,
+                        onPressed: getImage,
                         imageUrl: imageUrl),
                     Expanded(
                       child: Column(
