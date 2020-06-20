@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
+import 'package:song_hub/models/song.dart';
 import 'dart:io';
 import 'package:uuid/uuid.dart';
 
@@ -14,18 +15,18 @@ import 'package:song_hub/services/db_service.dart';
 import 'package:song_hub/services/storage_service.dart';
 
 class FilesGrid extends StatefulWidget {
-  final String songId;
+  final Song song;
 
-  FilesGrid({@required this.songId});
+  FilesGrid({@required this.song});
 
   @override
-  _FilesGridState createState() => _FilesGridState(songId: songId);
+  _FilesGridState createState() => _FilesGridState(song: song);
 }
 
 class _FilesGridState extends State<FilesGrid> {
-  final String songId;
+  final Song song;
 
-  _FilesGridState({this.songId});
+  _FilesGridState({this.song});
 
   File recordingFile;
   String storagePath;
@@ -34,26 +35,32 @@ class _FilesGridState extends State<FilesGrid> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void getFile() async {
-    File file = await FilePicker.getFile();
-    FirebaseUser user = await _auth.currentUser();
+    final File file = await FilePicker.getFile();
+    final FirebaseUser user = await _auth.currentUser();
+    final String ownerId = user.uid.toString();
 
     if (file != null) {
       recordingFile = File(file.path);
       // TODO: Change UID?
       final recordingId = Uuid().v4();
-      storagePath =
-          await _storage.uploadFile("recordings", recordingFile, recordingId);
+      storagePath = await _storage.uploadFile(
+          // TODO: Song stream load participants images from storage when needed
+          // Only source of participants needed for recording file metadata
+          "recordings",
+          recordingFile,
+          recordingId,
+          ownerId,
+          song.participants);
       final recording = Recording(
         id: recordingId,
         name: basename(recordingFile.path),
-        //TODO: Could be improved?
         image: user.uid,
         storagePath: storagePath,
         timestamp: Timestamp.fromDate(DateTime.now().toUtc()),
         // TODO: Version
         version: "Initiation",
       );
-      await _db.upsertRecording(songId, recording);
+      await _db.upsertRecording(song.id, recording);
     }
   }
 
@@ -79,7 +86,6 @@ class _FilesGridState extends State<FilesGrid> {
             time: DateFormat("yyyy-MM-dd")
                 .format(recordings[index - 1].timestamp.toDate()),
             image: recordings[index - 1].image,
-            // image: null,
           );
         });
   }
@@ -138,11 +144,12 @@ class FileItemContainer extends StatelessWidget {
                               child: ClipOval(
                                 child: Image.network(image),
                               ),
-                              radius: 11,
+                              radius: 14,
                             )
                           : Icon(
                               Icons.account_circle,
                               color: Colors.grey,
+                              size: 28,
                             )
                     ],
                   ),

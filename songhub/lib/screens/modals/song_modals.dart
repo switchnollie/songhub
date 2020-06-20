@@ -101,7 +101,7 @@ class _SongFormState extends State<SongForm> {
     if (_formKey.currentState.validate()) {
       if (imageFile != null) {
         imageUrl = await _storage.uploadFile(
-            "covers", imageFile, imageFile.toString());
+            "covers", imageFile, imageFile.toString(), null, null);
       }
       _db.upsertSong(Song(
           title: _titleController.text,

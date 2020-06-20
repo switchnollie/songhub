@@ -1,11 +1,9 @@
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class StorageService {
   static final FirebaseStorage _storage = FirebaseStorage.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   static Future<String> loadImage(String image) async {
     var result;
@@ -31,24 +29,42 @@ class StorageService {
   }
 
   /// Upload file to Firebase Storage
-  Future<String> uploadFile(String collection, File file, String name) async {
+  Future<String> uploadFile(String collection, File file, String name,
+      String owner, List<String> participants) async {
     StorageReference ref;
-    FirebaseUser user = await _auth.currentUser();
 
     // TODO: Name might miss file type
     if (collection == "public") {
       ref = _storage.ref().child("$collection/$name");
     } else {
-      ref = _storage.ref().child("${user.uid}/$collection/$name");
+      ref = _storage.ref().child("$owner/$collection/$name");
     }
 
-    // TODO: Add custom medatadata
     StorageUploadTask uploadTask = ref.putFile(
       file,
+      createMetadata(owner, participants),
     );
 
     await uploadTask.onComplete;
 
     return await ref.getPath();
+  }
+
+  /// Create metadata based on uids
+  StorageMetadata createMetadata(String owner, List<String> participants) {
+    Map<String, String> data = {
+      "$owner": "owner",
+    };
+
+    if (participants.length > 0) {
+      for (int i = 0; i < participants.length; i++) {
+        if (participants[i] != owner) {
+          // TODO: Uniformed metadata id: string
+          data["${participants[i]}"] = "allowRead";
+        }
+      }
+    }
+
+    return StorageMetadata(customMetadata: data);
   }
 }

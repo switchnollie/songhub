@@ -60,6 +60,25 @@ class DatabaseService {
     });
   }
 
+  /// Add or update data in the firestore
+  Future upsertSong(Song song) async {
+    FirebaseUser user = await _auth.currentUser();
+    try {
+      await _db
+          .collection("users")
+          .document(user.uid)
+          .collection("songs")
+          .document(song.id)
+          .updateData(song.toMap());
+    } catch (e) {
+      if (e is PlatformException) {
+        return e.message;
+      } else {
+        return e.toString();
+      }
+    }
+  }
+
   /// Recording stream
   Stream<List<Recording>> getRecordings(String songId) {
     return _auth.onAuthStateChanged.switchMap((user) {
@@ -99,16 +118,6 @@ class DatabaseService {
     return Recording.fromMap(mergedRecordingMap);
   }
 
-  /// Get song data by id
-  Future getSong(String collection, String id) async {
-    FirebaseUser user = await _auth.currentUser();
-    final snapshot = await _db
-        .collectionGroup("songs")
-        .where("ownedBy", isEqualTo: user.uid)
-        .getDocuments();
-    return snapshot.documents[0];
-  }
-
   Future getRecordsBySongId(String songId) async {
     FirebaseUser user = await _auth.currentUser();
     var data;
@@ -124,25 +133,6 @@ class DatabaseService {
       print(err);
     }
     return data;
-  }
-
-  /// Add or update data in the firestore
-  Future upsertSong(Song song) async {
-    FirebaseUser user = await _auth.currentUser();
-    try {
-      await _db
-          .collection("users")
-          .document(user.uid)
-          .collection("songs")
-          .document(song.id)
-          .updateData(song.toMap());
-    } catch (e) {
-      if (e is PlatformException) {
-        return e.message;
-      } else {
-        return e.toString();
-      }
-    }
   }
 
   Future upsertRecording(String songId, Recording recording) async {
