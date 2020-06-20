@@ -86,6 +86,7 @@ class _UserSettingsFormState extends State<UserSettingsForm> {
   }
 
   /// Dispose forms
+  @override
   void dispose() {
     _firstNameController.dispose();
     _lastNameController.dispose();

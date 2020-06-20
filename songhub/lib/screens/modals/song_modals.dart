@@ -78,14 +78,12 @@ class _SongFormState extends State<SongForm> {
   /// Init state
   @override
   void initState() {
-    if (widget.song != null) {
-      _titleController = TextEditingController(text: widget.song.title);
-      _artistController = TextEditingController(text: widget.song.artist);
-      _lyricsController = TextEditingController(text: widget.song.lyrics);
-      _moodController = TextEditingController(text: widget.song.mood);
-      selectedStatus = widget.song.status;
-      imageUrl = widget.song.coverImg;
-    }
+    _titleController = TextEditingController(text: widget.song?.title ?? "");
+    _artistController = TextEditingController(text: widget.song?.artist ?? "");
+    _lyricsController = TextEditingController(text: widget.song?.lyrics ?? "");
+    _moodController = TextEditingController(text: widget.song?.mood ?? "");
+    selectedStatus = widget.song?.status;
+    imageUrl = widget.song?.coverImg;
     super.initState();
   }
 
@@ -123,7 +121,7 @@ class _SongFormState extends State<SongForm> {
     Navigator.pop(context);
   }
 
-  /// Dispose forms
+  @override
   void dispose() {
     _titleController.dispose();
     _artistController.dispose();
