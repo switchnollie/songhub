@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:song_hub/components/dropdown_field.dart';
 import 'package:song_hub/components/image_input.dart';
 import 'package:song_hub/components/text_input.dart';
 import 'package:song_hub/models/user.dart';
@@ -46,7 +47,7 @@ class _UserSettingsFormState extends State<UserSettingsForm> {
       _stageNameController;
 
   File _imageFile;
-  String _dropdownRole;
+  String _selectedRole;
 
   /// Init state
   @override
@@ -55,7 +56,7 @@ class _UserSettingsFormState extends State<UserSettingsForm> {
       _firstNameController = TextEditingController(text: widget.user.firstName);
       _lastNameController = TextEditingController(text: widget.user.lastName);
       _stageNameController = TextEditingController(text: widget.user.stageName);
-      _dropdownRole = widget.user.role;
+      _selectedRole = widget.user.role;
     }
     super.initState();
   }
@@ -89,11 +90,14 @@ class _UserSettingsFormState extends State<UserSettingsForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              ImageInput(
-                imageFile: _imageFile,
-                onPressed: getImage,
-                imageUrl: widget.user.profileImgUrl,
-                isAvatar: true,
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: ImageInput(
+                  imageFile: _imageFile,
+                  onPressed: getImage,
+                  imageUrl: widget.user.profileImgUrl,
+                  isAvatar: true,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),
@@ -135,6 +139,23 @@ class _UserSettingsFormState extends State<UserSettingsForm> {
                     return null;
                   },
                   hintText: "Stage Name",
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: DropdownInput(
+                  items: [
+                    "Song Writer",
+                    "Producer",
+                  ],
+                  icon: Icons.label,
+                  value: _selectedRole,
+                  initialValue: "Song Writer",
+                  onChanged: (newVal) {
+                    setState(() {
+                      _selectedRole = newVal;
+                    });
+                  },
                 ),
               ),
             ],

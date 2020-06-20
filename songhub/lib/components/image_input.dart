@@ -27,7 +27,7 @@ class ImageInput extends StatelessWidget {
               ),
             )
           : Container(
-              color: Theme.of(context).accentColor.withAlpha(0x22),
+              color: Colors.transparent,
               width: 125,
               height: 125,
               child: Stack(
@@ -35,12 +35,13 @@ class ImageInput extends StatelessWidget {
                 children: <Widget>[
                   Opacity(
                     opacity: 0.33,
-                    // TODO: Error hasSize
-                    child: FittedBox(
-                        fit: BoxFit.fill,
-                        child: imageFile != null
-                            ? Image.file(imageFile)
-                            : Image.network(imageUrl)),
+                    child: SizedBox.expand(
+                      child: FittedBox(
+                          fit: BoxFit.fill,
+                          child: imageFile != null
+                              ? Image.file(imageFile)
+                              : Image.network(imageUrl)),
+                    ),
                   ),
                   IconButton(
                     icon: Icon(imageUrl != null ? Icons.edit : Icons.add),
@@ -59,6 +60,7 @@ class ImageInput extends StatelessWidget {
       padding: EdgeInsets.only(right: 16.0),
       child: isAvatar
           ? CircleAvatar(
+              backgroundColor: Theme.of(context).accentColor.withAlpha(0x22),
               child: ClipOval(child: _buildMaskedContent(context)),
               radius: 62.5,
             )

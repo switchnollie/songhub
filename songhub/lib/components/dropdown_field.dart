@@ -1,66 +1,52 @@
 import 'package:flutter/material.dart';
 
-class _DropDownInputState extends State<DropDownInput> {
-  String value;
+class DropdownInput extends StatelessWidget {
+  final List<String> items;
   final IconData icon;
-  final List<String> statusItems;
+  final String value;
+  final Function onChanged;
+  final String initialValue;
 
-  _DropDownInputState({this.statusItems, this.icon, this.value});
+  DropdownInput(
+      {this.items, this.icon, this.value, this.onChanged, this.initialValue});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: InputDecorator(
+    return InputDecorator(
+      decoration: InputDecoration(
+        errorStyle: TextStyle(color: Colors.redAccent, fontSize: 16.0),
+        fillColor: Theme.of(context).accentColor.withAlpha(0x22),
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 4.0, horizontal: 12.0),
+        filled: true,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(5),
+          borderSide: BorderSide(
+            width: 0,
+            style: BorderStyle.none,
+          ),
+        ),
+        prefixIcon: icon != null
+            ? Icon(
+                icon,
+                color: Theme.of(context).hintColor,
+              )
+            : null,
+      ),
+      child: DropdownButtonFormField<String>(
+        isDense: true,
         decoration: InputDecoration(
-          errorStyle: TextStyle(color: Colors.redAccent, fontSize: 16.0),
-          fillColor: Theme.of(context).accentColor.withAlpha(0x22),
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
-          filled: true,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5),
-            borderSide: BorderSide(
-              width: 0,
-              style: BorderStyle.none,
-            ),
-          ),
-          prefixIcon: icon != null
-              ? Icon(
-                  icon,
-                  color: Theme.of(context).hintColor,
-                )
-              : null,
+          enabledBorder: InputBorder.none,
         ),
-        // OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton<String>(
-            isDense: true,
-            value: value != null ? value : "Initiation",
-            onChanged: (String newValue) {
-              setState(() {
-                value = newValue;
-              });
-            },
-            items: statusItems.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-          ),
-        ),
+        value: value != null && value != "" ? value : initialValue,
+        onChanged: onChanged,
+        items: items.map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
       ),
     );
   }
-}
-
-class DropDownInput extends StatefulWidget {
-  final List<String> statusItems;
-  final IconData icon;
-  final String value;
-
-  DropDownInput({this.statusItems, this.icon, this.value});
-
-  _DropDownInputState createState() =>
-      _DropDownInputState(statusItems: statusItems, icon: icon, value: value);
 }

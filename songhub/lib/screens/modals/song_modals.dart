@@ -50,12 +50,19 @@ class EditSongModal extends StatelessWidget {
   }
 }
 
-class _SongFormState extends State<SongForm> {
+class SongForm extends StatefulWidget {
   final Song song;
   final bool isAdd;
 
-  _SongFormState({this.song, this.isAdd});
+  SongForm({this.song, this.isAdd});
 
+  @override
+  _SongFormState createState() {
+    return _SongFormState();
+  }
+}
+
+class _SongFormState extends State<SongForm> {
   final _db = DatabaseService();
   final _storage = StorageService();
   final _formKey = GlobalKey<FormState>();
@@ -68,18 +75,18 @@ class _SongFormState extends State<SongForm> {
   String currentStatus = "Initiation";
   File imageFile;
   bool valid;
-  String buttonText, dropDownStatus, imageUrl;
+  String buttonText, selectedStatus, imageUrl;
 
   /// Init state
   @override
   void initState() {
-    if (song != null) {
-      _titleController = TextEditingController(text: song.title);
-      _artistController = TextEditingController(text: song.artist);
-      _lyricsController = TextEditingController(text: song.lyrics);
-      _moodController = TextEditingController(text: song.mood);
-      dropDownStatus = song.status;
-      imageUrl = song.coverImg;
+    if (widget.song != null) {
+      _titleController = TextEditingController(text: widget.song.title);
+      _artistController = TextEditingController(text: widget.song.artist);
+      _lyricsController = TextEditingController(text: widget.song.lyrics);
+      _moodController = TextEditingController(text: widget.song.mood);
+      selectedStatus = widget.song.status;
+      imageUrl = widget.song.coverImg;
     }
     super.initState();
   }
@@ -177,10 +184,15 @@ class _SongFormState extends State<SongForm> {
                   ]),
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),
-                child: DropDownInput(
-                  statusItems: ["Initiation", "Idea", "Demo", "Release"],
+                child: DropdownInput(
+                  items: ["Initiation", "Idea", "Demo", "Release"],
                   icon: Icons.label,
-                  value: dropDownStatus,
+                  value: selectedStatus,
+                  onChanged: (newVal) {
+                    setState(() {
+                      selectedStatus = newVal;
+                    });
+                  },
                 ),
               ),
               Padding(
@@ -202,7 +214,7 @@ class _SongFormState extends State<SongForm> {
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),
                 child: PrimaryButton(
-                  text: isAdd ? "CREATE" : "SAVE",
+                  text: widget.isAdd ? "CREATE" : "SAVE",
                   onPressed: () {
                     _handleSubmit();
                     Navigator.pop(context);
@@ -214,17 +226,5 @@ class _SongFormState extends State<SongForm> {
         ),
       ),
     );
-  }
-}
-
-class SongForm extends StatefulWidget {
-  final Song song;
-  final bool isAdd;
-
-  SongForm({this.song, this.isAdd});
-
-  @override
-  _SongFormState createState() {
-    return _SongFormState(song: song, isAdd: isAdd);
   }
 }
