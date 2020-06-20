@@ -72,9 +72,7 @@ class _SongFormState extends State<SongForm> {
       _lyricsController,
       _moodController;
 
-  String currentStatus = "Initiation";
   File imageFile;
-  bool valid;
   String buttonText, selectedStatus, imageUrl;
 
   /// Init state
@@ -122,6 +120,7 @@ class _SongFormState extends State<SongForm> {
           lyrics: _lyricsController.text,
           mood: _moodController.text));
     }
+    Navigator.pop(context);
   }
 
   /// Dispose forms
@@ -131,6 +130,13 @@ class _SongFormState extends State<SongForm> {
     _lyricsController.dispose();
     _moodController.dispose();
     super.dispose();
+  }
+
+  Widget _buildRow(Widget wrappedWidget) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16.0),
+      child: wrappedWidget,
+    );
   }
 
   @override
@@ -164,9 +170,8 @@ class _SongFormState extends State<SongForm> {
                               return null;
                             },
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 16.0),
-                            child: TextInput(
+                          _buildRow(
+                            TextInput(
                               controller: _artistController,
                               label: "Artist",
                               icon: Icons.person,
@@ -182,9 +187,8 @@ class _SongFormState extends State<SongForm> {
                       ),
                     ),
                   ]),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: DropdownInput(
+              _buildRow(
+                DropdownInput(
                   items: ["Initiation", "Idea", "Demo", "Release"],
                   icon: Icons.label,
                   value: selectedStatus,
@@ -195,30 +199,24 @@ class _SongFormState extends State<SongForm> {
                   },
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: TextInput(
+              _buildRow(
+                TextInput(
                   controller: _lyricsController,
                   label: "Lyrics",
                   icon: Icons.subject,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: TextInput(
+              _buildRow(
+                TextInput(
                   controller: _moodController,
                   label: "Mood",
                   icon: Icons.mood,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: PrimaryButton(
+              _buildRow(
+                PrimaryButton(
                   text: widget.isAdd ? "CREATE" : "SAVE",
-                  onPressed: () {
-                    _handleSubmit();
-                    Navigator.pop(context);
-                  },
+                  onPressed: _handleSubmit,
                 ),
               ),
             ],

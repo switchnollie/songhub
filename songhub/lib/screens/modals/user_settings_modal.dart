@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:song_hub/components/buttons.dart';
 import 'package:song_hub/components/dropdown_field.dart';
 import 'package:song_hub/components/image_input.dart';
 import 'package:song_hub/components/text_input.dart';
@@ -72,6 +73,18 @@ class _UserSettingsFormState extends State<UserSettingsForm> {
     });
   }
 
+  void _handleSubmit() {
+    print(_formKey.currentState);
+    // Navigator.pop(context);
+  }
+
+  Widget _buildRow(Widget wrappedWidget) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16.0),
+      child: wrappedWidget,
+    );
+  }
+
   /// Dispose forms
   void dispose() {
     _firstNameController.dispose();
@@ -90,18 +103,16 @@ class _UserSettingsFormState extends State<UserSettingsForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: ImageInput(
+              _buildRow(
+                ImageInput(
                   imageFile: _imageFile,
                   onPressed: getImage,
                   imageUrl: widget.user.profileImgUrl,
                   isAvatar: true,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: TextInput(
+              _buildRow(
+                TextInput(
                   controller: _firstNameController,
                   icon: Icons.person,
                   hintText: "First Name",
@@ -113,9 +124,8 @@ class _UserSettingsFormState extends State<UserSettingsForm> {
                   },
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: TextInput(
+              _buildRow(
+                TextInput(
                   controller: _lastNameController,
                   icon: Icons.person,
                   validator: (value) {
@@ -127,9 +137,8 @@ class _UserSettingsFormState extends State<UserSettingsForm> {
                   hintText: "Last Name",
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: TextInput(
+              _buildRow(
+                TextInput(
                   controller: _stageNameController,
                   icon: Icons.person,
                   validator: (value) {
@@ -141,9 +150,8 @@ class _UserSettingsFormState extends State<UserSettingsForm> {
                   hintText: "Stage Name",
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: DropdownInput(
+              _buildRow(
+                DropdownInput(
                   items: [
                     "Song Writer",
                     "Producer",
@@ -156,6 +164,12 @@ class _UserSettingsFormState extends State<UserSettingsForm> {
                       _selectedRole = newVal;
                     });
                   },
+                ),
+              ),
+              _buildRow(
+                PrimaryButton(
+                  text: "SAVE",
+                  onPressed: _handleSubmit,
                 ),
               ),
             ],

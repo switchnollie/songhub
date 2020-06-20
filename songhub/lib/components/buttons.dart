@@ -19,24 +19,26 @@ class PrimaryButton extends StatelessWidget {
   PrimaryButton({@required this.text, @required this.onPressed});
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: 54,
-      child: RaisedButton(
-        textColor: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 18.0),
-          child: Text(
-            text.toUpperCase(),
-            style: TextStyle(
-              fontSize: 16.0,
+    return InkWell(
+      child: SizedBox(
+        width: double.infinity,
+        height: 54,
+        child: RaisedButton(
+          textColor: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 18.0),
+            child: Text(
+              text.toUpperCase(),
+              style: TextStyle(
+                fontSize: 16.0,
+              ),
             ),
           ),
+          color: Theme.of(context).accentColor,
+          shape: RoundedRectangleBorder(
+              borderRadius: new BorderRadius.circular(5.0)),
+          onPressed: onPressed,
         ),
-        color: Theme.of(context).accentColor,
-        shape: RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(5.0)),
-        onPressed: onPressed,
       ),
     );
   }
