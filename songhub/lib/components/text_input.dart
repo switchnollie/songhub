@@ -5,7 +5,6 @@ class TextInput extends StatelessWidget {
   final String label;
   final String hintText;
   final TextEditingController controller;
-  final String placeholder;
   final Function onChanged;
   final IconData icon;
   final Function validator;
@@ -14,7 +13,6 @@ class TextInput extends StatelessWidget {
   TextInput({
     this.controller,
     this.label,
-    this.placeholder,
     this.onChanged,
     this.obscureText,
     this.icon,

@@ -3,6 +3,7 @@ import 'package:song_hub/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:song_hub/services/db_service.dart';
+import 'package:song_hub/services/storage_service.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -23,12 +24,22 @@ class AuthService {
     }
   }
 
+  Future<User> loadUserProfileImageUrl(User user) async {
+    user.profileImgUrl =
+        await StorageService.loadImage('public/profileImgs/${user.id}.jpg');
+    return user;
+  }
+
   // auth change user stream
   Stream<User> get user {
     return _auth.onAuthStateChanged
-        .switchMap((FirebaseUser user) =>
-            _db.collection("users").document(user.uid).snapshots())
-        .map((DocumentSnapshot doc) => User.fromFirestore(doc));
+        .switchMap((FirebaseUser user) => _db
+            .collection("users")
+            .document(user.uid)
+            .snapshots()
+            .map((DocumentSnapshot doc) => User.fromFirestore(doc, user)))
+        .switchMap(
+            (User user) => Stream.fromFuture(loadUserProfileImageUrl(user)));
   }
 
   // sign in with email and password
