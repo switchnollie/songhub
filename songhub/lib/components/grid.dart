@@ -20,14 +20,10 @@ class FilesGrid extends StatefulWidget {
   FilesGrid({@required this.song});
 
   @override
-  _FilesGridState createState() => _FilesGridState(song: song);
+  _FilesGridState createState() => _FilesGridState();
 }
 
 class _FilesGridState extends State<FilesGrid> {
-  final Song song;
-
-  _FilesGridState({this.song});
-
   File recordingFile;
   String storagePath;
   final _storage = StorageService();
@@ -37,20 +33,16 @@ class _FilesGridState extends State<FilesGrid> {
   void getFile() async {
     final File file = await FilePicker.getFile();
     final FirebaseUser user = await _auth.currentUser();
-    final String ownerId = user.uid.toString();
 
     if (file != null) {
       recordingFile = File(file.path);
-      // TODO: Change UID?
       final recordingId = Uuid().v4();
-      storagePath = await _storage.uploadFile(
-          // TODO: Song stream load participants images from storage when needed
-          // Only source of participants needed for recording file metadata
-          "recordings",
-          recordingFile,
+      storagePath = await _storage.uploadRecording(
+          widget.song.id,
           recordingId,
-          ownerId,
-          song.participants);
+          file,
+          FileUserPermissions(
+              owner: user.uid, participants: widget.song.participants));
       final recording = Recording(
         id: recordingId,
         name: basename(recordingFile.path),
@@ -60,7 +52,7 @@ class _FilesGridState extends State<FilesGrid> {
         // TODO: Version
         version: "Initiation",
       );
-      await _db.upsertRecording(song.id, recording);
+      await _db.upsertRecording(widget.song.id, recording);
     }
   }
 

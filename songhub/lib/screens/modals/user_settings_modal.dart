@@ -77,8 +77,7 @@ class _UserSettingsFormState extends State<UserSettingsForm> {
 
   void _handleSubmit() async {
     if (_imageFile != null) {
-      await StorageService()
-          .uploadFile("covers", _imageFile, _imageFile.toString(), null, null);
+      await StorageService().uploadProfileImg(widget.user.id, _imageFile);
     }
     if (_formKey.currentState.validate()) {
       await DatabaseService().updateUserData(
@@ -88,7 +87,7 @@ class _UserSettingsFormState extends State<UserSettingsForm> {
         _selectedRole ?? widget.user.role,
       );
     }
-    // Navigator.pop(context);
+    Navigator.pop(context);
   }
 
   Widget _buildRow(Widget wrappedWidget) {

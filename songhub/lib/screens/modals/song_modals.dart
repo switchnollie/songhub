@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -101,10 +102,15 @@ class _SongFormState extends State<SongForm> {
 
   /// Push data to firebase if form fields are valid
   void _handleSubmit() async {
+    final FirebaseUser user = await FirebaseAuth.instance.currentUser();
+
     if (_formKey.currentState.validate()) {
       if (imageFile != null) {
-        imageUrl = await _storage.uploadFile(
-            "covers", imageFile, imageFile.toString(), null, null);
+        imageUrl = await _storage.uploadCoverImg(
+            widget.song.id,
+            imageFile,
+            FileUserPermissions(
+                owner: user.uid, participants: widget.song.participants));
       }
       _db.upsertSong(Song(
           title: _titleController.text,

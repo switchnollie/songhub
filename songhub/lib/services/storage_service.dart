@@ -2,6 +2,13 @@ import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 
+class FileUserPermissions {
+  final String owner;
+  final List<String> participants;
+
+  FileUserPermissions({this.owner, this.participants});
+}
+
 class StorageService {
   static final FirebaseStorage _storage = FirebaseStorage.instance;
 
@@ -28,22 +35,51 @@ class StorageService {
     return result;
   }
 
+  Future<String> uploadProfileImg(String uid, File file) {
+    return uploadFile(
+        bucketPath: "profileImgs", fileName: uid, file: file, isPublic: true);
+  }
+
+  Future<String> uploadCoverImg(
+      String songId, File file, FileUserPermissions fileUserPermissions) {
+    return uploadFile(
+        bucketPath: "covers",
+        userPermissions: fileUserPermissions,
+        file: file,
+        fileName: songId);
+  }
+
+  Future<String> uploadRecording(String songId, String recordingId, File file,
+      FileUserPermissions fileUserPermissions) {
+    return uploadFile(
+        bucketPath: "recordings/$songId",
+        userPermissions: fileUserPermissions,
+        file: file,
+        fileName: recordingId);
+  }
+
   /// Upload file to Firebase Storage
-  Future<String> uploadFile(String collection, File file, String name,
-      String owner, List<String> participants) async {
+  Future<String> uploadFile(
+      {String bucketPath,
+      File file,
+      String fileName,
+      bool isPublic = false,
+      FileUserPermissions userPermissions}) async {
     StorageReference ref;
 
-    // TODO: Name might miss file type
-    if (collection == "public") {
-      ref = _storage.ref().child("$collection/$name");
+    if (isPublic) {
+      ref = _storage.ref().child("public/$bucketPath/$fileName");
     } else {
-      ref = _storage.ref().child("$owner/$collection/$name");
+      ref = _storage
+          .ref()
+          .child("${userPermissions.owner}/$bucketPath/$fileName");
     }
 
-    StorageUploadTask uploadTask = ref.putFile(
-      file,
-      createMetadata(owner, participants),
-    );
+    StorageMetadata meta = userPermissions != null
+        ? createMetadata(userPermissions.owner, userPermissions.participants)
+        : null;
+
+    StorageUploadTask uploadTask = ref.putFile(file, meta);
 
     await uploadTask.onComplete;
 
@@ -52,18 +88,14 @@ class StorageService {
 
   /// Create metadata based on uids
   StorageMetadata createMetadata(String owner, List<String> participants) {
-    Map<String, String> data = {
-      "$owner": "owner",
-    };
-
-    if (participants.length > 0) {
-      for (int i = 0; i < participants.length; i++) {
-        if (participants[i] != owner) {
-          // TODO: Uniformed metadata id: string
-          data["${participants[i]}"] = "allowRead";
-        }
+    Map<String, String> data = participants.fold({}, (dataMap, participant) {
+      if (participant == owner) {
+        dataMap[owner] = "owner";
+      } else {
+        dataMap[participant] = "allowRead";
       }
-    }
+      return dataMap;
+    });
 
     return StorageMetadata(customMetadata: data);
   }
