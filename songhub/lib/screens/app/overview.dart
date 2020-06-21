@@ -16,7 +16,7 @@ class SongOverviewScreen extends StatelessWidget {
         actionButton: IconButton(
           icon: Icon(
             Icons.add,
-            size: 38,
+            size: 32.0,
           ),
           color: Color(0xFFD2D4DC),
           onPressed: () {

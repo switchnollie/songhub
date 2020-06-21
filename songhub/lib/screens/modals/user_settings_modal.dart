@@ -8,6 +8,8 @@ import 'package:song_hub/components/dropdown_field.dart';
 import 'package:song_hub/components/image_input.dart';
 import 'package:song_hub/components/text_input.dart';
 import 'package:song_hub/models/user.dart';
+import 'package:song_hub/services/db_service.dart';
+import 'package:song_hub/services/storage_service.dart';
 
 class UserSettingsModal extends StatelessWidget {
   static const routeId = "/profile/edit";
@@ -73,8 +75,19 @@ class _UserSettingsFormState extends State<UserSettingsForm> {
     });
   }
 
-  void _handleSubmit() {
-    print(_formKey.currentState);
+  void _handleSubmit() async {
+    if (_imageFile != null) {
+      await StorageService()
+          .uploadFile("covers", _imageFile, _imageFile.toString(), null, null);
+    }
+    if (_formKey.currentState.validate()) {
+      await DatabaseService().updateUserData(
+        _firstNameController.text ?? widget.user.firstName,
+        _lastNameController.text ?? widget.user.lastName,
+        _stageNameController.text ?? widget.user.stageName,
+        _selectedRole ?? widget.user.role,
+      );
+    }
     // Navigator.pop(context);
   }
 

@@ -15,8 +15,8 @@ class AuthService {
           email: email, password: password);
       FirebaseUser user = result.user;
       // create a new User document for the newly created user in the db
-      await DatabaseService().updateUserData(
-          'tbd', 'tbd', 'tbd', 'profileImgs/placeholderProfileImg.png');
+      await DatabaseService()
+          .updateUserData('tbd', 'tbd', 'tbd', 'Song Writer');
       return user;
     } catch (error) {
       print(error.toString());

@@ -155,14 +155,14 @@ class DatabaseService {
     }
   }
 
-  Future updateUserData(String firstName, String lastName, String stageName,
-      String imgPath) async {
+  Future updateUserData(
+      String firstName, String lastName, String stageName, String role) async {
     FirebaseUser user = await _auth.currentUser();
     return await _db.collection("users").document(user.uid).setData({
       'firstName': firstName,
       'lastName': lastName,
       'stageName': stageName,
-      'profileImg': imgPath,
+      'role': role,
     });
   }
 }
