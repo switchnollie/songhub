@@ -64,15 +64,12 @@ class _UserSettingsFormState extends State<UserSettingsForm> {
     super.initState();
   }
 
-  /// Get image state
-  Future getImage() async {
-    final pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
-
-    setState(() {
-      if (pickedFile != null) {
-        _imageFile = File(pickedFile.path);
-      }
-    });
+  void _handleImagePicked(PickedFile image) async {
+    if (image != null) {
+      setState(() {
+        _imageFile = File(image.path);
+      });
+    }
   }
 
   void _handleSubmit() async {
@@ -119,7 +116,7 @@ class _UserSettingsFormState extends State<UserSettingsForm> {
               _buildRow(
                 ImageInput(
                   imageFile: _imageFile,
-                  onPressed: getImage,
+                  onPicked: _handleImagePicked,
                   imageUrl: widget.user.profileImgUrl,
                   isAvatar: true,
                 ),

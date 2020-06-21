@@ -88,16 +88,12 @@ class _SongFormState extends State<SongForm> {
     super.initState();
   }
 
-  /// Get image state
-  Future getImage() async {
-    final pickedFile = await ImagePicker()
-        .getImage(source: ImageSource.camera, maxHeight: 300, maxWidth: 300);
-
-    setState(() {
-      if (pickedFile != null) {
-        imageFile = File(pickedFile.path);
-      }
-    });
+  void _handleImagePicked(PickedFile image) async {
+    if (image != null) {
+      setState(() {
+        imageFile = File(image.path);
+      });
+    }
   }
 
   /// Push data to firebase if form fields are valid
@@ -158,7 +154,7 @@ class _SongFormState extends State<SongForm> {
                     // AddCoverImage(),
                     ImageInput(
                         imageFile: imageFile,
-                        onPressed: getImage,
+                        onPicked: _handleImagePicked,
                         imageUrl: imageUrl),
                     Expanded(
                       child: Column(
