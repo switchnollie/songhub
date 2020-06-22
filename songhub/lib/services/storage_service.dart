@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image/image.dart';
+import 'package:path_provider/path_provider.dart';
 
 class FileUserPermissions {
   final String owner;
@@ -35,9 +37,30 @@ class StorageService {
     return result;
   }
 
-  Future<String> uploadProfileImg(String uid, File file) {
-    return uploadFile(
-        bucketPath: "profileImgs", fileName: uid, file: file, isPublic: true);
+  Future<String> uploadProfileImg(String uid, File file,
+      [int croppedWidth = 1000]) async {
+    print({
+      "filePath": file.path,
+      "fileUri": file.uri,
+      "runtimeType": file.runtimeType,
+      "absolute": file.absolute
+    });
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    final String fileName = '$uid.jpg';
+    // Preprocessing on the image file (crop to square, resize, convert to jpg)
+    Image image = decodeImage(file.readAsBytesSync());
+    Image thumbnail = copyResizeCropSquare(image, croppedWidth);
+    File resizedCroppedFile =
+        await File("$tempPath/$fileName").writeAsBytes(encodeJpg(thumbnail));
+    final String uploadPath = await uploadFile(
+        bucketPath: "profileImgs",
+        fileName: fileName,
+        file: resizedCroppedFile,
+        isPublic: true);
+    // cleanup
+    await resizedCroppedFile.delete();
+    return uploadPath;
   }
 
   Future<String> uploadCoverImg(
