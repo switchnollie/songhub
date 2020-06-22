@@ -60,14 +60,29 @@ class DatabaseService {
     });
   }
 
-  /// Add or update data in the firestore
+  /// Add song data in Firestore
+  Future addSong(Song song) async {
+    FirebaseUser user = await _auth.currentUser();
+    try {
+      await _db
+          .collection("users/${user.uid}/songs")
+          .document(song.id)
+          .setData(song.toMap());
+    } catch (e) {
+      if (e is PlatformException) {
+        return e.message;
+      } else {
+        return e.toString();
+      }
+    }
+  }
+
+  /// Update data in the firestore
   Future upsertSong(Song song) async {
     FirebaseUser user = await _auth.currentUser();
     try {
       await _db
-          .collection("users")
-          .document(user.uid)
-          .collection("songs")
+          .collection("users/${user.uid}/songs")
           .document(song.id)
           .updateData(song.toMap());
     } catch (e) {
@@ -84,11 +99,7 @@ class DatabaseService {
     return _auth.onAuthStateChanged.switchMap((user) {
       if (user != null) {
         return _db
-            .collection("users")
-            .document(user.uid)
-            .collection("songs")
-            .document(songId)
-            .collection("recordings")
+            .collection("users/${user.uid}/songs/$songId/recordings")
             .snapshots();
       }
       return Stream.error(
@@ -118,32 +129,11 @@ class DatabaseService {
     return Recording.fromMap(mergedRecordingMap);
   }
 
-  Future getRecordsBySongId(String songId) async {
-    FirebaseUser user = await _auth.currentUser();
-    var data;
-    try {
-      data = await _db
-          .collection("users")
-          .document(user.uid)
-          .collection("songs")
-          .document(songId)
-          .collection("records")
-          .getDocuments();
-    } catch (err) {
-      print(err);
-    }
-    return data;
-  }
-
   Future upsertRecording(String songId, Recording recording) async {
     FirebaseUser user = await _auth.currentUser();
     try {
       await _db
-          .collection("users")
-          .document(user.uid)
-          .collection("songs")
-          .document(songId)
-          .collection("recordings")
+          .collection("users/${user.uid}/songs/$songId/recordings")
           .document(recording.id)
           .setData(recording.toMap());
     } catch (e) {

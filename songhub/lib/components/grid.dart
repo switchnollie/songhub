@@ -45,12 +45,13 @@ class _FilesGridState extends State<FilesGrid> {
               owner: user.uid, participants: widget.song.participants));
       final recording = Recording(
         id: recordingId,
-        name: basename(recordingFile.path),
+        label: basename(recordingFile.path),
         image: user.uid,
         storagePath: storagePath,
         timestamp: Timestamp.fromDate(DateTime.now().toUtc()),
         // TODO: Version
-        version: "Initiation",
+        // Commit message like
+        versionDescription: "Initiation",
       );
       await _db.upsertRecording(widget.song.id, recording);
     }
@@ -73,8 +74,8 @@ class _FilesGridState extends State<FilesGrid> {
             return FileInput(onPressed: getFile);
           }
           return FileItemContainer(
-            name: recordings[index - 1].name,
-            version: recordings[index - 1].version,
+            name: recordings[index - 1].label,
+            version: recordings[index - 1].versionDescription,
             time: DateFormat("yyyy-MM-dd")
                 .format(recordings[index - 1].timestamp.toDate()),
             image: recordings[index - 1].image,
