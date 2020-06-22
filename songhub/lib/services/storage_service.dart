@@ -37,22 +37,20 @@ class StorageService {
     return result;
   }
 
-  Future<String> uploadProfileImg(String uid, File file,
+  Future<File> _preprocessImgThumbnail(File imgFile, String path,
       [int croppedWidth = 1000]) async {
-    print({
-      "filePath": file.path,
-      "fileUri": file.uri,
-      "runtimeType": file.runtimeType,
-      "absolute": file.absolute
-    });
+    Image image = decodeImage(imgFile.readAsBytesSync());
+    Image thumbnail = copyResizeCropSquare(image, croppedWidth);
+    return await File(path).writeAsBytes(encodeJpg(thumbnail));
+  }
+
+  Future<String> uploadProfileImg(String uid, File file) async {
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = tempDir.path;
     final String fileName = '$uid.jpg';
     // Preprocessing on the image file (crop to square, resize, convert to jpg)
-    Image image = decodeImage(file.readAsBytesSync());
-    Image thumbnail = copyResizeCropSquare(image, croppedWidth);
     File resizedCroppedFile =
-        await File("$tempPath/$fileName").writeAsBytes(encodeJpg(thumbnail));
+        await _preprocessImgThumbnail(file, "$tempPath/$fileName");
     final String uploadPath = await uploadFile(
         bucketPath: "profileImgs",
         fileName: fileName,
