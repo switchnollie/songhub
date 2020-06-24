@@ -3,7 +3,7 @@ import 'package:song_hub/models/song.dart';
 import 'package:song_hub/models/user.dart';
 import 'package:song_hub/routing.dart';
 import "package:flutter/material.dart";
-import 'package:song_hub/screens/authGuard.dart';
+import 'package:song_hub/screens/auth_guard.dart';
 import "constants.dart";
 import 'package:song_hub/services/services.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +20,13 @@ class Main extends State<Songhub> {
     return MultiProvider(
         providers: [
           StreamProvider<User>.value(value: _auth.user),
-          StreamProvider<List<Song>>.value(value: _db.songs),
+          StreamProvider<List<Song>>.value(
+            value: _db.songs,
+            catchError: (_, err) {
+              print(err);
+              return [];
+            },
+          ),
         ],
         // All data will be available in this child and descendents
         child: MaterialApp(

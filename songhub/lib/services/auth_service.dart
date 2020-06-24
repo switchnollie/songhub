@@ -33,13 +33,19 @@ class AuthService {
   // auth change user stream
   Stream<User> get user {
     return _auth.onAuthStateChanged
-        .switchMap((FirebaseUser user) => _db
-            .collection("users")
-            .document(user.uid)
-            .snapshots()
-            .map((DocumentSnapshot doc) => User.fromFirestore(doc, user)))
-        .switchMap(
-            (User user) => Stream.fromFuture(loadUserProfileImageUrl(user)));
+        .switchMap((FirebaseUser user) {
+          if (user != null) {
+            return _db
+                .collection("users")
+                .document(user.uid)
+                .snapshots()
+                .map((DocumentSnapshot doc) => User.fromFirestore(doc, user));
+          }
+          return Stream.error(
+              Exception('Can\'t stream user: User is not authenticated'));
+        })
+        .switchMap((user) => Stream.fromFuture(loadUserProfileImageUrl(user)))
+        .onErrorResumeNext(Stream.value(null));
   }
 
   // sign in with email and password

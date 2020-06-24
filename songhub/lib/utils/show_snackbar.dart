@@ -20,7 +20,7 @@ void showSnackBarByContext(BuildContext context, String text) {
   currentScaffold.showSnackBar(snackBarContent);
 }
 
-navigateAndDisplayReturnedMessage(BuildContext context, String routeName,
+void navigateAndDisplayReturnedMessage(BuildContext context, String routeName,
     {Object arguments}) async {
   final result =
       await Navigator.pushNamed(context, routeName, arguments: arguments);
