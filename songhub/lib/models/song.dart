@@ -9,6 +9,7 @@ class Song {
   final String mood;
   final List<String> participants;
   final String status;
+  final String ownedBy;
 
   Song(
       {this.id,
@@ -18,7 +19,8 @@ class Song {
       this.participants,
       this.lyrics,
       this.mood,
-      this.status});
+      this.status,
+      this.ownedBy});
 
   factory Song.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data;
@@ -66,6 +68,7 @@ class Song {
       "lyrics": lyrics,
       "mood": mood,
       "status": status,
+      "ownedBy": ownedBy,
     };
   }
 }

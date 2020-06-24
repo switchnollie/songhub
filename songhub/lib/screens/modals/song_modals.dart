@@ -12,6 +12,7 @@ import 'package:song_hub/models/song.dart';
 import 'package:song_hub/services/db_service.dart';
 import 'package:song_hub/services/storage_service.dart';
 import 'package:song_hub/routing.dart';
+import 'package:uuid/uuid.dart';
 
 class AddSongModal extends StatelessWidget {
   static const routeId = "/songs/add";
@@ -59,11 +60,16 @@ class SongForm extends StatefulWidget {
 
   @override
   _SongFormState createState() {
-    return _SongFormState();
+    return _SongFormState(song: song, isAdd: isAdd);
   }
 }
 
 class _SongFormState extends State<SongForm> {
+  final Song song;
+  final bool isAdd;
+
+  _SongFormState({this.song, this.isAdd});
+
   final _db = DatabaseService();
   final _storage = StorageService();
   final _formKey = GlobalKey<FormState>();
@@ -97,30 +103,51 @@ class _SongFormState extends State<SongForm> {
   }
 
   /// Push data to firebase if form fields are valid
-  void _handleSubmit() async {
+  void _handleSubmit(Song song, bool isAdd) async {
     final FirebaseUser user = await FirebaseAuth.instance.currentUser();
 
     if (_formKey.currentState.validate()) {
-      if (imageFile != null) {
-        imageUrl = await _storage.uploadCoverImg(
-            widget.song.id,
-            imageFile,
-            FileUserPermissions(
-                owner: user.uid, participants: widget.song.participants));
+      if (isAdd) {
+        final String songId = Uuid().v4();
+        final List<String> participants = [
+          // TODO: Add real participants
+          "ypVCXwADSWSToxsRpyspWWAHNfJ2",
+          "dMxDgggEyDTYgkcDW8O6MMOPNiD2"
+        ];
+        if (imageFile != null) {
+          imageUrl = await _storage.uploadCoverImg(songId, imageFile,
+              FileUserPermissions(owner: user.uid, participants: participants));
+        }
+        _db.addSong(Song(
+            id: songId,
+            title: _titleController.text,
+            artist: _artistController.text,
+            coverImg: imageUrl,
+            participants: participants,
+            lyrics: _lyricsController.text,
+            status: selectedStatus,
+            mood: _moodController.text,
+            ownedBy: user.uid));
+      } else {
+        if (imageFile != null) {
+          imageUrl = await _storage.uploadCoverImg(
+              song.id,
+              imageFile,
+              FileUserPermissions(
+                  owner: user.uid, participants: song.participants));
+        }
+        _db.upsertSong(Song(
+            id: song.id,
+            title: _titleController.text,
+            artist: _artistController.text,
+            coverImg: imageUrl,
+            // participants: song.participants,
+            lyrics: _lyricsController.text,
+            status: selectedStatus,
+            mood: _moodController.text));
       }
-      _db.upsertSong(Song(
-          title: _titleController.text,
-          artist: _artistController.text,
-          coverImg: imageUrl,
-          participants: [
-            // TODO: Add real participants
-            "ypVCXwADSWSToxsRpyspWWAHNfJ2",
-            "dMxDgggEyDTYgkcDW8O6MMOPNiD2"
-          ],
-          lyrics: _lyricsController.text,
-          mood: _moodController.text));
+      Navigator.pop(context);
     }
-    Navigator.pop(context);
   }
 
   @override
@@ -216,7 +243,7 @@ class _SongFormState extends State<SongForm> {
               _buildRow(
                 PrimaryButton(
                   text: widget.isAdd ? "CREATE" : "SAVE",
-                  onPressed: _handleSubmit,
+                  onPressed: () => _handleSubmit(song, isAdd),
                 ),
               ),
             ],
