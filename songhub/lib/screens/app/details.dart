@@ -8,6 +8,7 @@ import 'package:song_hub/models/song.dart';
 import 'package:song_hub/routing.dart';
 import 'package:flutter/material.dart';
 import 'package:song_hub/services/db_service.dart';
+import 'package:song_hub/utils/show_snackbar.dart';
 
 class SongTitle extends StatelessWidget {
   final String titleText;
@@ -119,7 +120,7 @@ class EditSheet extends StatelessWidget {
               leading: Icon(Icons.edit),
               title: Text("Edit"),
               onTap: () {
-                Navigator.pushNamed(
+                navigateAndDisplayReturnedMessage(
                   context,
                   "/songs/edit",
                   arguments: EditSongModalRouteParams(song: song),

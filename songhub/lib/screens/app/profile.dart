@@ -31,14 +31,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  _navigateAndDisplayReturnedMessage(
-      BuildContext context, String routeName) async {
-    final result = await Navigator.pushNamed(context, routeName);
-    if (result != null) {
-      showSnackBarByContext(context, result);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return loading
@@ -56,8 +48,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   leading: Icon(Icons.settings),
                   title: ListTitle(title: "User Settings"),
                   onTap: () {
-                    _navigateAndDisplayReturnedMessage(
-                        context, "/profile/edit");
+                    navigateAndDisplayReturnedMessage(context, "/profile/edit");
                   },
                 ),
               ],
