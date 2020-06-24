@@ -12,20 +12,12 @@ import 'package:song_hub/services/db_service.dart';
 import 'package:song_hub/services/storage_service.dart';
 import 'package:song_hub/utils/show_snackbar.dart';
 
-class UserSettingsModal extends StatefulWidget {
+class UserSettingsModal extends StatelessWidget {
   static const routeId = "/profile/edit";
-  @override
-  _UserSettingsModalState createState() => _UserSettingsModalState();
-}
-
-class _UserSettingsModalState extends State<UserSettingsModal> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
   @override
   Widget build(BuildContext context) {
     User user = Provider.of<User>(context);
     return Scaffold(
-      key: _scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.close, color: Colors.black),
@@ -35,7 +27,7 @@ class _UserSettingsModalState extends State<UserSettingsModal> {
         title: Text("User Settings"),
         elevation: 0.0,
       ),
-      body: UserSettingsForm(user: user, scaffoldKey: _scaffoldKey),
+      body: UserSettingsForm(user: user),
       backgroundColor: Colors.white,
     );
   }
@@ -43,8 +35,7 @@ class _UserSettingsModalState extends State<UserSettingsModal> {
 
 class UserSettingsForm extends StatefulWidget {
   final User user;
-  final GlobalKey<ScaffoldState> scaffoldKey;
-  UserSettingsForm({this.user, this.scaffoldKey});
+  UserSettingsForm({this.user});
 
   @override
   _UserSettingsFormState createState() => _UserSettingsFormState();
@@ -97,11 +88,10 @@ class _UserSettingsFormState extends State<UserSettingsForm> {
     } catch (err) {
       print(err);
       if (err is StorageError) {
-        showSnackBarByScaffoldId(widget.scaffoldKey,
-            "An error occured: profile image upload failed");
+        showSnackBarByContext(
+            context, "An error occured: profile image upload failed");
       } else {
-        showSnackBarByScaffoldId(
-            widget.scaffoldKey, "An error occured: data upload failed");
+        showSnackBarByContext(context, "An error occured: data upload failed");
       }
     }
   }
