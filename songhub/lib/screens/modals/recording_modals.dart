@@ -43,6 +43,7 @@ class EditRecordingModal extends StatelessWidget {
         ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
+        title: Text("Add recording"),
         leading: IconButton(
           icon: Icon(Icons.close, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
@@ -106,7 +107,7 @@ class _RecordingModalState extends State<RecordingModal> {
   }
 
   /// Handle button submit
-  void _handleSubmit() async {
+  void _handleSubmit(BuildContext context) async {
     final FirebaseUser user = await _auth.currentUser();
 
     if (_formKey.currentState.validate()) {
@@ -146,34 +147,52 @@ class _RecordingModalState extends State<RecordingModal> {
         key: _formKey,
         child: Column(
           children: <Widget>[
-            Image.asset("assets/hero_recording_small.jpg"),
+            Hero(
+              tag: "file",
+              child: Material(
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    Image.asset("assets/hero_recording_small.jpg"),
+                    IconButton(
+                      icon: Icon(Icons.add),
+                      onPressed: getFile,
+                    )
+                  ],
+                ),
+              ),
+            ),
             _buildRow(
               ClipRRect(
                 borderRadius: BorderRadius.circular(5),
-                child: InkWell(
-                  onTap: getFile,
-                  child: Container(
-                    height: 54,
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    color: Theme.of(context).accentColor.withAlpha(0x22),
-                    child: Row(
-                      children: <Widget>[
-                        Icon(Icons.add_circle,
-                            color: Theme.of(context).hintColor),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 12.0),
-                          child: Text(recordingFile != null
-                              ? Path.basename(recordingFile.path).toString()
-                              : "Select file"),
-                        ),
-                      ],
+                child: Container(
+                  height: 54,
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Theme.of(context).hintColor,
+                      width: 2,
                     ),
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      Icon(Icons.audiotrack,
+                          color: Theme.of(context).hintColor),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 12.0),
+                        child: Text(recordingFile != null
+                            ? "File: " +
+                                Path.basename(recordingFile.path).toString()
+                            : "File:"),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
             _buildRow(
               DropdownInput(
+                // TODO: Define other labels?
                 items: ["Idea", "Lyrics", "Voice memo", "Demo tape"],
                 icon: Icons.label,
                 value: selectedStatus,
@@ -200,7 +219,7 @@ class _RecordingModalState extends State<RecordingModal> {
             _buildRow(
               PrimaryButton(
                 text: widget.isAdd ? "CREATE" : "SAVE",
-                onPressed: _handleSubmit,
+                onPressed: () => _handleSubmit(context),
               ),
             ),
           ],

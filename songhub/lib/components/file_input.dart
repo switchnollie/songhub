@@ -11,9 +11,10 @@ class FileInputContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Hero(
       tag: "file",
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(5.0),
-        child: Container(
+      child: Material(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(5.0),
+          child: Container(
             color: Theme.of(context).accentColor.withAlpha(0x22),
             child: Center(
               child: IconButton(
@@ -26,7 +27,9 @@ class FileInputContainer extends StatelessWidget {
                   );
                 },
               ),
-            )),
+            ),
+          ),
+        ),
       ),
     );
   }
