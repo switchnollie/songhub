@@ -4,6 +4,7 @@ import 'package:song_hub/components/screen_header.dart';
 import 'package:song_hub/components/song_list.dart';
 import 'package:song_hub/components/spinner.dart';
 import 'package:song_hub/services/auth_service.dart';
+import 'package:song_hub/utils/show_snackbar.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const routeId = "/profile";
@@ -30,6 +31,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  _navigateAndDisplayReturnedMessage(
+      BuildContext context, String routeName) async {
+    final result = await Navigator.pushNamed(context, routeName);
+    if (result != null) {
+      showSnackBarByContext(context, result);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return loading
@@ -47,7 +56,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   leading: Icon(Icons.settings),
                   title: ListTitle(title: "User Settings"),
                   onTap: () {
-                    Navigator.pushNamed(context, "/profile/edit");
+                    _navigateAndDisplayReturnedMessage(
+                        context, "/profile/edit");
                   },
                 ),
               ],

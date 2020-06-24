@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -10,15 +10,22 @@ import 'package:song_hub/components/text_input.dart';
 import 'package:song_hub/models/user.dart';
 import 'package:song_hub/services/db_service.dart';
 import 'package:song_hub/services/storage_service.dart';
+import 'package:song_hub/utils/show_snackbar.dart';
 
-class UserSettingsModal extends StatelessWidget {
+class UserSettingsModal extends StatefulWidget {
   static const routeId = "/profile/edit";
+  @override
+  _UserSettingsModalState createState() => _UserSettingsModalState();
+}
+
+class _UserSettingsModalState extends State<UserSettingsModal> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     User user = Provider.of<User>(context);
-    print(user.toString());
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.close, color: Colors.black),
@@ -28,7 +35,7 @@ class UserSettingsModal extends StatelessWidget {
         title: Text("User Settings"),
         elevation: 0.0,
       ),
-      body: UserSettingsForm(user: user),
+      body: UserSettingsForm(user: user, scaffoldKey: _scaffoldKey),
       backgroundColor: Colors.white,
     );
   }
@@ -36,7 +43,8 @@ class UserSettingsModal extends StatelessWidget {
 
 class UserSettingsForm extends StatefulWidget {
   final User user;
-  UserSettingsForm({this.user});
+  final GlobalKey<ScaffoldState> scaffoldKey;
+  UserSettingsForm({this.user, this.scaffoldKey});
 
   @override
   _UserSettingsFormState createState() => _UserSettingsFormState();
@@ -72,19 +80,30 @@ class _UserSettingsFormState extends State<UserSettingsForm> {
     }
   }
 
-  void _handleSubmit() async {
-    if (_imageFile != null) {
-      await StorageService().uploadProfileImg(widget.user.id, _imageFile);
+  void _handleSubmit(BuildContext context) async {
+    try {
+      if (_imageFile != null) {
+        await StorageService().uploadProfileImg(widget.user.id, _imageFile);
+      }
+      if (_formKey.currentState.validate()) {
+        await DatabaseService().updateUserData(
+          _firstNameController.text ?? widget.user.firstName,
+          _lastNameController.text ?? widget.user.lastName,
+          _stageNameController.text ?? widget.user.stageName,
+          _selectedRole ?? widget.user.role,
+        );
+        Navigator.pop(context, "Your profile has been updated");
+      }
+    } catch (err) {
+      print(err);
+      if (err is StorageError) {
+        showSnackBarByScaffoldId(widget.scaffoldKey,
+            "An error occured: profile image upload failed");
+      } else {
+        showSnackBarByScaffoldId(
+            widget.scaffoldKey, "An error occured: data upload failed");
+      }
     }
-    if (_formKey.currentState.validate()) {
-      await DatabaseService().updateUserData(
-        _firstNameController.text ?? widget.user.firstName,
-        _lastNameController.text ?? widget.user.lastName,
-        _stageNameController.text ?? widget.user.stageName,
-        _selectedRole ?? widget.user.role,
-      );
-    }
-    Navigator.pop(context);
   }
 
   Widget _buildRow(Widget wrappedWidget) {
@@ -179,7 +198,7 @@ class _UserSettingsFormState extends State<UserSettingsForm> {
               _buildRow(
                 PrimaryButton(
                   text: "SAVE",
-                  onPressed: _handleSubmit,
+                  onPressed: () => _handleSubmit(context),
                 ),
               ),
             ],
