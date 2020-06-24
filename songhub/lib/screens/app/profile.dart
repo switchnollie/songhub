@@ -4,6 +4,7 @@ import 'package:song_hub/components/screen_header.dart';
 import 'package:song_hub/components/song_list.dart';
 import 'package:song_hub/components/spinner.dart';
 import 'package:song_hub/services/auth_service.dart';
+import 'package:song_hub/utils/show_snackbar.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const routeId = "/profile";
@@ -47,7 +48,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   leading: Icon(Icons.settings),
                   title: ListTitle(title: "User Settings"),
                   onTap: () {
-                    Navigator.pushNamed(context, "/profile/edit");
+                    navigateAndDisplayReturnedMessage(context, "/profile/edit");
                   },
                 ),
               ],

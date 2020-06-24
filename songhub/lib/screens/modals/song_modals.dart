@@ -13,6 +13,7 @@ import 'package:song_hub/services/db_service.dart';
 import 'package:song_hub/services/storage_service.dart';
 import 'package:song_hub/routing.dart';
 import 'package:uuid/uuid.dart';
+import 'package:song_hub/utils/show_snackbar.dart';
 
 class AddSongModal extends StatelessWidget {
   static const routeId = "/songs/add";
@@ -103,50 +104,58 @@ class _SongFormState extends State<SongForm> {
   }
 
   /// Push data to firebase if form fields are valid
-  void _handleSubmit(Song song, bool isAdd) async {
-    final FirebaseUser user = await FirebaseAuth.instance.currentUser();
-
-    if (_formKey.currentState.validate()) {
-      if (isAdd) {
-        final String songId = Uuid().v4();
-        final List<String> participants = [
-          // TODO: Add real participants
-          "ypVCXwADSWSToxsRpyspWWAHNfJ2",
-          "dMxDgggEyDTYgkcDW8O6MMOPNiD2"
-        ];
-        if (imageFile != null) {
-          imageUrl = await _storage.uploadCoverImg(songId, imageFile,
-              FileUserPermissions(owner: user.uid, participants: participants));
+  void _handleSubmit(BuildContext context, Song song, bool isAdd) async {
+    try {
+      final FirebaseUser user = await FirebaseAuth.instance.currentUser();
+      if (_formKey.currentState.validate()) {
+        if (isAdd) {
+          final String songId = Uuid().v4();
+          final List<String> participants = [
+            // TODO: Add real participants
+            "ypVCXwADSWSToxsRpyspWWAHNfJ2",
+            "dMxDgggEyDTYgkcDW8O6MMOPNiD2"
+          ];
+          if (imageFile != null) {
+            imageUrl = await _storage.uploadCoverImg(
+                songId,
+                imageFile,
+                FileUserPermissions(
+                    owner: user.uid, participants: participants));
+          }
+          _db.addSong(Song(
+              id: songId,
+              title: _titleController.text,
+              artist: _artistController.text,
+              coverImg: imageUrl,
+              participants: participants,
+              lyrics: _lyricsController.text,
+              status: selectedStatus,
+              mood: _moodController.text,
+              ownedBy: user.uid));
+        } else {
+          if (imageFile != null) {
+            imageUrl = await _storage.uploadCoverImg(
+                song.id,
+                imageFile,
+                FileUserPermissions(
+                    owner: user.uid, participants: song.participants));
+          }
+          _db.upsertSong(Song(
+              id: song.id,
+              title: _titleController.text,
+              artist: _artistController.text,
+              coverImg: imageUrl,
+              // participants: song.participants,
+              lyrics: _lyricsController.text,
+              status: selectedStatus,
+              mood: _moodController.text));
         }
-        _db.addSong(Song(
-            id: songId,
-            title: _titleController.text,
-            artist: _artistController.text,
-            coverImg: imageUrl,
-            participants: participants,
-            lyrics: _lyricsController.text,
-            status: selectedStatus,
-            mood: _moodController.text,
-            ownedBy: user.uid));
-      } else {
-        if (imageFile != null) {
-          imageUrl = await _storage.uploadCoverImg(
-              song.id,
-              imageFile,
-              FileUserPermissions(
-                  owner: user.uid, participants: song.participants));
-        }
-        _db.upsertSong(Song(
-            id: song.id,
-            title: _titleController.text,
-            artist: _artistController.text,
-            coverImg: imageUrl,
-            // participants: song.participants,
-            lyrics: _lyricsController.text,
-            status: selectedStatus,
-            mood: _moodController.text));
+        Navigator.pop(
+            context, "Successfully ${widget.isAdd ? 'added' : 'updated'} song");
       }
-      Navigator.pop(context);
+    } catch (err) {
+      // use 'on' clause and handle errors in more detail
+      showSnackBarByContext(context, "Error submitting data");
     }
   }
 
@@ -243,7 +252,7 @@ class _SongFormState extends State<SongForm> {
               _buildRow(
                 PrimaryButton(
                   text: widget.isAdd ? "CREATE" : "SAVE",
-                  onPressed: () => _handleSubmit(song, isAdd),
+                  onPressed: () => _handleSubmit(context, song, isAdd),
                 ),
               ),
             ],

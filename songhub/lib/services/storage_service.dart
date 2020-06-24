@@ -37,6 +37,7 @@ class StorageService {
     return result;
   }
 
+  /// Preprocessing on the image file (crop to square, resize, convert to jpg)
   Future<File> _preprocessImgThumbnail(File imgFile, String path,
       [int croppedWidth = 1000]) async {
     Image image = decodeImage(imgFile.readAsBytesSync());
@@ -48,7 +49,6 @@ class StorageService {
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = tempDir.path;
     final String fileName = '$uid.jpg';
-    // Preprocessing on the image file (crop to square, resize, convert to jpg)
     File resizedCroppedFile =
         await _preprocessImgThumbnail(file, "$tempPath/$fileName");
     final String uploadPath = await uploadFile(
