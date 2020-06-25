@@ -121,9 +121,9 @@ class _RecordingModalState extends State<RecordingModal> {
       final recording = Recording(
         id: recordingId,
         label: selectedStatus,
-        image: user.uid,
+        creator: user.uid,
         storagePath: storagePath,
-        timestamp: Timestamp.fromDate(DateTime.now().toUtc()),
+        creationTime: Timestamp.fromDate(DateTime.now().toUtc()),
         versionDescription: _versionDescriptionController.text,
       );
       await _db.upsertRecording(song.id, recording);

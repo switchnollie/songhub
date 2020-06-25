@@ -40,8 +40,8 @@ class _FilesGridState extends State<FilesGrid> {
             label: recordings[index - 1].label,
             versionDescription: recordings[index - 1].versionDescription,
             time: DateFormat("yyyy-MM-dd")
-                .format(recordings[index - 1].timestamp.toDate()),
-            image: recordings[index - 1].image,
+                .format(recordings[index - 1].creationTime.toDate()),
+            image: recordings[index - 1].creator,
           );
         });
   }

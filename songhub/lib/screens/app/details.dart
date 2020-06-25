@@ -3,6 +3,7 @@ import 'package:song_hub/components/avatar.dart';
 import 'package:song_hub/components/cover.dart';
 import 'package:song_hub/components/discussion.dart';
 import 'package:song_hub/components/grid.dart';
+import 'package:song_hub/models/message.dart';
 import 'package:song_hub/models/recording.dart';
 import 'package:song_hub/models/song.dart';
 import 'package:song_hub/routing.dart';
@@ -192,7 +193,9 @@ class SongDetailsScreen extends StatelessWidget {
         .firstWhere((songEl) => songEl.id == args.songId);
     return MultiProvider(
       providers: [
-        StreamProvider<List<Recording>>.value(value: _db.getRecordings(song.id))
+        StreamProvider<List<Recording>>.value(
+            value: _db.getRecordings(song.id)),
+        StreamProvider<List<Message>>.value(value: _db.getMessages(song.id)),
       ],
       child: Scaffold(
         backgroundColor: Colors.white,

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:song_hub/models/message.dart';
 import 'package:song_hub/models/recording.dart';
 import 'dart:async';
 import 'package:song_hub/models/song.dart';
@@ -43,7 +44,7 @@ class DatabaseService {
         // Needed because each comparison value must meet the security rule constraints
         return _db
             .collectionGroup('songs')
-            .where("participants", arrayContains: user.uid)
+            .where('participants', arrayContains: user.uid)
             .snapshots();
       }
       return Stream.error(
@@ -65,7 +66,7 @@ class DatabaseService {
     FirebaseUser user = await _auth.currentUser();
     try {
       await _db
-          .collection("users/${user.uid}/songs")
+          .collection('users/${user.uid}/songs')
           .document(song.id)
           .setData(song.toMap());
     } catch (e) {
@@ -82,7 +83,7 @@ class DatabaseService {
     FirebaseUser user = await _auth.currentUser();
     try {
       await _db
-          .collection("users/${user.uid}/songs")
+          .collection('users/${user.uid}/songs')
           .document(song.id)
           .updateData(song.toMap());
     } catch (e) {
@@ -94,46 +95,49 @@ class DatabaseService {
     }
   }
 
-  /// Recording stream
+  /// Recordings stream
   Stream<List<Recording>> getRecordings(String songId) {
     return _auth.onAuthStateChanged.switchMap((user) {
       if (user != null) {
         return _db
-            .collection("users/${user.uid}/songs/$songId/recordings")
+            .collection('users/${user.uid}/songs/$songId/recordings')
             .snapshots();
       }
       return Stream.error(
           Exception('Can\'t stream records: User is not authenticated'));
     }).switchMap((dbSnapshot) {
       List<Future<Recording>> mergedValues = [];
-      (dbSnapshot as QuerySnapshot).documents.forEach((recording) {
-        mergedValues.add(getImageCreator(recording.documentID, recording.data));
+      (dbSnapshot as QuerySnapshot).documents.forEach((doc) {
+        mergedValues.add(buildImagePathRecording(doc.documentID, doc.data));
       });
       final values = Future.wait(mergedValues);
-
+      print(values);
       return Stream.fromFuture(values);
     });
   }
 
   /// Get recording creator image from Firebase Storage
-  Future<Recording> getImageCreator(
-      String recordingId, Map<String, dynamic> recordingMap) async {
-    final image = await StorageService.loadRecordingCreatorImage(
-        "public/profileImgs/${recordingMap["image"]}.jpg");
-    final Map<String, dynamic> mergedRecordingMap = {
-      'id': recordingId,
-      'data': {...recordingMap}
-    };
-    mergedRecordingMap["data"]["image"] = image;
+  Future<Recording> buildImagePathRecording(
+      String id, Map<String, dynamic> content) async {
+    final imagePath = await StorageService.loadRecordingCreatorImage(
+        'public/profileImgs/${content['creator']}.jpg');
 
-    return Recording.fromMap(mergedRecordingMap);
+    final Map<String, dynamic> mergedContent = {
+      'id': id,
+      'data': {...content}
+    };
+
+    mergedContent['data']['creator'] = imagePath;
+
+    return Recording.fromMap(mergedContent);
   }
 
+  /// Update Recording document in Firestore
   Future upsertRecording(String songId, Recording recording) async {
     FirebaseUser user = await _auth.currentUser();
     try {
       await _db
-          .collection("users/${user.uid}/songs/$songId/recordings")
+          .collection('users/${user.uid}/songs/$songId/recordings')
           .document(recording.id)
           .setData(recording.toMap());
     } catch (e) {
@@ -145,10 +149,47 @@ class DatabaseService {
     }
   }
 
+  /// Messages stream
+  Stream<List<Message>> getMessages(String songId) {
+    return _auth.onAuthStateChanged.switchMap((user) {
+      if (user != null) {
+        return _db
+            .collection('users/${user.uid}/songs/$songId/recordings')
+            .snapshots();
+      }
+      return Stream.error(
+          Exception('Can\'t stream records: User is not authenticated'));
+    }).switchMap((dbSnapshot) {
+      List<Future<Message>> mergedValues = [];
+      (dbSnapshot as QuerySnapshot).documents.forEach((doc) {
+        mergedValues.add(buildImagePathMessage(doc.documentID, doc.data));
+      });
+      final values = Future.wait(mergedValues);
+      print(values);
+      return Stream.fromFuture(values);
+    });
+  }
+
+  /// Get Message creator image from Firebase Storage
+  Future<Message> buildImagePathMessage(
+      String id, Map<String, dynamic> content) async {
+    final imagePath = await StorageService.loadRecordingCreatorImage(
+        'public/profileImgs/${content['creator']}.jpg');
+
+    final Map<String, dynamic> mergedContent = {
+      'id': id,
+      'data': {...content}
+    };
+
+    mergedContent['data']['creator'] = imagePath;
+
+    return Message.fromMap(mergedContent);
+  }
+
   Future updateUserData(
       String firstName, String lastName, String stageName, String role) async {
     FirebaseUser user = await _auth.currentUser();
-    return await _db.collection("users").document(user.uid).setData({
+    return await _db.collection('users').document(user.uid).setData({
       'firstName': firstName,
       'lastName': lastName,
       'stageName': stageName,
