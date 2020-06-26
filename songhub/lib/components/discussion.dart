@@ -1,12 +1,20 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:song_hub/components/avatar.dart';
 import 'package:song_hub/components/text_input.dart';
 import 'package:song_hub/models/message.dart';
+import 'package:song_hub/models/models.dart';
+import 'package:uuid/uuid.dart';
 
 class Discussion extends StatelessWidget {
+  final Song song;
+
+  Discussion({this.song});
+
   final TextEditingController controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +44,7 @@ class Discussion extends StatelessWidget {
                 }),
           ),
         ),
-        MessageForm(formKey: _formKey, controller: controller),
+        MessageForm(songId: song.id),
       ]),
     );
   }

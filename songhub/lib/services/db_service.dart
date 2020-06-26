@@ -181,7 +181,6 @@ class DatabaseService {
     };
 
     mergedContent['data']['creatorImg'] = imagePath;
-    // TODO: User not working
     if (user.uid == content['creator']) {
       mergedContent['data']['isMyMessage'] = true;
     } else {
@@ -189,6 +188,23 @@ class DatabaseService {
     }
 
     return Message.fromMap(mergedContent);
+  }
+
+  /// Create Message in Firestore
+  Future createMessage(String songId, Message message) async {
+    FirebaseUser user = await _auth.currentUser();
+    try {
+      await _db
+          .collection('users/${user.uid}/songs/$songId/messages')
+          .document(message.id)
+          .setData(message.toMap());
+    } catch (e) {
+      if (e is PlatformException) {
+        return e.message;
+      } else {
+        return e.toString();
+      }
+    }
   }
 
   Future updateUserData(

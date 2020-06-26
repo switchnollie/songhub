@@ -1,4 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:song_hub/models/message.dart';
+import 'package:song_hub/services/db_service.dart';
+import 'package:uuid/uuid.dart';
 
 class TextInput extends StatelessWidget {
   final bool obscureText;
@@ -59,10 +64,31 @@ class TextInput extends StatelessWidget {
 }
 
 class MessageForm extends StatelessWidget {
-  final GlobalKey<FormState> formKey;
-  final TextEditingController controller;
+  final String songId;
 
-  MessageForm({@required this.formKey, @required this.controller});
+  MessageForm({this.songId});
+
+  final _formKey = GlobalKey<FormState>();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final _db = DatabaseService();
+
+  var controller = TextEditingController();
+
+  void _handleSubmit(BuildContext context) async {
+    final FirebaseUser user = await _auth.currentUser();
+
+    if (_formKey.currentState.validate()) {
+      final messageId = Uuid().v4();
+      await _db.createMessage(
+          songId,
+          Message(
+            id: messageId,
+            creator: user.uid,
+            content: controller.text,
+            creationTime: Timestamp.fromDate(DateTime.now().toUtc()),
+          ));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +98,7 @@ class MessageForm extends StatelessWidget {
         padding: EdgeInsets.only(left: 8.0),
         color: Theme.of(context).accentColor.withAlpha(0x2E),
         child: Form(
-          key: formKey,
+          key: _formKey,
           child: Row(
             children: <Widget>[
               Expanded(
@@ -85,7 +111,7 @@ class MessageForm extends StatelessWidget {
                 icon: Icon(
                   Icons.send,
                 ),
-                onPressed: () {},
+                onPressed: () => _handleSubmit(context),
               )
             ],
           ),

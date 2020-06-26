@@ -172,7 +172,7 @@ class BodyTabs extends StatelessWidget {
               child: TabBarView(
                 children: [
                   FilesGrid(song: song),
-                  Discussion(),
+                  Discussion(song: song),
                 ],
               ),
             ),
