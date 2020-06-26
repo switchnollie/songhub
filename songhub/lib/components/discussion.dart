@@ -17,8 +17,7 @@ class Discussion extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final _db = DatabaseService();
-
-  var messageController = TextEditingController();
+  final messageController = TextEditingController();
 
   void _handleSubmit(BuildContext context) async {
     final FirebaseUser user = await _auth.currentUser();
@@ -26,7 +25,7 @@ class Discussion extends StatelessWidget {
     if (_formKey.currentState.validate()) {
       final messageId = Uuid().v4();
       await _db.createMessage(
-        song.id,
+        song,
         Message(
           id: messageId,
           creator: user.uid,

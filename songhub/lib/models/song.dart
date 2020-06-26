@@ -43,7 +43,8 @@ class Song {
         coverImg: map['data']["coverImg"] ?? "",
         participants: List.from(map['data']["participants"]),
         lyrics: map['data']["lyrics"] ?? "",
-        status: map['data']["status"] ?? "");
+        status: map['data']["status"] ?? "",
+        ownedBy: map['data']['ownedBy']);
   }
 
   String toString() {

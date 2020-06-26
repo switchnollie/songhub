@@ -195,7 +195,7 @@ class SongDetailsScreen extends StatelessWidget {
       providers: [
         StreamProvider<List<Recording>>.value(
             value: _db.getRecordings(song.id)),
-        StreamProvider<List<Message>>.value(value: _db.getMessages(song.id)),
+        StreamProvider<List<Message>>.value(value: _db.getMessages(song)),
       ],
       child: Scaffold(
         backgroundColor: Colors.white,

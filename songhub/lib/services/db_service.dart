@@ -149,11 +149,12 @@ class DatabaseService {
   }
 
   /// Messages stream
-  Stream<List<Message>> getMessages(String songId) {
+  Stream<List<Message>> getMessages(Song song) {
     return _auth.onAuthStateChanged.switchMap((user) {
       if (user != null) {
+        // TODO: song.ownedBy instead of use
         return _db
-            .collection('users/${user.uid}/songs/$songId/messages')
+            .collection('users/${song.ownedBy}/songs/${song.id}/messages')
             .orderBy('creationTime')
             .snapshots();
       }
@@ -192,11 +193,10 @@ class DatabaseService {
   }
 
   /// Create Message in Firestore
-  Future createMessage(String songId, Message message) async {
-    FirebaseUser user = await _auth.currentUser();
+  Future createMessage(Song song, Message message) async {
     try {
       await _db
-          .collection('users/${user.uid}/songs/$songId/messages')
+          .collection('users/${song.ownedBy}/songs/${song.id}/messages')
           .document(message.id)
           .setData(message.toMap());
     } catch (e) {

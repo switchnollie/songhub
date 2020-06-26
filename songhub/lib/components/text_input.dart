@@ -1,9 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:song_hub/models/message.dart';
-import 'package:song_hub/services/db_service.dart';
-import 'package:uuid/uuid.dart';
 
 class TextInput extends StatelessWidget {
   final bool obscureText;
@@ -66,7 +61,7 @@ class TextInput extends StatelessWidget {
 class MessageForm extends StatelessWidget {
   final Function onPressed;
   final TextEditingController controller;
-  var formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey;
 
   MessageForm({this.onPressed, this.controller, this.formKey});
 
