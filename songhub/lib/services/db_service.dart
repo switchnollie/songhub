@@ -133,7 +133,6 @@ class DatabaseService {
 
   /// Update Recording document in Firestore
   Future createRecording(Song song, Recording recording) async {
-    FirebaseUser user = await _auth.currentUser();
     try {
       await _db
           .collection('users/${song.ownedBy}/songs/${song.id}/recordings')
@@ -152,10 +151,11 @@ class DatabaseService {
   Stream<List<Message>> getMessages(Song song) {
     return _auth.onAuthStateChanged.switchMap((user) {
       if (user != null) {
-        // TODO: song.ownedBy instead of use
         return _db
             .collection('users/${song.ownedBy}/songs/${song.id}/messages')
             .orderBy('creationTime')
+            // TODO: Only show last 20 messages -> Load more button and call
+            .limit(20)
             .snapshots();
       }
       return Stream.error(
