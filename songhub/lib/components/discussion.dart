@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:song_hub/components/avatar.dart';
 import 'package:song_hub/components/text_input.dart';
+import 'package:song_hub/models/message.dart';
 
 class Discussion extends StatelessWidget {
   final TextEditingController controller = TextEditingController();
@@ -7,59 +10,55 @@ class Discussion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Message> messages = Provider.of<List<Message>>(context);
     return Container(
-      padding: const EdgeInsets.only(top: 16.0),
-      // height: double.infinity,
-      child: Column(
-        children: <Widget>[
-          SizedBox(
-            height: MediaQuery.of(context).size.height - 323,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              reverse: true,
-              child: Column(
-                // TODO: Builder function to fetch messages from firestore
-                children: <Widget>[
-                  MessageContainer(
-                      message:
-                          "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et"),
-                  MessageContainer(
-                      message:
-                          "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et"),
-                  MessageContainer(
-                      message:
-                          "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et"),
-                  MessageContainer(
-                      message:
-                          "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et"),
-                ],
-              ),
-            ),
+      child: Column(children: <Widget>[
+        SizedBox(
+          height: MediaQuery.of(context).size.height - 307,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            reverse: true,
+            child: ListView.builder(
+                shrinkWrap: true,
+                padding: EdgeInsets.all(16.0),
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: messages != null ? messages.length : 0,
+                itemBuilder: (BuildContext context, int index) {
+                  return messages[index].isMyMessage
+                      ? MessageContainerRight(
+                          message: messages[index].content,
+                          image: messages[index].creatorImg,
+                        )
+                      : MessageContainerLeft(
+                          message: messages[index].content,
+                          image: messages[index].creatorImg,
+                        );
+                }),
           ),
-          MessageForm(formKey: _formKey, controller: controller),
-        ],
-      ),
+        ),
+        MessageForm(formKey: _formKey, controller: controller),
+      ]),
     );
   }
 }
 
-class MessageContainer extends StatelessWidget {
+class MessageContainerLeft extends StatelessWidget {
   final String message;
   final String image;
 
-  MessageContainer({@required this.message, this.image});
+  MessageContainerLeft({@required this.message, this.image});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           image != null
-              ? Image.network(image)
+              ? Avatar(img: image)
               : Icon(
                   Icons.account_circle,
-                  // TODO: Add color to theme?
                   color: Colors.grey,
                 ),
           Padding(
@@ -70,14 +69,57 @@ class MessageContainer extends StatelessWidget {
                   topRight: const Radius.circular(5.0),
                   bottomRight: const Radius.circular(5.0)),
               child: Container(
-                width: MediaQuery.of(context).size.width / 1.7,
+                width: MediaQuery.of(context).size.width / 1.8,
                 color: Theme.of(context).accentColor.withAlpha(0x22),
                 child: Padding(
+                  // TODO: user name?
                   padding: const EdgeInsets.all(16.0),
                   child: Text(message),
                 ),
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class MessageContainerRight extends StatelessWidget {
+  final String message;
+  final String image;
+
+  MessageContainerRight({@required this.message, this.image});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          ClipRRect(
+            borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(5.0),
+                topRight: const Radius.circular(5.0),
+                bottomRight: const Radius.circular(5.0)),
+            child: Container(
+              width: MediaQuery.of(context).size.width / 1.8,
+              color: Theme.of(context).accentColor.withAlpha(0x22),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(message),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 12.0),
+            child: image != null
+                ? Avatar(img: image)
+                : Icon(
+                    Icons.account_circle,
+                    color: Colors.grey,
+                  ),
           ),
         ],
       ),

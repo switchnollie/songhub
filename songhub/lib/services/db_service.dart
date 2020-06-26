@@ -111,7 +111,6 @@ class DatabaseService {
         mergedValues.add(buildImagePathRecording(doc.documentID, doc.data));
       });
       final values = Future.wait(mergedValues);
-      print(values);
       return Stream.fromFuture(values);
     });
   }
@@ -154,7 +153,7 @@ class DatabaseService {
     return _auth.onAuthStateChanged.switchMap((user) {
       if (user != null) {
         return _db
-            .collection('users/${user.uid}/songs/$songId/recordings')
+            .collection('users/${user.uid}/songs/$songId/messages')
             .snapshots();
       }
       return Stream.error(
@@ -165,7 +164,6 @@ class DatabaseService {
         mergedValues.add(buildImagePathMessage(doc.documentID, doc.data));
       });
       final values = Future.wait(mergedValues);
-      print(values);
       return Stream.fromFuture(values);
     });
   }
@@ -173,6 +171,7 @@ class DatabaseService {
   /// Get Message creator image from Firebase Storage
   Future<Message> buildImagePathMessage(
       String id, Map<String, dynamic> content) async {
+    final FirebaseUser user = await _auth.currentUser();
     final imagePath = await StorageService.loadRecordingCreatorImage(
         'public/profileImgs/${content['creator']}.jpg');
 
@@ -181,7 +180,13 @@ class DatabaseService {
       'data': {...content}
     };
 
-    mergedContent['data']['creator'] = imagePath;
+    mergedContent['data']['creatorImg'] = imagePath;
+    // TODO: User not working
+    if (user.uid == content['creator']) {
+      mergedContent['data']['isMyMessage'] = true;
+    } else {
+      mergedContent['data']['isMyMessage'] = false;
+    }
 
     return Message.fromMap(mergedContent);
   }
