@@ -154,6 +154,7 @@ class DatabaseService {
       if (user != null) {
         return _db
             .collection('users/${user.uid}/songs/$songId/messages')
+            .orderBy('creationTime')
             .snapshots();
       }
       return Stream.error(

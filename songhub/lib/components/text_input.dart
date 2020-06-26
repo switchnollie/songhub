@@ -64,31 +64,11 @@ class TextInput extends StatelessWidget {
 }
 
 class MessageForm extends StatelessWidget {
-  final String songId;
+  final Function onPressed;
+  final TextEditingController controller;
+  var formKey = GlobalKey<FormState>();
 
-  MessageForm({this.songId});
-
-  final _formKey = GlobalKey<FormState>();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final _db = DatabaseService();
-
-  var controller = TextEditingController();
-
-  void _handleSubmit(BuildContext context) async {
-    final FirebaseUser user = await _auth.currentUser();
-
-    if (_formKey.currentState.validate()) {
-      final messageId = Uuid().v4();
-      await _db.createMessage(
-          songId,
-          Message(
-            id: messageId,
-            creator: user.uid,
-            content: controller.text,
-            creationTime: Timestamp.fromDate(DateTime.now().toUtc()),
-          ));
-    }
-  }
+  MessageForm({this.onPressed, this.controller, this.formKey});
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +78,7 @@ class MessageForm extends StatelessWidget {
         padding: EdgeInsets.only(left: 8.0),
         color: Theme.of(context).accentColor.withAlpha(0x2E),
         child: Form(
-          key: _formKey,
+          key: formKey,
           child: Row(
             children: <Widget>[
               Expanded(
@@ -111,7 +91,7 @@ class MessageForm extends StatelessWidget {
                 icon: Icon(
                   Icons.send,
                 ),
-                onPressed: () => _handleSubmit(context),
+                onPressed: () => onPressed(context),
               )
             ],
           ),

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -5,6 +6,7 @@ import 'package:song_hub/components/avatar.dart';
 import 'package:song_hub/components/text_input.dart';
 import 'package:song_hub/models/message.dart';
 import 'package:song_hub/models/models.dart';
+import 'package:song_hub/services/db_service.dart';
 import 'package:uuid/uuid.dart';
 
 class Discussion extends StatelessWidget {
@@ -12,9 +14,29 @@ class Discussion extends StatelessWidget {
 
   Discussion({this.song});
 
-  final TextEditingController controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final _db = DatabaseService();
+
+  var messageController = TextEditingController();
+
+  void _handleSubmit(BuildContext context) async {
+    final FirebaseUser user = await _auth.currentUser();
+
+    if (_formKey.currentState.validate()) {
+      final messageId = Uuid().v4();
+      await _db.createMessage(
+        song.id,
+        Message(
+          id: messageId,
+          creator: user.uid,
+          content: messageController.text,
+          creationTime: Timestamp.fromDate(DateTime.now().toUtc()),
+        ),
+      );
+      messageController.clear();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +66,11 @@ class Discussion extends StatelessWidget {
                 }),
           ),
         ),
-        MessageForm(songId: song.id),
+        MessageForm(
+          onPressed: _handleSubmit,
+          controller: messageController,
+          formKey: _formKey,
+        ),
       ]),
     );
   }
