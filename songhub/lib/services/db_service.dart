@@ -96,11 +96,11 @@ class DatabaseService {
   }
 
   /// Recordings stream
-  Stream<List<Recording>> getRecordings(String songId) {
+  Stream<List<Recording>> getRecordings(Song song) {
     return _auth.onAuthStateChanged.switchMap((user) {
       if (user != null) {
         return _db
-            .collection('users/${user.uid}/songs/$songId/recordings')
+            .collection('users/${song.ownedBy}/songs/${song.id}/recordings')
             .snapshots();
       }
       return Stream.error(
@@ -132,11 +132,11 @@ class DatabaseService {
   }
 
   /// Update Recording document in Firestore
-  Future upsertRecording(String songId, Recording recording) async {
+  Future createRecording(Song song, Recording recording) async {
     FirebaseUser user = await _auth.currentUser();
     try {
       await _db
-          .collection('users/${user.uid}/songs/$songId/recordings')
+          .collection('users/${song.ownedBy}/songs/${song.id}/recordings')
           .document(recording.id)
           .setData(recording.toMap());
     } catch (e) {

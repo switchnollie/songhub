@@ -126,7 +126,7 @@ class _RecordingModalState extends State<RecordingModal> {
         creationTime: Timestamp.fromDate(DateTime.now().toUtc()),
         versionDescription: _versionDescriptionController.text,
       );
-      await _db.upsertRecording(song.id, recording);
+      await _db.createRecording(song, recording);
     }
     Navigator.pop(context);
   }

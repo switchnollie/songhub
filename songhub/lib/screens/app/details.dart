@@ -193,8 +193,7 @@ class SongDetailsScreen extends StatelessWidget {
         .firstWhere((songEl) => songEl.id == args.songId);
     return MultiProvider(
       providers: [
-        StreamProvider<List<Recording>>.value(
-            value: _db.getRecordings(song.id)),
+        StreamProvider<List<Recording>>.value(value: _db.getRecordings(song)),
         StreamProvider<List<Message>>.value(value: _db.getMessages(song)),
       ],
       child: Scaffold(
