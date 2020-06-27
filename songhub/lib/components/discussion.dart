@@ -19,6 +19,7 @@ class Discussion extends StatelessWidget {
   final _db = DatabaseService();
   final messageController = TextEditingController();
 
+  /// Handle message input submit
   void _handleSubmit(BuildContext context) async {
     final FirebaseUser user = await _auth.currentUser();
 
@@ -43,7 +44,7 @@ class Discussion extends StatelessWidget {
     return Container(
       child: Column(children: <Widget>[
         SizedBox(
-          height: MediaQuery.of(context).size.height - 307,
+          height: MediaQuery.of(context).size.height - 315,
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             reverse: true,
@@ -135,7 +136,7 @@ class MessageContainerRight extends StatelessWidget {
             borderRadius: BorderRadius.only(
                 topLeft: const Radius.circular(5.0),
                 topRight: const Radius.circular(5.0),
-                bottomRight: const Radius.circular(5.0)),
+                bottomLeft: const Radius.circular(5.0)),
             child: Container(
               width: MediaQuery.of(context).size.width / 1.8,
               color: Theme.of(context).accentColor.withAlpha(0x22),

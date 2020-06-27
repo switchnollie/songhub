@@ -69,26 +69,31 @@ class MessageForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Align(
       alignment: FractionalOffset.bottomCenter,
-      child: Container(
-        padding: EdgeInsets.only(left: 8.0),
-        color: Theme.of(context).accentColor.withAlpha(0x2E),
-        child: Form(
-          key: formKey,
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: MessageInput(
-                  controller: controller,
-                  label: "Type message",
-                ),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(5.0),
+          child: Container(
+            color: Theme.of(context).accentColor.withAlpha(0x2E),
+            child: Form(
+              key: formKey,
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: MessageInput(
+                      controller: controller,
+                      label: "Type message",
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.send,
+                    ),
+                    onPressed: () => onPressed(context),
+                  )
+                ],
               ),
-              IconButton(
-                icon: Icon(
-                  Icons.send,
-                ),
-                onPressed: () => onPressed(context),
-              )
-            ],
+            ),
           ),
         ),
       ),
