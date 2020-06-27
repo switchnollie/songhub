@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image/image.dart';
 import 'package:path_provider/path_provider.dart';
@@ -14,7 +13,7 @@ class FileUserPermissions {
 class StorageService {
   static final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  static Future<String> loadImage(String image) async {
+  Future<String> loadImage(String image) async {
     var result;
     print(image);
     try {
@@ -27,7 +26,7 @@ class StorageService {
   }
 
   // TODO: Redundant but would like to return null if error; Placeholder wont load ether as network image!
-  static Future<String> loadRecordingCreatorImage(String image) async {
+  Future<String> loadRecordingCreatorImage(String image) async {
     var result;
     try {
       result = await _storage.ref().child(image).getDownloadURL();

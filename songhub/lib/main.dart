@@ -6,30 +6,38 @@ import 'package:song_hub/screens/auth_widget.dart';
 import 'package:song_hub/screens/auth_widget_builder.dart';
 import 'package:song_hub/services/firebase_auth_service.dart';
 import 'package:song_hub/services/firestore_database.dart';
+import 'package:song_hub/services/storage_service.dart';
 import "constants.dart";
 import 'package:provider/provider.dart';
 
-void main() => runApp(Songhub(
+void main() => runApp(SongHub(
       authServiceBuilder: (_) => FirebaseAuthService(),
       databaseBuilder: (_, uid) => FirestoreDatabase(uid: uid),
+      storageServiceBuilder: (_) => StorageService(),
     ));
 
-class Songhub extends StatelessWidget {
-  const Songhub({Key key, this.authServiceBuilder, this.databaseBuilder})
+class SongHub extends StatelessWidget {
+  const SongHub(
+      {Key key,
+      this.authServiceBuilder,
+      this.databaseBuilder,
+      this.storageServiceBuilder})
       : super(key: key);
   // Expose builders for 3rd party services at the root of the widget tree
   // This is useful when mocking services while testing
   final FirebaseAuthService Function(BuildContext context) authServiceBuilder;
   final FirestoreDatabase Function(BuildContext context, String uid)
       databaseBuilder;
+  final StorageService Function(BuildContext context) storageServiceBuilder;
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<FirebaseAuthService>(
-          create: authServiceBuilder,
-        ),
+        Provider<FirebaseAuthService>(create: authServiceBuilder),
+        Provider<StorageService>(
+          create: storageServiceBuilder,
+        )
       ],
       // All data will be available in this child and descendents
       child: AuthWidgetBuilder(

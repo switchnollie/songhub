@@ -1,4 +1,3 @@
-export 'auth_guard.dart';
 export 'app/details.dart';
 export 'app/overview.dart';
 export 'app/placeholder.dart';
