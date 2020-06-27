@@ -123,15 +123,16 @@ class DatabaseService {
   /// Get recording creator image from Firebase Storage
   Future<Recording> buildImagePathRecording(
       String id, Map<String, dynamic> content) async {
-    final imagePath = await StorageService.loadRecordingCreatorImage(
-        'public/profileImgs/${content['creator']}.jpg');
-
     final Map<String, dynamic> mergedContent = {
       'id': id,
       'data': {...content}
     };
 
-    mergedContent['data']['creator'] = imagePath;
+    if (content['creator'] != null) {
+      final imagePath = await StorageService.loadRecordingCreatorImage(
+          'public/profileImgs/${content['creator']}.jpg');
+      mergedContent['data']['creator'] = imagePath;
+    }
 
     return Recording.fromMap(mergedContent);
   }
@@ -179,15 +180,18 @@ class DatabaseService {
   Future<Message> buildImagePathMessage(
       String id, Map<String, dynamic> content) async {
     final FirebaseUser user = await _auth.currentUser();
-    final imagePath = await StorageService.loadRecordingCreatorImage(
-        'public/profileImgs/${content['creator']}.jpg');
 
     final Map<String, dynamic> mergedContent = {
       'id': id,
       'data': {...content}
     };
 
-    mergedContent['data']['creatorImg'] = imagePath;
+    if (content['creator'] != null) {
+      final imagePath = await StorageService.loadRecordingCreatorImage(
+          'public/profileImgs/${content['creator']}.jpg');
+      mergedContent['data']['creatorImg'] = imagePath;
+    }
+
     if (user.uid == content['creator']) {
       mergedContent['data']['isMyMessage'] = true;
     } else {
