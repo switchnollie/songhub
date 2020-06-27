@@ -74,7 +74,7 @@ class MessageForm extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(5.0),
           child: Container(
-            color: Theme.of(context).accentColor.withAlpha(0x2E),
+            color: Colors.white,
             child: Form(
               key: formKey,
               child: Row(

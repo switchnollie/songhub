@@ -23,24 +23,27 @@ class _RecordingsGridState extends State<RecordingsGrid> {
   @override
   Widget build(BuildContext context) {
     List<Recording> recordings = Provider.of<List<Recording>>(context);
-    return GridView.builder(
-        padding: EdgeInsets.all(16.0),
-        // itemCount: content.length,
-        itemCount: recordings != null ? recordings.length + 1 : 0,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
-        ),
-        itemBuilder: (BuildContext context, int index) {
-          if (index == 0) {
-            return RecordingInputItem(song: song);
-          }
-          return RecordingItem(
-            song: song,
-            recording: recordings[index - 1],
-          );
-        });
+    return Container(
+      color: Color(0xFFf1f7ff),
+      child: GridView.builder(
+          padding: EdgeInsets.all(16.0),
+          // itemCount: content.length,
+          itemCount: recordings != null ? recordings.length + 1 : 0,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+          ),
+          itemBuilder: (BuildContext context, int index) {
+            if (index == 0) {
+              return RecordingInputItem(song: song);
+            }
+            return RecordingItem(
+              song: song,
+              recording: recordings[index - 1],
+            );
+          }),
+    );
   }
 }
 

@@ -42,9 +42,10 @@ class Discussion extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Message> messages = Provider.of<List<Message>>(context);
     return Container(
-      child: Column(children: <Widget>[
-        SizedBox(
-          height: MediaQuery.of(context).size.height - 315,
+      color: Color(0xFFf1f7ff),
+      child: Stack(children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(bottom: 50),
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             reverse: true,
