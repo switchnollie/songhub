@@ -2,12 +2,12 @@ import 'package:song_hub/components/cover.dart';
 import 'package:song_hub/components/avatar.dart';
 import 'package:song_hub/routing.dart';
 import "package:flutter/material.dart";
-import "package:song_hub/models/song.dart";
+import 'package:song_hub/screens/app/songs_overview/song_with_images.dart';
 
 class SongList extends StatelessWidget {
   SongList({this.songs});
 
-  final List<Song> songs;
+  final List<SongWithImages> songs;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class SongList extends StatelessWidget {
 }
 
 class SongListEntry extends StatelessWidget {
-  final Song song;
+  final SongWithImages song;
 
   SongListEntry({@required this.song});
 
@@ -38,18 +38,18 @@ class SongListEntry extends StatelessWidget {
   Widget build(BuildContext context) => ListTile(
       // Song entry widget
       leading: Cover(
-        img: song.coverImg,
+        img: song.coverImgUrl,
         size: CoverSize.SMALL,
       ),
-      title: ListTitle(title: song.title),
-      subtitle: ListSubtitle(artist: song.artist),
-      trailing: AvatarRow(imgs: song.participants),
+      title: ListTitle(title: song.song.title),
+      subtitle: ListSubtitle(artist: song.song.artist),
+      trailing: AvatarRow(imgs: song.participantImgUrls),
       contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
       onTap: () {
         Navigator.pushNamed(
           context,
           "/songs/details",
-          arguments: SongDetailsScreenRouteParams(songId: song.id),
+          arguments: SongDetailsScreenRouteParams(songId: song.song.id),
         );
       });
 }

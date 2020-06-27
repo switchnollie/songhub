@@ -1,4 +1,5 @@
 //import 'package:song_hub/constants.dart';
+import 'package:song_hub/screens/app/songs_overview/songs_overview_screen.dart';
 import 'package:song_hub/screens/screens.dart';
 import 'package:flutter/material.dart';
 
@@ -11,11 +12,14 @@ class _AppState extends State<App> {
   // Navigation State
   int _selectedIndex = 0;
 
-  final List<Widget> _children = [
-    SongOverviewScreen(),
-    PlaceholderScreen("Notifications"),
-    ProfileScreen(),
-  ];
+  Widget _getSelectedScreen(BuildContext context, int index) {
+    final List<Widget> children = [
+      SongsOverviewScreen.create(context),
+      PlaceholderScreen("Notifications"),
+      ProfileScreen(),
+    ];
+    return children[index];
+  }
 
   // Bottom navigation onTap
   void _onItemTapped(int index) {
@@ -27,7 +31,7 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _children[_selectedIndex], //_buildOverview(),
+      body: _getSelectedScreen(context, _selectedIndex), //_buildOverview(),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Color(0xFFF2F5FA),
         selectedItemColor: Theme.of(context).accentColor,
