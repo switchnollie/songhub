@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:song_hub/routing.dart';
 import "package:flutter/material.dart";
-import 'package:song_hub/screens/auth_guard.dart';
+import 'package:song_hub/screens/auth_widget.dart';
 import 'package:song_hub/screens/auth_widget_builder.dart';
 import 'package:song_hub/services/firebase_auth_service.dart';
 import 'package:song_hub/services/firestore_database.dart';
@@ -53,7 +53,7 @@ class Songhub extends StatelessWidget {
                 ),
               ),
             ),
-            home: AuthGuard(),
+            home: AuthWidget(userSnapshot: userSnapshot),
             routes: routes,
           );
         },

@@ -1,10 +1,10 @@
 import 'package:song_hub/models/recording.dart';
 import 'package:song_hub/screens/app/profile.dart';
+import 'package:song_hub/screens/authentication/sign_in/sign_in_screen.dart';
 import 'package:song_hub/screens/modals/song_modals.dart';
 import 'package:song_hub/screens/modals/recording_modals.dart';
 import 'package:song_hub/models/song.dart';
 import 'package:song_hub/screens/app/details.dart';
-import 'package:song_hub/screens/authentication/login.dart';
 import 'package:song_hub/screens/app/overview.dart';
 import 'package:song_hub/screens/app/placeholder.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +34,7 @@ Map<String, Widget Function(BuildContext)> routes = {
   EditSongModal.routeId: (context) => EditSongModal(),
   AddRecordingModal.routeId: (context) => AddRecordingModal(),
   EditRecordingModal.routeId: (context) => EditRecordingModal(),
-  LoginScreen.routeId: (context) => LoginScreen(),
+  SignInScreen.routeId: (context) => SignInScreen(),
   "/notifications": (context) => PlaceholderScreen("Notifications"),
   ProfileScreen.routeId: (context) => ProfileScreen(),
   RegistrationScreen.routeId: (context) => RegistrationScreen(),
