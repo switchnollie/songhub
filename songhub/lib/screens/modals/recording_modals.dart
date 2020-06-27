@@ -156,7 +156,6 @@ class _RecordingModalState extends State<RecordingModal> {
               storagePath != recording.storagePath && storagePath != null
                   ? storagePath
                   : recording.storagePath,
-          // TODO: Created or last updated?
           createdAt: recording.createdAt,
           updatedAt: Timestamp.fromDate(DateTime.now().toUtc()),
           versionDescription:
@@ -219,7 +218,6 @@ class _RecordingModalState extends State<RecordingModal> {
                           color: Theme.of(context).hintColor),
                       Padding(
                         padding: const EdgeInsets.only(left: 12.0),
-                        // TODO : Not working atm
                         child: Text(recordingFile != null
                             ? "File: " +
                                 Path.basename(recordingFile.path).toString()

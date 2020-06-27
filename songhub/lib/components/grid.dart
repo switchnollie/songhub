@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:song_hub/models/song.dart';
 
 import 'package:provider/provider.dart';
-import 'package:song_hub/components/file_input.dart';
 import 'package:song_hub/models/recording.dart';
 import 'package:song_hub/routing.dart';
 
@@ -45,6 +44,41 @@ class _FilesGridState extends State<FilesGrid> {
   }
 }
 
+/// File input container
+class FileInputContainer extends StatelessWidget {
+  final Song song;
+
+  FileInputContainer({this.song});
+
+  @override
+  Widget build(BuildContext context) {
+    return Hero(
+      tag: "file",
+      child: Material(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(5.0),
+          child: Container(
+            color: Theme.of(context).accentColor.withAlpha(0x22),
+            child: Center(
+              child: IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    "/recordings/add",
+                    arguments: RecordingModalRouteParams(song: song),
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Container for specific file in grid
 class FileItemContainer extends StatelessWidget {
   final Song song;
   final Recording recording;
@@ -66,71 +100,100 @@ class FileItemContainer extends StatelessWidget {
         },
         child: Container(
           color: Theme.of(context).accentColor.withAlpha(0x22),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  // TODO: Padding not responsive
-                  padding: EdgeInsets.only(bottom: 28.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.timeline,
-                            size: 16,
-                            // TODO: Define color from custom theme?
-                            color: Colors.grey,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 4.0),
-                            child: Text(
-                              DateFormat('yyyy-MM-dd').format(
-                                  recording.updatedAt != null
-                                      ? recording.updatedAt.toDate()
-                                      : recording.createdAt.toDate()),
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          ),
-                        ],
-                      ),
-                      recording.creator != ""
-                          ? CircleAvatar(
-                              child: ClipOval(
-                                child: Image.network(recording.creator),
-                              ),
-                              radius: 14,
-                            )
-                          : Icon(
-                              Icons.account_circle,
-                              color: Colors.grey,
-                              size: 28,
-                            )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 4.0),
-                  child: Text(
-                    recording.label,
-                    style: TextStyle(
-                      color: Theme.of(context).accentColor,
-                    ),
-                  ),
-                ),
-                Text(
-                  recording.versionDescription,
-                  style: TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            children: <Widget>[
+              FileContainerHeader(recording: recording),
+              FileContainerContent(recording: recording),
+            ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Header of file container
+class FileContainerHeader extends StatelessWidget {
+  final Recording recording;
+
+  FileContainerHeader({@required this.recording});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.topLeft,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Icon(
+                Icons.timeline,
+                size: 16,
+                color: Colors.grey,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 4.0),
+                child: Text(
+                  DateFormat('yyyy-MM-dd').format(recording.updatedAt != null
+                      ? recording.updatedAt.toDate()
+                      : recording.createdAt.toDate()),
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ),
+            ],
+          ),
+          recording.creator != ""
+              ? CircleAvatar(
+                  child: ClipOval(
+                    child: Image.network(recording.creator),
+                  ),
+                  radius: 14,
+                )
+              : Icon(
+                  Icons.account_circle,
+                  color: Colors.grey,
+                  size: 28,
+                )
+        ],
+      ),
+    );
+  }
+}
+
+/// Content of file container
+class FileContainerContent extends StatelessWidget {
+  final Recording recording;
+
+  FileContainerContent({@required this.recording});
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      flex: 1,
+      child: Container(
+        alignment: Alignment.centerLeft,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(bottom: 4.0),
+              child: Text(
+                recording.label,
+                style: TextStyle(
+                  color: Theme.of(context).accentColor,
+                ),
+              ),
+            ),
+            Text(
+              recording.versionDescription,
+              style: TextStyle(
+                fontSize: 16,
+              ),
+            ),
+          ],
         ),
       ),
     );
