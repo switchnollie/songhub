@@ -1,0 +1,105 @@
+// Following bizz84's provider based architecture for flutter and firebase (https://github.com/bizz84/starter_architecture_flutter_firebase)
+import 'package:meta/meta.dart';
+import 'package:song_hub/models/message.dart';
+import 'package:song_hub/models/recording.dart';
+import 'package:song_hub/models/song.dart';
+import 'package:song_hub/models/user.dart';
+import 'package:song_hub/services/firestore_paths.dart';
+import 'package:song_hub/services/firestore_service.dart';
+
+/// Singleton Service that exposes pure functions to transform
+/// Firestore documents into models and vice versa.
+/// Updating denormalized data is always implemented in cloud functions
+/// i.e. setData and deleteData calls trigger further updates that are
+/// run serverside
+class FirestoreDatabase {
+  FirestoreDatabase({@required this.uid}) : assert(uid != null);
+  final String uid;
+
+  final _service = FirestoreService.instance;
+
+  Future<void> setSong(Song song) async => await _service.setData(
+        path: FirestorePath.song(uid, song.id),
+        data: song.toMap(),
+      );
+
+  /// Deletes a song. Deleting all associated data with that song must
+  /// not implemented on the client side but in a dedicated cloud function
+  Future<void> deleteSong(Song song) async => await _service.deleteData(
+        path: FirestorePath.song(uid, song.id),
+      );
+
+  /// Updates a song. Updating all associated data with that song must
+  /// not implemented on the client side but in a dedicated cloud function
+  Stream<Song> songStream({@required String songId}) => _service.documentStream(
+        path: FirestorePath.song(uid, songId),
+        builder: (data, documentId) => Song.fromMap(data, documentId),
+      );
+
+  Stream<List<Song>> songsStream() => _service.collectionStream(
+        path: FirestorePath.songs(uid),
+        builder: (data, documentId) => Song.fromMap(data, documentId),
+      );
+
+  /// Updates a recording. Updating all associated data with that recording must
+  /// not implemented on the client side but in a dedicated cloud function
+  Future<void> setRecording(Recording recording, String songId) async =>
+      await _service.setData(
+        path: FirestorePath.recording(uid, songId, recording.id),
+        data: recording.toMap(),
+      );
+
+  /// Deletes a recording. Deleting all associated data with that recording must
+  /// not implemented on the client side but in a dedicated cloud function
+  Future<void> deleteRecording(Recording recording, String songId) async =>
+      await _service.deleteData(
+        path: FirestorePath.recording(uid, songId, recording.id),
+      );
+
+  Stream<Recording> recordingStream(
+          {@required String recordingId, @required String songId}) =>
+      _service.documentStream(
+        path: FirestorePath.recording(uid, songId, recordingId),
+        builder: (data, documentId) => Recording.fromMap(data, documentId),
+      );
+
+  Stream<List<Recording>> recordingsStream({@required String songId}) =>
+      _service.collectionStream(
+        path: FirestorePath.recordings(uid, songId),
+        builder: (data, documentId) => Recording.fromMap(data, documentId),
+      );
+
+  /// Updates a user. Updating all associated data with that user must
+  /// not implemented on the client side but in a dedicated cloud function
+  Future<void> setUser(User user) async => await _service.setData(
+        path: FirestorePath.user(uid),
+        data: user.toMap(),
+      );
+
+  /// Deletes a user. Deleting all associated data with that user must
+  /// not implemented on the client side but in a dedicated cloud function
+  Future<void> deleteUser() async => await _service.deleteData(
+        path: FirestorePath.user(uid),
+      );
+
+  Stream<User> streamUser() => _service.documentStream(
+        path: FirestorePath.user(uid),
+        builder: (data, documentId) => User.fromMap(data, documentId),
+      );
+
+  /// Updates a message. Updating all associated data with that message must
+  /// not implemented on the client side but in a dedicated cloud function
+  Future<void> setMessage(
+          Message message, String songId, String recordingId) async =>
+      await _service.setData(
+        path: FirestorePath.message(uid, songId, recordingId, message.id),
+        data: message.toMap(),
+      );
+
+  Stream<List<Message>> messagesStream(
+          {@required String recordingId, @required String songId}) =>
+      _service.collectionStream(
+        path: FirestorePath.messages(uid, songId, recordingId),
+        builder: (data, documentId) => Message.fromMap(data, documentId),
+      );
+}
