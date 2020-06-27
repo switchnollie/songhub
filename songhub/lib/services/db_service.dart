@@ -137,13 +137,29 @@ class DatabaseService {
     return Recording.fromMap(mergedContent);
   }
 
-  /// Update Recording document in Firestore
+  /// Create Recording document in Firestore
   Future createRecording(Song song, Recording recording) async {
     try {
       await _db
           .collection('users/${song.ownedBy}/songs/${song.id}/recordings')
           .document(recording.id)
-          .setData(recording.toMap());
+          .setData(recording.toMap(false));
+    } catch (e) {
+      if (e is PlatformException) {
+        return e.message;
+      } else {
+        return e.toString();
+      }
+    }
+  }
+
+  /// Update Recording document in Firestore
+  Future updateRecording(Song song, Recording recording) async {
+    try {
+      await _db
+          .collection('users/${song.ownedBy}/songs/${song.id}/recordings')
+          .document(recording.id)
+          .updateData(recording.toMap(true));
     } catch (e) {
       if (e is PlatformException) {
         return e.message;

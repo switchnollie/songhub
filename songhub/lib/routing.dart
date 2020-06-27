@@ -1,3 +1,4 @@
+import 'package:song_hub/models/recording.dart';
 import 'package:song_hub/screens/app/profile.dart';
 import 'package:song_hub/screens/modals/song_modals.dart';
 import 'package:song_hub/screens/modals/recording_modals.dart';
@@ -22,7 +23,8 @@ class EditSongModalRouteParams {
 
 class RecordingModalRouteParams {
   final Song song;
-  RecordingModalRouteParams({this.song});
+  final Recording recording;
+  RecordingModalRouteParams({this.song, this.recording});
 }
 
 Map<String, Widget Function(BuildContext)> routes = {

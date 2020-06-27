@@ -5,6 +5,7 @@ import 'package:song_hub/models/song.dart';
 import 'package:provider/provider.dart';
 import 'package:song_hub/components/file_input.dart';
 import 'package:song_hub/models/recording.dart';
+import 'package:song_hub/routing.dart';
 
 class FilesGrid extends StatefulWidget {
   final Song song;
@@ -37,24 +38,18 @@ class _FilesGridState extends State<FilesGrid> {
             return FileInputContainer(song: song);
           }
           return FileItemContainer(
-            label: recordings[index - 1].label,
-            versionDescription: recordings[index - 1].versionDescription,
-            time: DateFormat("yyyy-MM-dd")
-                .format(recordings[index - 1].createdAt.toDate()),
-            image: recordings[index - 1].creator,
+            song: song,
+            recording: recordings[index - 1],
           );
         });
   }
 }
 
 class FileItemContainer extends StatelessWidget {
-  final String versionDescription, label, image, time;
+  final Song song;
+  final Recording recording;
 
-  FileItemContainer(
-      {@required this.versionDescription,
-      @required this.label,
-      this.image,
-      @required this.time});
+  FileItemContainer({@required this.song, @required this.recording});
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +60,8 @@ class FileItemContainer extends StatelessWidget {
           Navigator.pushNamed(
             context,
             "/recordings/edit",
+            arguments:
+                RecordingModalRouteParams(song: song, recording: recording),
           );
         },
         child: Container(
@@ -92,16 +89,19 @@ class FileItemContainer extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(left: 4.0),
                             child: Text(
-                              time,
+                              DateFormat('yyyy-MM-dd').format(
+                                  recording.updatedAt != null
+                                      ? recording.updatedAt.toDate()
+                                      : recording.createdAt.toDate()),
                               style: TextStyle(color: Colors.grey),
                             ),
                           ),
                         ],
                       ),
-                      image != ""
+                      recording.creator != ""
                           ? CircleAvatar(
                               child: ClipOval(
-                                child: Image.network(image),
+                                child: Image.network(recording.creator),
                               ),
                               radius: 14,
                             )
@@ -116,14 +116,14 @@ class FileItemContainer extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(bottom: 4.0),
                   child: Text(
-                    label,
+                    recording.label,
                     style: TextStyle(
                       color: Theme.of(context).accentColor,
                     ),
                   ),
                 ),
                 Text(
-                  versionDescription,
+                  recording.versionDescription,
                   style: TextStyle(
                     fontSize: 16,
                   ),

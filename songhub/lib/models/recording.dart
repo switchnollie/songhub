@@ -6,6 +6,7 @@ class Recording {
   final String creator;
   final String storagePath;
   final Timestamp createdAt;
+  final Timestamp updatedAt;
   final String versionDescription;
 
   Recording(
@@ -13,10 +14,11 @@ class Recording {
       this.label,
       this.creator,
       this.createdAt,
+      this.updatedAt,
       this.storagePath,
       this.versionDescription});
 
-  /// Create Records instance from Firestore DocumentSnapshot
+  /// Create Recording instance from Firestore DocumentSnapshot
   factory Recording.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data;
     return Recording(
@@ -25,10 +27,11 @@ class Recording {
         creator: data['creator'] ?? '',
         storagePath: data['storagePath'] ?? '',
         createdAt: data['createdAt'],
+        updatedAt: data['updatedAt'],
         versionDescription: data['versionDescription']);
   }
 
-  /// Create Records instance from map
+  /// Create Recording instance from map
   factory Recording.fromMap(Map<String, dynamic> map) {
     return Recording(
         id: map['id'],
@@ -36,16 +39,25 @@ class Recording {
         creator: map['data']['creator'] ?? '',
         storagePath: map['data']['storagePath'] ?? '',
         createdAt: map['data']['createdAt'],
+        updatedAt: map['data']['updatedAt'],
         versionDescription: map['data']['versionDescription']);
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'label': label,
-      'creator': creator,
-      'storagePath': storagePath,
-      'createdAt': createdAt,
-      'versionDescription': versionDescription,
-    };
+  // Create map from Recording
+  Map<String, dynamic> toMap(bool isUpdate) {
+    return isUpdate
+        ? {
+            'label': label,
+            'storagePath': storagePath,
+            'updatedAt': updatedAt,
+            'versionDescription': versionDescription,
+          }
+        : {
+            'label': label,
+            'creator': creator,
+            'storagePath': storagePath,
+            'createdAt': createdAt,
+            'versionDescription': versionDescription,
+          };
   }
 }

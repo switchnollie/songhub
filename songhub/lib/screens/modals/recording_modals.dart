@@ -23,13 +23,14 @@ class AddRecordingModal extends StatelessWidget {
         ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
+        title: Text('Add recording'),
         leading: IconButton(
           icon: Icon(Icons.close, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
         ),
         elevation: 0.0,
       ),
-      body: RecordingModal(song: args.song, isAdd: true),
+      body: RecordingModal(song: args.song, recording: null, isAdd: true),
       backgroundColor: Colors.white,
     );
   }
@@ -43,14 +44,15 @@ class EditRecordingModal extends StatelessWidget {
         ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add recording"),
+        title: Text("Edit recording"),
         leading: IconButton(
           icon: Icon(Icons.close, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
         ),
         elevation: 0.0,
       ),
-      body: RecordingModal(song: args.song, isAdd: false),
+      body: RecordingModal(
+          song: args.song, recording: args.recording, isAdd: false),
       backgroundColor: Colors.white,
     );
   }
@@ -58,19 +60,22 @@ class EditRecordingModal extends StatelessWidget {
 
 class RecordingModal extends StatefulWidget {
   final Song song;
+  final Recording recording;
   final bool isAdd;
 
-  RecordingModal({this.song, this.isAdd});
+  RecordingModal({this.song, this.recording, this.isAdd});
 
   @override
-  _RecordingModalState createState() => _RecordingModalState(song: song);
+  _RecordingModalState createState() =>
+      _RecordingModalState(song: song, recording: recording, isAdd: isAdd);
 }
 
 class _RecordingModalState extends State<RecordingModal> {
-  final bool isAdd;
   final Song song;
+  final Recording recording;
+  final bool isAdd;
 
-  _RecordingModalState({this.song, this.isAdd});
+  _RecordingModalState({this.song, this.recording, this.isAdd});
 
   final _formKey = GlobalKey<FormState>();
   final _storage = StorageService();
@@ -84,8 +89,9 @@ class _RecordingModalState extends State<RecordingModal> {
   /// Init state
   @override
   void initState() {
-    selectedStatus = "Idea";
-    _versionDescriptionController = TextEditingController();
+    selectedStatus = widget.recording?.label;
+    _versionDescriptionController =
+        TextEditingController(text: widget.recording?.versionDescription ?? '');
     super.initState();
   }
 
@@ -107,26 +113,59 @@ class _RecordingModalState extends State<RecordingModal> {
   }
 
   /// Handle button submit
-  void _handleSubmit(BuildContext context) async {
+  void _handleSubmit(
+      BuildContext context, bool isAdd, Recording recording) async {
     final FirebaseUser user = await _auth.currentUser();
 
     if (_formKey.currentState.validate()) {
-      final recordingId = Uuid().v4();
-      storagePath = await _storage.uploadRecording(
-          song.id,
-          recordingId,
-          recordingFile,
-          FileUserPermissions(
-              owner: user.uid, participants: song.participants));
-      final recording = Recording(
-        id: recordingId,
-        label: selectedStatus,
-        creator: user.uid,
-        storagePath: storagePath,
-        createdAt: Timestamp.fromDate(DateTime.now().toUtc()),
-        versionDescription: _versionDescriptionController.text,
-      );
-      await _db.createRecording(song, recording);
+      if (isAdd) {
+        final recordingId = Uuid().v4();
+        if (recordingFile != null) {
+          storagePath = await _storage.uploadRecording(
+              song.id,
+              recordingId,
+              recordingFile,
+              FileUserPermissions(
+                  owner: user.uid, participants: song.participants));
+        }
+        final recording = Recording(
+          id: recordingId,
+          label: selectedStatus,
+          creator: user.uid,
+          storagePath: storagePath,
+          createdAt: Timestamp.fromDate(DateTime.now().toUtc()),
+          versionDescription: _versionDescriptionController.text,
+        );
+        await _db.createRecording(song, recording);
+      } else {
+        if (recordingFile != null) {
+          storagePath = await _storage.uploadRecording(
+              song.id,
+              recording.id,
+              recordingFile,
+              FileUserPermissions(
+                  owner: user.uid, participants: song.participants));
+        }
+        final updatedRecording = Recording(
+          id: recording.id,
+          label: selectedStatus != recording.label
+              ? selectedStatus
+              : recording.label,
+          creator: recording.creator,
+          storagePath:
+              storagePath != recording.storagePath && storagePath != null
+                  ? storagePath
+                  : recording.storagePath,
+          // TODO: Created or last updated?
+          createdAt: recording.createdAt,
+          updatedAt: Timestamp.fromDate(DateTime.now().toUtc()),
+          versionDescription:
+              _versionDescriptionController.text != recording.versionDescription
+                  ? _versionDescriptionController.text
+                  : recording.versionDescription,
+        );
+        await _db.updateRecording(song, updatedRecording);
+      }
     }
     Navigator.pop(context);
   }
@@ -180,10 +219,14 @@ class _RecordingModalState extends State<RecordingModal> {
                           color: Theme.of(context).hintColor),
                       Padding(
                         padding: const EdgeInsets.only(left: 12.0),
+                        // TODO : Not working atm
                         child: Text(recordingFile != null
                             ? "File: " +
                                 Path.basename(recordingFile.path).toString()
-                            : "File:"),
+                            : recording != null
+                                ? Path.basename(recording.storagePath)
+                                    .toString()
+                                : "File:"),
                       ),
                     ],
                   ),
@@ -219,7 +262,7 @@ class _RecordingModalState extends State<RecordingModal> {
             _buildRow(
               PrimaryButton(
                 text: widget.isAdd ? "CREATE" : "SAVE",
-                onPressed: () => _handleSubmit(context),
+                onPressed: () => _handleSubmit(context, isAdd, recording),
               ),
             ),
           ],
