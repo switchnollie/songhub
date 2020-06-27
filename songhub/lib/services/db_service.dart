@@ -105,6 +105,7 @@ class DatabaseService {
       if (user != null) {
         return _db
             .collection('users/${song.ownedBy}/songs/${song.id}/recordings')
+            .orderBy('createdAt', descending: true)
             .snapshots();
       }
       return Stream.error(
