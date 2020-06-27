@@ -1,6 +1,7 @@
 //import 'package:song_hub/constants.dart';
+import 'package:song_hub/screens/app/placeholder.dart';
 import 'package:song_hub/screens/app/songs_overview/songs_overview_screen.dart';
-import 'package:song_hub/screens/screens.dart';
+import 'package:song_hub/screens/app/user_settings/user_settings_screen.dart';
 import 'package:flutter/material.dart';
 
 class App extends StatefulWidget {
@@ -16,7 +17,7 @@ class _AppState extends State<App> {
     final List<Widget> children = [
       SongsOverviewScreen.create(context),
       PlaceholderScreen("Notifications"),
-      ProfileScreen(),
+      UserSettingsScreen(),
     ];
     return children[index];
   }

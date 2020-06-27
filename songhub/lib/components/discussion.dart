@@ -7,10 +7,11 @@ import 'package:song_hub/components/text_input.dart';
 import 'package:song_hub/models/message.dart';
 import 'package:song_hub/models/models.dart';
 import 'package:song_hub/services/db_service.dart';
+import 'package:song_hub/viewModels/song_with_images.dart';
 import 'package:uuid/uuid.dart';
 
 class Discussion extends StatelessWidget {
-  final Song song;
+  final SongWithImages song;
 
   Discussion({this.song});
 

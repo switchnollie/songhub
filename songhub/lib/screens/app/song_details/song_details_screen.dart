@@ -1,15 +1,15 @@
 import 'package:provider/provider.dart';
 import 'package:song_hub/components/avatar.dart';
 import 'package:song_hub/components/cover.dart';
-import 'package:song_hub/components/discussion.dart';
-import 'package:song_hub/components/recordings_grid.dart';
 import 'package:song_hub/models/message.dart';
 import 'package:song_hub/models/recording.dart';
 import 'package:song_hub/models/song.dart';
 import 'package:song_hub/routing.dart';
 import 'package:flutter/material.dart';
+import 'package:song_hub/screens/app/song_details/body_tabs.dart';
+import 'package:song_hub/screens/app/song_details/edit_sheet.dart';
 import 'package:song_hub/services/db_service.dart';
-import 'package:song_hub/utils/show_snackbar.dart';
+import 'package:song_hub/viewModels/song_with_images.dart';
 
 class SongDetailsScreen extends StatelessWidget {
   static const routeId = "/songs/details";
@@ -19,7 +19,7 @@ class SongDetailsScreen extends StatelessWidget {
     final _db = DatabaseService();
     final SongDetailsScreenRouteParams args =
         ModalRoute.of(context).settings.arguments;
-    Song song = Provider.of<List<Song>>(context)
+    SongWithImages song = Provider.of<List<Song>>(context)
         .firstWhere((songEl) => songEl.id == args.songId);
     return MultiProvider(
       providers: [
@@ -31,14 +31,16 @@ class SongDetailsScreen extends StatelessWidget {
         appBar: AppBar(
           elevation: 0.0,
         ),
-        body: DetailsView(song: song),
+        body: SingleChildScrollView(
+          child: DetailsView(song: song),
+        ),
       ),
     );
   }
 }
 
 class DetailsView extends StatelessWidget {
-  final Song song;
+  final SongWithImages song;
 
   DetailsView({@required this.song});
 
@@ -56,7 +58,7 @@ class DetailsView extends StatelessWidget {
 }
 
 class DetailsViewHeader extends StatelessWidget {
-  final Song song;
+  final SongWithImages song;
 
   DetailsViewHeader({@required this.song});
 
@@ -68,7 +70,7 @@ class DetailsViewHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Cover(
-            img: song.coverImg,
+            img: song.coverImgUrl,
             size: CoverSize.LARGE,
           ),
           Padding(
@@ -76,9 +78,9 @@ class DetailsViewHeader extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  SongTitle(titleText: song.title),
-                  Artist(artist: song.artist),
-                  AvatarRow(imgs: song.participants),
+                  SongTitle(titleText: song.song.title),
+                  Artist(artist: song.song.artist),
+                  AvatarRow(imgs: song.song.participants),
                   IconButton(
                     icon: Icon(
                       Icons.more_horiz,
@@ -100,106 +102,6 @@ class DetailsViewHeader extends StatelessWidget {
         builder: (BuildContext context) {
           return EditSheet(song: song);
         });
-  }
-}
-
-class EditSheet extends StatelessWidget {
-  final Song song;
-
-  EditSheet({@required this.song});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        height: 168,
-        margin: const EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            ListTile(
-              leading: Icon(Icons.edit),
-              title: Text("Edit"),
-              onTap: () {
-                navigateAndDisplayReturnedMessage(
-                  context,
-                  "/songs/edit",
-                  arguments: EditSongModalRouteParams(song: song),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.share),
-              title: Text("Share"),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: Icon(Icons.close),
-              title: Text("Cancel"),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ));
-  }
-}
-
-class FeatureTabs extends StatelessWidget {
-  final Song song;
-
-  FeatureTabs({@required this.song});
-
-  @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Expanded(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              child: TabBar(
-                tabs: [Tab(text: 'FILES'), Tab(text: 'DISCUSSION')],
-              ),
-            ),
-            Expanded(
-              child: TabBarView(
-                children: <Widget>[
-                  RecordingsGrid(song: song),
-                  Discussion(song: song),
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-    // return DefaultTabController(
-    //   length: 2,
-    //   child: Column(
-    //       crossAxisAlignment: CrossAxisAlignment.stretch,
-    //       children: <Widget>[
-    //         Container(
-    //           constraints: BoxConstraints.expand(height: 50),
-    //           child: Padding(
-    //             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-    //             child: TabBar(tabs: [
-    //               Tab(text: "FILES"),
-    //               Tab(text: "DISCUSSION"),
-    //             ]),
-    //           ),
-    //         ),
-    //         SizedBox(
-    //           height: MediaQuery.of(context).size.height - 259.0,
-    //           child: TabBarView(
-    //             children: [
-    //               RecordingsGrid(song: song),
-    //               Discussion(song: song),
-    //             ],
-    //           ),
-    //         ),
-    //       ]),
-    // );
   }
 }
 

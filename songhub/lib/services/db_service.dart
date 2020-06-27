@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:song_hub/models/song.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:song_hub/services/storage_service.dart';
+import 'package:song_hub/viewModels/song_with_images.dart';
 
 class DatabaseService {
   final Firestore _db = Firestore.instance;
@@ -218,10 +219,11 @@ class DatabaseService {
   }
 
   /// Create Message in Firestore
-  Future createMessage(Song song, Message message) async {
+  Future createMessage(SongWithImages song, Message message) async {
     try {
       await _db
-          .collection('users/${song.ownedBy}/songs/${song.id}/messages')
+          .collection(
+              'users/${song.song.ownedBy}/songs/${song.song.id}/messages')
           .document(message.id)
           .setData(message.toMap());
     } catch (e) {

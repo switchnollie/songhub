@@ -1,15 +1,12 @@
 import 'package:song_hub/models/recording.dart';
-import 'package:song_hub/screens/app/profile.dart';
 import 'package:song_hub/screens/authentication/sign_in/sign_in_screen.dart';
 import 'package:song_hub/screens/modals/song_modals.dart';
 import 'package:song_hub/screens/modals/recording_modals.dart';
-import 'package:song_hub/models/song.dart';
-import 'package:song_hub/screens/app/details.dart';
-import 'package:song_hub/screens/app/overview.dart';
 import 'package:song_hub/screens/app/placeholder.dart';
 import 'package:flutter/material.dart';
 import 'package:song_hub/screens/authentication/sign_up/sign_up_screen.dart';
 import 'package:song_hub/screens/modals/user_settings_modal.dart';
+import 'package:song_hub/viewModels/song_with_images.dart';
 
 class SongDetailsScreenRouteParams {
   final String songId;
@@ -17,12 +14,12 @@ class SongDetailsScreenRouteParams {
 }
 
 class EditSongModalRouteParams {
-  final Song song;
+  final SongWithImages song;
   EditSongModalRouteParams({this.song});
 }
 
 class RecordingModalRouteParams {
-  final Song song;
+  final SongWithImages song;
   final Recording recording;
   RecordingModalRouteParams({this.song, this.recording});
 }

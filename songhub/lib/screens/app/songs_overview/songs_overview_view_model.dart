@@ -1,5 +1,5 @@
 import 'package:song_hub/models/song.dart';
-import 'package:song_hub/screens/app/songs_overview/song_with_images.dart';
+import 'package:song_hub/viewModels/song_with_images.dart';
 import 'package:song_hub/services/firestore_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:song_hub/services/storage_service.dart';

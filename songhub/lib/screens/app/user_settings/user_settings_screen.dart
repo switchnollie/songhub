@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:song_hub/components/screen_container.dart';
 import 'package:song_hub/components/screen_header.dart';
-import 'package:song_hub/components/song_list.dart';
+// TODO: create a shared list component
+import 'package:song_hub/screens/app/songs_overview/songs_overview_list.dart';
 import 'package:song_hub/components/spinner.dart';
-import 'package:song_hub/services/auth_service.dart';
+import 'package:song_hub/services/firebase_auth_service.dart';
 import 'package:song_hub/utils/show_snackbar.dart';
 
-class ProfileScreen extends StatefulWidget {
+class UserSettingsScreen extends StatefulWidget {
   static const routeId = "/profile";
-
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  _UserSettingsScreenState createState() => _UserSettingsScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
-  final AuthService _auth = AuthService();
+class _UserSettingsScreenState extends State<UserSettingsScreen> {
   bool loading = false;
 
-  void _handleLogoutTap() {
+  void _handleLogoutTap(FirebaseAuthService auth) async {
     setState(() {
       loading = true;
     });
     try {
-      _auth.signOut();
+      await auth.signOut();
     } catch (e) {
       setState(() {
         loading = false;
@@ -33,6 +33,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<FirebaseAuthService>(context, listen: false);
     return loading
         ? Spinner()
         : ScreenContainer(
@@ -42,7 +43,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ListTile(
                   leading: Icon(Icons.exit_to_app),
                   title: ListTitle(title: "Logout"),
-                  onTap: _handleLogoutTap,
+                  onTap: () => _handleLogoutTap(auth),
                 ),
                 ListTile(
                   leading: Icon(Icons.settings),

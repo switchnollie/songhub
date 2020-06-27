@@ -2,7 +2,7 @@ import 'package:song_hub/components/cover.dart';
 import 'package:song_hub/components/avatar.dart';
 import 'package:song_hub/routing.dart';
 import "package:flutter/material.dart";
-import 'package:song_hub/screens/app/songs_overview/song_with_images.dart';
+import 'package:song_hub/viewModels/song_with_images.dart';
 
 class SongList extends StatelessWidget {
   SongList({this.songs});
