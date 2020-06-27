@@ -2,7 +2,7 @@ import 'package:provider/provider.dart';
 import 'package:song_hub/components/avatar.dart';
 import 'package:song_hub/components/cover.dart';
 import 'package:song_hub/components/discussion.dart';
-import 'package:song_hub/components/grid.dart';
+import 'package:song_hub/components/recordings_grid.dart';
 import 'package:song_hub/models/message.dart';
 import 'package:song_hub/models/recording.dart';
 import 'package:song_hub/models/song.dart';
@@ -171,7 +171,7 @@ class BodyTabs extends StatelessWidget {
               height: MediaQuery.of(context).size.height - 259.0,
               child: TabBarView(
                 children: [
-                  FilesGrid(song: song),
+                  RecordingsGrid(song: song),
                   Discussion(song: song),
                 ],
               ),

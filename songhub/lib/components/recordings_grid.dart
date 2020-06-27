@@ -6,19 +6,19 @@ import 'package:provider/provider.dart';
 import 'package:song_hub/models/recording.dart';
 import 'package:song_hub/routing.dart';
 
-class FilesGrid extends StatefulWidget {
+class RecordingsGrid extends StatefulWidget {
   final Song song;
 
-  FilesGrid({@required this.song});
+  RecordingsGrid({@required this.song});
 
   @override
-  _FilesGridState createState() => _FilesGridState(song: song);
+  _RecordingsGridState createState() => _RecordingsGridState(song: song);
 }
 
-class _FilesGridState extends State<FilesGrid> {
+class _RecordingsGridState extends State<RecordingsGrid> {
   final Song song;
 
-  _FilesGridState({this.song});
+  _RecordingsGridState({this.song});
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +34,9 @@ class _FilesGridState extends State<FilesGrid> {
         ),
         itemBuilder: (BuildContext context, int index) {
           if (index == 0) {
-            return FileInputContainer(song: song);
+            return RecordingInputItem(song: song);
           }
-          return FileItemContainer(
+          return RecordingItem(
             song: song,
             recording: recordings[index - 1],
           );
@@ -45,10 +45,10 @@ class _FilesGridState extends State<FilesGrid> {
 }
 
 /// File input container
-class FileInputContainer extends StatelessWidget {
+class RecordingInputItem extends StatelessWidget {
   final Song song;
 
-  FileInputContainer({this.song});
+  RecordingInputItem({this.song});
 
   @override
   Widget build(BuildContext context) {
@@ -79,11 +79,11 @@ class FileInputContainer extends StatelessWidget {
 }
 
 /// Container for specific file in grid
-class FileItemContainer extends StatelessWidget {
+class RecordingItem extends StatelessWidget {
   final Song song;
   final Recording recording;
 
-  FileItemContainer({@required this.song, @required this.recording});
+  RecordingItem({@required this.song, @required this.recording});
 
   @override
   Widget build(BuildContext context) {
@@ -103,8 +103,8 @@ class FileItemContainer extends StatelessWidget {
           padding: EdgeInsets.all(16.0),
           child: Column(
             children: <Widget>[
-              FileContainerHeader(recording: recording),
-              FileContainerContent(recording: recording),
+              RecordingItemHeader(recording: recording),
+              RecordingItemBody(recording: recording),
             ],
           ),
         ),
@@ -114,10 +114,10 @@ class FileItemContainer extends StatelessWidget {
 }
 
 /// Header of file container
-class FileContainerHeader extends StatelessWidget {
+class RecordingItemHeader extends StatelessWidget {
   final Recording recording;
 
-  FileContainerHeader({@required this.recording});
+  RecordingItemHeader({@required this.recording});
 
   @override
   Widget build(BuildContext context) {
@@ -163,10 +163,10 @@ class FileContainerHeader extends StatelessWidget {
 }
 
 /// Content of file container
-class FileContainerContent extends StatelessWidget {
+class RecordingItemBody extends StatelessWidget {
   final Recording recording;
 
-  FileContainerContent({@required this.recording});
+  RecordingItemBody({@required this.recording});
 
   @override
   Widget build(BuildContext context) {
