@@ -5,14 +5,14 @@ class Recording {
   final String label;
   final String creator;
   final String storagePath;
-  final Timestamp creationTime;
+  final Timestamp createdAt;
   final String versionDescription;
 
   Recording(
       {this.id,
       this.label,
       this.creator,
-      this.creationTime,
+      this.createdAt,
       this.storagePath,
       this.versionDescription});
 
@@ -24,7 +24,7 @@ class Recording {
         label: data['label'],
         creator: data['creator'] ?? '',
         storagePath: data['storagePath'] ?? '',
-        creationTime: data['creationTime'],
+        createdAt: data['createdAt'],
         versionDescription: data['versionDescription']);
   }
 
@@ -35,7 +35,7 @@ class Recording {
         label: map['data']['label'],
         creator: map['data']['creator'] ?? '',
         storagePath: map['data']['storagePath'] ?? '',
-        creationTime: map['data']['creationTime'],
+        createdAt: map['data']['createdAt'],
         versionDescription: map['data']['versionDescription']);
   }
 
@@ -44,7 +44,7 @@ class Recording {
       'label': label,
       'creator': creator,
       'storagePath': storagePath,
-      'creationTime': creationTime,
+      'createdAt': createdAt,
       'versionDescription': versionDescription,
     };
   }

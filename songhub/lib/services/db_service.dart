@@ -17,7 +17,7 @@ class DatabaseService {
         'public/profileImgs/$participant.jpg');
   }
 
-  Future<Song> _getDataWithUrls(
+  Future<Song> _getSongDataWithImageUrls(
       Map<String, dynamic> songMap, String songId) async {
     final coverUrl = await StorageService.loadImage(songMap['coverImg']);
     final participantImgUrlFutures = songMap['participants']
@@ -53,7 +53,7 @@ class DatabaseService {
       List<Future<Song>> mergedValuesFutures = [];
       (dbSnapshot as QuerySnapshot).documents.forEach((songMap) {
         mergedValuesFutures
-            .add(_getDataWithUrls(songMap.data, songMap.documentID));
+            .add(_getSongDataWithImageUrls(songMap.data, songMap.documentID));
       });
 
       final mergedValues = Future.wait(mergedValuesFutures);
@@ -81,11 +81,15 @@ class DatabaseService {
   /// Update data in the firestore
   Future upsertSong(Song song) async {
     FirebaseUser user = await _auth.currentUser();
+    final updatedSong = {
+      "updatedAt": Timestamp.fromDate(DateTime.now().toUtc()),
+      ...song.toMap()
+    };
     try {
       await _db
           .collection('users/${user.uid}/songs')
           .document(song.id)
-          .updateData(song.toMap());
+          .updateData(updatedSong);
     } catch (e) {
       if (e is PlatformException) {
         return e.message;
@@ -153,7 +157,7 @@ class DatabaseService {
       if (user != null) {
         return _db
             .collection('users/${song.ownedBy}/songs/${song.id}/messages')
-            .orderBy('creationTime')
+            .orderBy('createdAt')
             // TODO: Only show last 20 messages -> Load more button and call
             .limit(20)
             .snapshots();

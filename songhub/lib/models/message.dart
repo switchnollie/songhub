@@ -4,7 +4,7 @@ class Message {
   final String id;
   final String creator;
   final String content;
-  final Timestamp creationTime;
+  final Timestamp createdAt;
   String creatorImg;
   bool isMyMessage;
 
@@ -12,7 +12,7 @@ class Message {
       {this.id,
       this.creator,
       this.content,
-      this.creationTime,
+      this.createdAt,
       this.creatorImg,
       this.isMyMessage});
 
@@ -22,7 +22,7 @@ class Message {
       id: doc.documentID,
       creator: doc.data['creator'],
       content: doc.data['content'],
-      creationTime: doc.data['creationTime'],
+      createdAt: doc.data['createdAt'],
     );
   }
 
@@ -33,7 +33,7 @@ class Message {
         creator: map['data']['creator'],
         creatorImg: map['data']['creatorImg'],
         content: map['data']['content'],
-        creationTime: map['data']['creationTime'],
+        createdAt: map['data']['createdAt'],
         isMyMessage: map['data']['isMyMessage']);
   }
 
@@ -42,7 +42,7 @@ class Message {
     return {
       'creator': creator,
       'content': content,
-      'creationTime': creationTime,
+      'createdAt': createdAt,
     };
   }
 }

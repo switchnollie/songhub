@@ -123,7 +123,7 @@ class _RecordingModalState extends State<RecordingModal> {
         label: selectedStatus,
         creator: user.uid,
         storagePath: storagePath,
-        creationTime: Timestamp.fromDate(DateTime.now().toUtc()),
+        createdAt: Timestamp.fromDate(DateTime.now().toUtc()),
         versionDescription: _versionDescriptionController.text,
       );
       await _db.createRecording(song, recording);
