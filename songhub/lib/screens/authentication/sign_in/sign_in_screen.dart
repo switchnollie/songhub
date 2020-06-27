@@ -4,7 +4,7 @@ import 'package:song_hub/components/buttons.dart';
 import 'package:song_hub/components/link.dart';
 import 'package:song_hub/components/spinner.dart';
 import 'package:song_hub/components/text_input.dart';
-import 'package:song_hub/screens/authentication/registration.dart';
+import 'package:song_hub/screens/authentication/sign_up/sign_up_screen.dart';
 import 'package:song_hub/screens/authentication/sign_in/sign_in_view_model.dart';
 import 'package:song_hub/services/firebase_auth_service.dart';
 
@@ -111,7 +111,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                     ),
                     Link(
-                      to: RegistrationScreen.routeId,
+                      to: SignUpScreen.routeId,
                       child: Text(
                         'New to Song Hub? Sign Up',
                         style: Theme.of(context).textTheme.bodyText1,

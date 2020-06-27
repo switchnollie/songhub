@@ -8,7 +8,7 @@ import 'package:song_hub/screens/app/details.dart';
 import 'package:song_hub/screens/app/overview.dart';
 import 'package:song_hub/screens/app/placeholder.dart';
 import 'package:flutter/material.dart';
-import 'package:song_hub/screens/authentication/registration.dart';
+import 'package:song_hub/screens/authentication/sign_up/sign_up_screen.dart';
 import 'package:song_hub/screens/modals/user_settings_modal.dart';
 
 class SongDetailsScreenRouteParams {
@@ -34,9 +34,9 @@ Map<String, Widget Function(BuildContext)> routes = {
   EditSongModal.routeId: (context) => EditSongModal(),
   AddRecordingModal.routeId: (context) => AddRecordingModal(),
   EditRecordingModal.routeId: (context) => EditRecordingModal(),
-  SignInScreen.routeId: (context) => SignInScreen(),
   "/notifications": (context) => PlaceholderScreen("Notifications"),
   ProfileScreen.routeId: (context) => ProfileScreen(),
-  RegistrationScreen.routeId: (context) => RegistrationScreen(),
+  SignInScreen.routeId: (context) => SignInScreenBuilder(),
+  SignUpScreen.routeId: (context) => SignUpScreenBuilder(),
   UserSettingsModal.routeId: (context) => UserSettingsModal(),
 };

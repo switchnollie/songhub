@@ -2,11 +2,12 @@ import 'dart:ui';
 
 import 'package:song_hub/routing.dart';
 import "package:flutter/material.dart";
-import 'package:song_hub/screens/auth_widget.dart';
 import 'package:song_hub/screens/auth_widget_builder.dart';
 import 'package:song_hub/services/firebase_auth_service.dart';
 import 'package:song_hub/services/firestore_database.dart';
 import 'package:song_hub/services/storage_service.dart';
+import 'package:song_hub/screens/authentication/sign_in/sign_in_screen.dart';
+import 'package:song_hub/screens/app/app.dart';
 import "constants.dart";
 import 'package:provider/provider.dart';
 
@@ -41,7 +42,12 @@ class SongHub extends StatelessWidget {
       ],
       // All data will be available in this child and descendents
       child: AuthWidgetBuilder(
-        databaseBuilder: databaseBuilder,
+        userProvidersBuilder: (_, user) => [
+          Provider<FireUser>.value(value: user),
+          Provider<FirestoreDatabase>(
+            create: (_) => FirestoreDatabase(uid: user.uid),
+          ),
+        ],
         builder: (BuildContext context, AsyncSnapshot<FireUser> userSnapshot) {
           return MaterialApp(
             theme: ThemeData(
@@ -61,7 +67,11 @@ class SongHub extends StatelessWidget {
                 ),
               ),
             ),
-            home: AuthWidget(userSnapshot: userSnapshot),
+            home: AuthWidget(
+              userSnapshot: userSnapshot,
+              nonSignedInBuilder: (_) => SignInScreenBuilder(),
+              signedInBuilder: (_) => App(),
+            ),
             routes: routes,
           );
         },

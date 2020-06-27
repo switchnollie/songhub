@@ -1,23 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:song_hub/components/buttons.dart';
 import 'package:song_hub/components/link.dart';
 import 'package:song_hub/components/spinner.dart';
 import 'package:song_hub/components/text_input.dart';
-import 'package:song_hub/screens/authentication/login.dart';
-import 'package:song_hub/services/auth_service.dart';
+import 'package:song_hub/screens/authentication/sign_in/sign_in_screen.dart';
+import 'package:song_hub/screens/authentication/sign_up/sign_up_view_model.dart';
+import 'package:song_hub/services/firebase_auth_service.dart';
 
-class RegistrationScreen extends StatefulWidget {
-  static const String routeId = "/signup";
+class SignUpScreenBuilder extends StatelessWidget {
   @override
-  _RegistrationScreenState createState() => _RegistrationScreenState();
+  Widget build(BuildContext context) {
+    final FirebaseAuthService auth =
+        Provider.of<FirebaseAuthService>(context, listen: false);
+    return ChangeNotifierProvider<SignUpViewModel>(
+      create: (_) => SignUpViewModel(auth: auth),
+      child: Consumer<SignUpViewModel>(
+        builder: (_, viewModel, __) => SignUpScreen._(viewModel: viewModel),
+      ),
+    );
+  }
 }
 
-class _RegistrationScreenState extends State<RegistrationScreen> {
-  final AuthService _auth = AuthService();
+class SignUpScreen extends StatefulWidget {
+  static const String routeId = "/signup";
+  const SignUpScreen._({Key key, this.viewModel}) : super(key: key);
+  final SignUpViewModel viewModel;
+  @override
+  _SignUpScreenState createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   // global form state
   String globalError = '';
-  bool loading = false;
   // field state
   final TextEditingController _password = TextEditingController();
   final TextEditingController _email = TextEditingController();
@@ -25,12 +41,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   void _handleSubmit() async {
     if (_formKey.currentState.validate()) {
-      setState(() => loading = true);
-      var result =
-          await _auth.registerWithEmailAndPassword(_email.text, _password.text);
+      var result = await widget.viewModel.signUp(_email.text, _password.text);
       if (result == null) {
         setState(() {
-          loading = false;
           globalError = 'Registration request failed';
         });
       }
@@ -53,7 +66,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return loading
+    return widget.viewModel.isLoading
         ? Spinner()
         : Scaffold(
             backgroundColor: Colors.white,
@@ -122,7 +135,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         ),
                       ),
                       Link(
-                        to: LoginScreen.routeId,
+                        to: SignInScreen.routeId,
                         child: Text(
                           'Already signed up? Log In',
                           style: Theme.of(context).textTheme.bodyText1,
