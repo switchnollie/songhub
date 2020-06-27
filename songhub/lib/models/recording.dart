@@ -1,10 +1,11 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Recording {
   final String id;
   final String label;
   final String creator;
-  final String storagePath;
   final Timestamp createdAt;
   final Timestamp updatedAt;
   final String versionDescription;
@@ -12,52 +13,48 @@ class Recording {
   Recording(
       {this.id,
       this.label,
-      this.creator,
       this.createdAt,
+      this.versionDescription,
       this.updatedAt,
-      this.storagePath,
-      this.versionDescription});
+      this.creator});
 
-  /// Create Recording instance from Firestore DocumentSnapshot
-  factory Recording.fromFirestore(DocumentSnapshot doc) {
-    Map data = doc.data;
+  /// Create recording by deserializing a Firestore DocumentSnapshot
+  factory Recording.fromMap(Map<String, dynamic> data, String documentId) {
+    if (data == null) {
+      return null;
+    }
     return Recording(
-        id: doc.documentID,
+        id: documentId,
         label: data['label'],
-        creator: data['creator'] ?? '',
-        storagePath: data['storagePath'] ?? '',
         createdAt: data['createdAt'],
         updatedAt: data['updatedAt'],
         versionDescription: data['versionDescription']);
   }
 
-  /// Create Recording instance from map
-  factory Recording.fromMap(Map<String, dynamic> map) {
-    return Recording(
-        id: map['id'],
-        label: map['data']['label'],
-        creator: map['data']['creator'] ?? '',
-        storagePath: map['data']['storagePath'] ?? '',
-        createdAt: map['data']['createdAt'],
-        updatedAt: map['data']['updatedAt'],
-        versionDescription: map['data']['versionDescription']);
+  /// Serialize recording to update or add in Firestore
+  Map<String, dynamic> toMap() {
+    return {
+      'label': label,
+      'creator': creator,
+      'createdAt': createdAt,
+      'updateAt': updatedAt,
+      'versionDescription': versionDescription,
+    };
   }
 
-  // Create map from Recording
-  Map<String, dynamic> toMap(bool isUpdate) {
-    return isUpdate
-        ? {
-            'label': label,
-            'storagePath': storagePath,
-            'updatedAt': updatedAt,
-            'versionDescription': versionDescription,
-          }
-        : {
-            'label': label,
-            'creator': creator,
-            'storagePath': storagePath,
-            'createdAt': createdAt,
-            'versionDescription': versionDescription,
-          };
+  @override
+  int get hashCode => hashValues(id, label, versionDescription, createdAt);
+
+  @override
+  bool operator ==(dynamic other) {
+    if (identical(this, other)) return true;
+    if (runtimeType != other.runtimeType) return false;
+    final Recording otherRecording = other;
+    return id == otherRecording.id &&
+        label == otherRecording.label &&
+        versionDescription == otherRecording.versionDescription &&
+        createdAt == otherRecording.createdAt &&
+        updatedAt == otherRecording.updatedAt &&
+        creator == otherRecording.creator;
   }
 }

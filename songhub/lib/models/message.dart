@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Message {
@@ -5,44 +7,42 @@ class Message {
   final String creator;
   final String content;
   final Timestamp createdAt;
-  String creatorImg;
-  bool isMyMessage;
 
-  Message(
-      {this.id,
-      this.creator,
-      this.content,
-      this.createdAt,
-      this.creatorImg,
-      this.isMyMessage});
+  Message({this.id, this.creator, this.content, this.createdAt});
 
-  /// Create Message instance from Firestore DocumentSnapchot
-  factory Message.fromFirestore(DocumentSnapshot doc) {
+  /// Create message by deserializing a Firestore DocumentSnapshot
+  factory Message.fromMap(Map<String, dynamic> data, String documentId) {
+    if (data == null) {
+      return null;
+    }
     return Message(
-      id: doc.documentID,
-      creator: doc.data['creator'],
-      content: doc.data['content'],
-      createdAt: doc.data['createdAt'],
+      id: documentId,
+      creator: data['creator'],
+      content: data['content'],
+      createdAt: data['createdAt'],
     );
   }
 
-  /// Create Message instance from map
-  factory Message.fromMap(Map<String, dynamic> map) {
-    return Message(
-        id: map['id'],
-        creator: map['data']['creator'],
-        creatorImg: map['data']['creatorImg'],
-        content: map['data']['content'],
-        createdAt: map['data']['createdAt'],
-        isMyMessage: map['data']['isMyMessage']);
-  }
-
-  /// Create map from Message instance
+  /// Serialize message to update or add in Firestore
   Map<String, dynamic> toMap() {
     return {
       'creator': creator,
       'content': content,
       'createdAt': createdAt,
     };
+  }
+
+  @override
+  int get hashCode => hashValues(id, creator, content, createdAt);
+
+  @override
+  bool operator ==(dynamic other) {
+    if (identical(this, other)) return true;
+    if (runtimeType != other.runtimeType) return false;
+    final Message otherMessage = other;
+    return id == otherMessage.id &&
+        creator == otherMessage.creator &&
+        content == otherMessage.content &&
+        createdAt == otherMessage.createdAt;
   }
 }
