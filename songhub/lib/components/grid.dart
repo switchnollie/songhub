@@ -40,7 +40,7 @@ class _FilesGridState extends State<FilesGrid> {
             label: recordings[index - 1].label,
             versionDescription: recordings[index - 1].versionDescription,
             time: DateFormat("yyyy-MM-dd")
-                .format(recordings[index - 1].creationTime.toDate()),
+                .format(recordings[index - 1].createdAt.toDate()),
             image: recordings[index - 1].creator,
           );
         });

@@ -31,7 +31,7 @@ class Discussion extends StatelessWidget {
           id: messageId,
           creator: user.uid,
           content: messageController.text,
-          creationTime: Timestamp.fromDate(DateTime.now().toUtc()),
+          createdAt: Timestamp.fromDate(DateTime.now().toUtc()),
         ),
       );
       messageController.clear();
