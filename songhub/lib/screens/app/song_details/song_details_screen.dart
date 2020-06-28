@@ -1,39 +1,43 @@
 import 'package:provider/provider.dart';
 import 'package:song_hub/components/avatar.dart';
 import 'package:song_hub/components/cover.dart';
-import 'package:song_hub/models/message.dart';
-import 'package:song_hub/models/recording.dart';
-import 'package:song_hub/models/song.dart';
 import 'package:song_hub/routing.dart';
 import 'package:flutter/material.dart';
 import 'package:song_hub/screens/app/song_details/body_tabs.dart';
-import 'package:song_hub/screens/app/song_details/edit_sheet.dart';
-import 'package:song_hub/services/db_service.dart';
+import 'package:song_hub/screens/app/song_details/edit_song_sheet.dart';
+import 'package:song_hub/screens/app/song_details/song_details_view_model.dart';
+import 'package:song_hub/services/firestore_database.dart';
+import 'package:song_hub/services/storage_service.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 
 class SongDetailsScreen extends StatelessWidget {
   static const routeId = "/songs/details";
 
-  @override
-  Widget build(BuildContext context) {
-    final _db = DatabaseService();
+  static Widget create(BuildContext context) {
+    final database = Provider.of<FirestoreDatabase>(context, listen: false);
+    final storageService = Provider.of<StorageService>(context, listen: false);
     final SongDetailsScreenRouteParams args =
         ModalRoute.of(context).settings.arguments;
-    SongWithImages song = Provider.of<List<Song>>(context)
-        .firstWhere((songEl) => songEl.id == args.songId);
-    return MultiProvider(
-      providers: [
-        StreamProvider<List<Recording>>.value(value: _db.getRecordings(song)),
-        StreamProvider<List<Message>>.value(value: _db.getMessages(song)),
-      ],
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          elevation: 0.0,
-        ),
-        body: SingleChildScrollView(
-          child: DetailsView(song: song),
-        ),
+
+    return Provider<SongDetailsViewModel>(
+      create: (_) => SongDetailsViewModel(
+          database: database, storageService: storageService, song: args.song),
+      child: SongDetailsScreen(),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final SongDetailsScreenRouteParams args =
+        ModalRoute.of(context).settings.arguments;
+
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        elevation: 0.0,
+      ),
+      body: SingleChildScrollView(
+        child: DetailsView(song: args.song),
       ),
     );
   }
@@ -100,7 +104,7 @@ class DetailsViewHeader extends StatelessWidget {
     return showModalBottomSheet<void>(
         context: context,
         builder: (BuildContext context) {
-          return EditSheet(song: song);
+          return EditSongSheet(song: song);
         });
   }
 }

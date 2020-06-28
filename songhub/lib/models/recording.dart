@@ -13,10 +13,10 @@ class Recording {
   Recording(
       {this.id,
       this.label,
-      this.createdAt,
-      this.versionDescription,
+      this.creator,
       this.updatedAt,
-      this.creator});
+      this.createdAt,
+      this.versionDescription});
 
   /// Create recording by deserializing a Firestore DocumentSnapshot
   factory Recording.fromMap(Map<String, dynamic> data, String documentId) {
@@ -26,6 +26,7 @@ class Recording {
     return Recording(
         id: documentId,
         label: data['label'],
+        creator: data['creator'],
         createdAt: data['createdAt'],
         updatedAt: data['updatedAt'],
         versionDescription: data['versionDescription']);

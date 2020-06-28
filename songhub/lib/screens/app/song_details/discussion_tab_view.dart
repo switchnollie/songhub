@@ -10,10 +10,10 @@ import 'package:song_hub/services/db_service.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 import 'package:uuid/uuid.dart';
 
-class Discussion extends StatelessWidget {
+class DiscussionTabView extends StatelessWidget {
   final SongWithImages song;
 
-  Discussion({this.song});
+  DiscussionTabView({this.song});
 
   final _formKey = GlobalKey<FormState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-// TODO: grid and discussion are not reusable and shouldn't be in coponents
-// Define recordings_grid.dart and discussion.dart in this folder and
-// access reusable Grid from there
-import 'package:song_hub/components/discussion.dart';
-import 'package:song_hub/components/grid.dart';
+import 'package:song_hub/screens/app/song_details/discussion_tab_view.dart';
+import 'package:song_hub/screens/app/song_details/recordings_grid_tab_view.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 
 class FeatureTabs extends StatelessWidget {
@@ -27,15 +24,15 @@ class FeatureTabs extends StatelessWidget {
             ),
             Expanded(
               child: TabBarView(
-                children: <Widget>[
-                  FilesGrid(song: song),
-                  Discussion(song: song),
+                children: [
+                  RecordingsGridTabView(song: song),
+                  DiscussionTabView(song: song),
                 ],
               ),
             )
           ],
         ),
       ),
-    )
+    );
   }
 }

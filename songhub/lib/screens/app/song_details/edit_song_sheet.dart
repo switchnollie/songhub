@@ -3,10 +3,10 @@ import 'package:song_hub/routing.dart';
 import 'package:song_hub/utils/show_snackbar.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 
-class EditSheet extends StatelessWidget {
+class EditSongSheet extends StatelessWidget {
   final SongWithImages song;
 
-  EditSheet({@required this.song});
+  EditSongSheet({@required this.song});
 
   @override
   Widget build(BuildContext context) {
