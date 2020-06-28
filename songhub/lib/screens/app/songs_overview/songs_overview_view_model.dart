@@ -24,7 +24,7 @@ class SongsOverviewViewModel {
     final List<String> participantImgUrls =
         await Future.wait(participantImgUrlFutures);
     return SongWithImages(
-        song: song,
+        songDocument: song,
         coverImgUrl: coverImgUrl,
         participantImgUrls: participantImgUrls);
   }

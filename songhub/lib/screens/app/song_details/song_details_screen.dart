@@ -88,9 +88,9 @@ class DetailsViewHeader extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  SongTitle(titleText: song.song.title),
-                  Artist(artist: song.song.artist),
-                  AvatarRow(imgs: song.song.participants),
+                  SongTitle(titleText: song.songDocument.title),
+                  Artist(artist: song.songDocument.artist),
+                  AvatarRow(imgs: song.songDocument.participants),
                   IconButton(
                     icon: Icon(
                       Icons.more_horiz,

@@ -99,7 +99,7 @@ class RecordingItem extends StatelessWidget {
             context,
             "/recordings/edit",
             arguments: RecordingModalRouteParams(
-                song: song, recording: recording.recording),
+                song: song, recording: recording.recordingDocument),
           );
         },
         child: Container(
@@ -141,18 +141,18 @@ class RecordingItemHeader extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 4.0),
                 child: Text(
                   DateFormat('yyyy-MM-dd').format(
-                      recording.recording.updatedAt != null
-                          ? recording.recording.updatedAt.toDate()
-                          : recording.recording.createdAt.toDate()),
+                      recording.recordingDocument.updatedAt != null
+                          ? recording.recordingDocument.updatedAt.toDate()
+                          : recording.recordingDocument.createdAt.toDate()),
                   style: TextStyle(color: Colors.grey),
                 ),
               ),
             ],
           ),
-          recording.recording.creator != ""
+          recording.recordingDocument.creator != ""
               ? CircleAvatar(
                   child: ClipOval(
-                    child: Image.network(recording.recording.creator),
+                    child: Image.network(recording.recordingDocument.creator),
                   ),
                   radius: 14,
                 )
@@ -186,14 +186,14 @@ class RecordingItemBody extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(bottom: 4.0),
               child: Text(
-                recording.recording.label,
+                recording.recordingDocument.label,
                 style: TextStyle(
                   color: Theme.of(context).accentColor,
                 ),
               ),
             ),
             Text(
-              recording.recording.versionDescription,
+              recording.recordingDocument.versionDescription,
               style: TextStyle(
                 fontSize: 16,
               ),

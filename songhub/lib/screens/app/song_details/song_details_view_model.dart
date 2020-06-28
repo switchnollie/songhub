@@ -31,7 +31,8 @@ class SongDetailsViewModel {
           'public/profileImgs/${recording.creator}.jpg');
     }
 
-    return RecordingWithImages(recording: recording, creatorImgUrl: imageUrl);
+    return RecordingWithImages(
+        recordingDocument: recording, creatorImgUrl: imageUrl);
   }
 
   /// Get Message creator image from Firebase Storage
@@ -46,13 +47,15 @@ class SongDetailsViewModel {
     bool isMyMessage = user.uid == message.creator;
 
     return MessageWithImages(
-        message: message, authorImgUrl: authorImgUrl, isMyMessage: isMyMessage);
+        messageDocument: message,
+        authorImgUrl: authorImgUrl,
+        isMyMessage: isMyMessage);
   }
 
   Stream<List<RecordingWithImages>> get recordings {
     // TODO: Bring back .orderBy('createdAt', descending: true) on collection ref
     return database
-        .recordingsStream(songId: song.song.id)
+        .recordingsStream(songId: song.songDocument.id)
         .switchMap((List<Recording> recordings) {
       final mergedValuesFutures = recordings
           .map((recording) => _getRecordingDataWithImageUrl(recording))
@@ -64,7 +67,9 @@ class SongDetailsViewModel {
 
   /// Messages stream
   Stream<List<MessageWithImages>> get messages {
-    return database.messagesStream(songId: song.song.id).switchMap((messages) {
+    return database
+        .messagesStream(songId: song.songDocument.id)
+        .switchMap((messages) {
       final mergedValuesFuture = messages
           .map((message) => _getMessageDataWithImageUrl(message))
           .toList();
@@ -83,6 +88,6 @@ class SongDetailsViewModel {
       content: content,
       createdAt: Timestamp.fromDate(DateTime.now().toUtc()),
     );
-    database.setMessage(message, song.song.id);
+    database.setMessage(message, song.songDocument.id);
   }
 }

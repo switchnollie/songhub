@@ -114,12 +114,12 @@ class _RecordingModalState extends State<RecordingModal> {
         final recordingId = Uuid().v4();
         if (recordingFile != null) {
           storagePath = await storageService.uploadRecording(
-              widget.song.song.id,
+              widget.song.songDocument.id,
               recordingId,
               recordingFile,
               FileUserPermissions(
                   owner: database.uid,
-                  participants: widget.song.song.participants));
+                  participants: widget.song.songDocument.participants));
         }
         final recording = Recording(
           id: recordingId,
@@ -129,16 +129,16 @@ class _RecordingModalState extends State<RecordingModal> {
           createdAt: Timestamp.fromDate(DateTime.now().toUtc()),
           versionDescription: _versionDescriptionController.text,
         );
-        await database.setRecording(widget.recording, widget.song.song.id);
+        await database.setRecording(recording, widget.song.songDocument.id);
       } else {
         if (recordingFile != null) {
           storagePath = await storageService.uploadRecording(
-              widget.song.song.id,
+              widget.song.songDocument.id,
               recording.id,
               recordingFile,
               FileUserPermissions(
                   owner: database.uid,
-                  participants: widget.song.song.participants));
+                  participants: widget.song.songDocument.participants));
         }
         final updatedRecording = Recording(
           id: recording.id,
@@ -157,7 +157,8 @@ class _RecordingModalState extends State<RecordingModal> {
                   ? _versionDescriptionController.text
                   : recording.versionDescription,
         );
-        await database.setRecording(updatedRecording, widget.song.song.id);
+        await database.setRecording(
+            updatedRecording, widget.song.songDocument.id);
       }
     }
     Navigator.pop(context);

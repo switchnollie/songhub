@@ -49,11 +49,13 @@ class DiscussionTabView extends StatelessWidget {
                       itemBuilder: (BuildContext context, int index) {
                         return snapshot.data[index].isMyMessage
                             ? MessageContainerRight(
-                                message: snapshot.data[index].message.content,
+                                message: snapshot
+                                    .data[index].messageDocument.content,
                                 image: snapshot.data[index].authorImgUrl,
                               )
                             : MessageContainerLeft(
-                                message: snapshot.data[index].message.content,
+                                message: snapshot
+                                    .data[index].messageDocument.content,
                                 image: snapshot.data[index].authorImgUrl,
                               );
                       }),

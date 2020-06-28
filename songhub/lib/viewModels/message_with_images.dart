@@ -1,9 +1,10 @@
 import 'package:song_hub/models/message.dart';
 
 class MessageWithImages {
-  final Message message;
+  final Message messageDocument;
   final String authorImgUrl;
   final bool isMyMessage;
 
-  MessageWithImages({this.message, this.authorImgUrl, this.isMyMessage});
+  MessageWithImages(
+      {this.messageDocument, this.authorImgUrl, this.isMyMessage});
 }

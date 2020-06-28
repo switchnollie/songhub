@@ -50,14 +50,14 @@ class _SongFormState extends State<SongForm> {
   @override
   void initState() {
     _titleController =
-        TextEditingController(text: widget.song?.song?.title ?? "");
+        TextEditingController(text: widget.song?.songDocument?.title ?? "");
     _artistController =
-        TextEditingController(text: widget.song?.song?.artist ?? "");
+        TextEditingController(text: widget.song?.songDocument?.artist ?? "");
     _lyricsController =
-        TextEditingController(text: widget.song?.song?.lyrics ?? "");
+        TextEditingController(text: widget.song?.songDocument?.lyrics ?? "");
     _moodController =
-        TextEditingController(text: widget.song?.song?.mood ?? "");
-    selectedStatus = widget.song?.song?.status;
+        TextEditingController(text: widget.song?.songDocument?.mood ?? "");
+    selectedStatus = widget.song?.songDocument?.status;
     imageUrl = widget.song?.coverImgUrl;
     super.initState();
   }
@@ -80,8 +80,8 @@ class _SongFormState extends State<SongForm> {
       lyrics: _lyricsController.text,
       status: selectedStatus,
       mood: _moodController.text,
-      songId: widget.song.song.id,
-      participants: widget.song.song.participants,
+      songId: widget.song.songDocument.id,
+      participants: widget.song.songDocument.participants,
       context: context,
     );
   }

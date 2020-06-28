@@ -41,8 +41,8 @@ class SongListEntry extends StatelessWidget {
         img: song.coverImgUrl,
         size: CoverSize.SMALL,
       ),
-      title: ListTitle(title: song.song.title),
-      subtitle: ListSubtitle(artist: song.song.artist),
+      title: ListTitle(title: song.songDocument.title),
+      subtitle: ListSubtitle(artist: song.songDocument.artist),
       trailing: AvatarRow(imgs: song.participantImgUrls),
       contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
       onTap: () {
