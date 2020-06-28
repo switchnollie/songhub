@@ -9,6 +9,7 @@ class Recording {
   final Timestamp createdAt;
   final Timestamp updatedAt;
   final String versionDescription;
+  final String storagePath;
 
   Recording(
       {this.id,
@@ -16,7 +17,8 @@ class Recording {
       this.creator,
       this.updatedAt,
       this.createdAt,
-      this.versionDescription});
+      this.versionDescription,
+      this.storagePath});
 
   /// Create recording by deserializing a Firestore DocumentSnapshot
   factory Recording.fromMap(Map<String, dynamic> data, String documentId) {
@@ -24,12 +26,13 @@ class Recording {
       return null;
     }
     return Recording(
-        id: documentId,
-        label: data['label'],
-        creator: data['creator'],
-        createdAt: data['createdAt'],
-        updatedAt: data['updatedAt'],
-        versionDescription: data['versionDescription']);
+      id: documentId,
+      label: data['label'],
+      creator: data['creator'],
+      createdAt: data['createdAt'],
+      versionDescription: data['versionDescription'],
+      storagePath: data['storagePath'],
+    );
   }
 
   /// Serialize recording to update or add in Firestore
@@ -40,6 +43,7 @@ class Recording {
       'createdAt': createdAt,
       'updateAt': updatedAt,
       'versionDescription': versionDescription,
+      'storagePath': storagePath,
     };
   }
 
@@ -55,7 +59,7 @@ class Recording {
         label == otherRecording.label &&
         versionDescription == otherRecording.versionDescription &&
         createdAt == otherRecording.createdAt &&
-        updatedAt == otherRecording.updatedAt &&
-        creator == otherRecording.creator;
+        storagePath == otherRecording.storagePath &&
+        updatedAt == otherRecording.updatedAt;
   }
 }

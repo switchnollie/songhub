@@ -1,18 +1,19 @@
+// TODO: Refactor to use same structure as edit/add_song_modal (seperate recording_form with onSubmit handler as property)
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as Path;
+import 'package:provider/provider.dart';
 import 'package:song_hub/components/buttons.dart';
 import 'package:song_hub/components/dropdown_field.dart';
 import 'package:song_hub/components/text_input.dart';
 import 'package:song_hub/models/recording.dart';
-import 'package:song_hub/models/song.dart';
 import 'package:song_hub/routing.dart';
-import 'package:song_hub/services/db_service.dart';
+import 'package:song_hub/services/firestore_database.dart';
 import 'package:song_hub/services/storage_service.dart';
+import 'package:song_hub/viewModels/song_with_images.dart';
 import 'package:uuid/uuid.dart';
 
 class AddRecordingModal extends StatelessWidget {
@@ -59,28 +60,18 @@ class EditRecordingModal extends StatelessWidget {
 }
 
 class RecordingModal extends StatefulWidget {
-  final Song song;
+  final SongWithImages song;
   final Recording recording;
   final bool isAdd;
 
   RecordingModal({this.song, this.recording, this.isAdd});
 
   @override
-  _RecordingModalState createState() =>
-      _RecordingModalState(song: song, recording: recording, isAdd: isAdd);
+  _RecordingModalState createState() => _RecordingModalState();
 }
 
 class _RecordingModalState extends State<RecordingModal> {
-  final Song song;
-  final Recording recording;
-  final bool isAdd;
-
-  _RecordingModalState({this.song, this.recording, this.isAdd});
-
   final _formKey = GlobalKey<FormState>();
-  final _storage = StorageService();
-  final _db = DatabaseService();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   File recordingFile;
   String selectedStatus, storagePath;
@@ -115,36 +106,39 @@ class _RecordingModalState extends State<RecordingModal> {
   /// Handle button submit
   void _handleSubmit(
       BuildContext context, bool isAdd, Recording recording) async {
-    final FirebaseUser user = await _auth.currentUser();
+    final database = Provider.of<FirestoreDatabase>(context, listen: false);
+    final storageService = Provider.of<StorageService>(context, listen: false);
 
     if (_formKey.currentState.validate()) {
       if (isAdd) {
         final recordingId = Uuid().v4();
         if (recordingFile != null) {
-          storagePath = await _storage.uploadRecording(
-              song.id,
+          storagePath = await storageService.uploadRecording(
+              widget.song.song.id,
               recordingId,
               recordingFile,
               FileUserPermissions(
-                  owner: user.uid, participants: song.participants));
+                  owner: database.uid,
+                  participants: widget.song.song.participants));
         }
         final recording = Recording(
           id: recordingId,
           label: selectedStatus,
-          creator: user.uid,
+          creator: database.uid,
           storagePath: storagePath,
           createdAt: Timestamp.fromDate(DateTime.now().toUtc()),
           versionDescription: _versionDescriptionController.text,
         );
-        await _db.createRecording(song, recording);
+        await database.setRecording(widget.recording, widget.song.song.id);
       } else {
         if (recordingFile != null) {
-          storagePath = await _storage.uploadRecording(
-              song.id,
+          storagePath = await storageService.uploadRecording(
+              widget.song.song.id,
               recording.id,
               recordingFile,
               FileUserPermissions(
-                  owner: user.uid, participants: song.participants));
+                  owner: database.uid,
+                  participants: widget.song.song.participants));
         }
         final updatedRecording = Recording(
           id: recording.id,
@@ -163,7 +157,7 @@ class _RecordingModalState extends State<RecordingModal> {
                   ? _versionDescriptionController.text
                   : recording.versionDescription,
         );
-        await _db.updateRecording(song, updatedRecording);
+        await database.setRecording(updatedRecording, widget.song.song.id);
       }
     }
     Navigator.pop(context);
@@ -221,8 +215,8 @@ class _RecordingModalState extends State<RecordingModal> {
                         child: Text(recordingFile != null
                             ? "File: " +
                                 Path.basename(recordingFile.path).toString()
-                            : recording != null
-                                ? Path.basename(recording.storagePath)
+                            : widget.recording != null
+                                ? Path.basename(widget.recording.storagePath)
                                     .toString()
                                 : "File:"),
                       ),
@@ -260,7 +254,8 @@ class _RecordingModalState extends State<RecordingModal> {
             _buildRow(
               PrimaryButton(
                 text: widget.isAdd ? "CREATE" : "SAVE",
-                onPressed: () => _handleSubmit(context, isAdd, recording),
+                onPressed: () =>
+                    _handleSubmit(context, widget.isAdd, widget.recording),
               ),
             ),
           ],

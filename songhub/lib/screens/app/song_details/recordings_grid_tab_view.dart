@@ -98,8 +98,8 @@ class RecordingItem extends StatelessWidget {
           Navigator.pushNamed(
             context,
             "/recordings/edit",
-            arguments:
-                RecordingModalRouteParams(song: song, recording: recording),
+            arguments: RecordingModalRouteParams(
+                song: song, recording: recording.recording),
           );
         },
         child: Container(

@@ -1,3 +1,4 @@
+import 'package:song_hub/models/recording.dart';
 import 'package:song_hub/screens/authentication/sign_in/sign_in_screen.dart';
 import 'package:song_hub/screens/modals/song_modals.dart';
 import 'package:song_hub/screens/modals/recording_modals.dart';
@@ -20,7 +21,7 @@ class EditSongModalRouteParams {
 
 class RecordingModalRouteParams {
   final SongWithImages song;
-  final RecordingWithImages recording;
+  final Recording recording;
   RecordingModalRouteParams({this.song, this.recording});
 }
 
