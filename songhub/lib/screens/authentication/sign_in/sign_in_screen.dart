@@ -103,7 +103,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           PrimaryButton(
                             onPressed: widget.viewModel.isLoading
                                 ? null
-                                : () => _handleSubmit,
+                                : _handleSubmit,
                             text: "Login",
                           ),
                           _buildPossibleError(),

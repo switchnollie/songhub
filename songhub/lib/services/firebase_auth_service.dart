@@ -12,6 +12,11 @@ class FireUser {
 
   final String uid;
   final String email;
+
+  @override
+  String toString() {
+    return "User $uid, email $email";
+  }
 }
 
 class FirebaseAuthService {

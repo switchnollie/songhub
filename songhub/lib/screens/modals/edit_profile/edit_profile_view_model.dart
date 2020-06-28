@@ -11,6 +11,11 @@ class UserWithProfileImage {
 
   final String profileImgUrl;
   final User userDocument;
+
+  @override
+  String toString() {
+    return "UserDocument: ${userDocument.toString()}, profileImgUrl: $profileImgUrl";
+  }
 }
 
 class EditProfileViewModel {

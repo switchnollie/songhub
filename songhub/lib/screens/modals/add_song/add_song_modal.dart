@@ -13,16 +13,18 @@ import 'package:song_hub/utils/show_snackbar.dart';
 class AddSongModal extends StatelessWidget {
   static const routeId = "/songs/add";
 
-  handleSubmit(
-      {@required GlobalKey<FormState> formKey,
-      @required String title,
-      @required String artist,
-      @required String lyrics,
-      @required String mood,
-      @required File imageFile,
-      @required String status,
-      @required List<String> participants,
-      @required BuildContext context}) async {
+  void handleSubmit({
+    @required GlobalKey<FormState> formKey,
+    @required BuildContext context,
+    String title,
+    String artist,
+    String lyrics,
+    String mood,
+    File imageFile,
+    String status,
+    String songId,
+    List<String> participants,
+  }) async {
     try {
       final database = Provider.of<FirestoreDatabase>(context, listen: false);
       final storageService =

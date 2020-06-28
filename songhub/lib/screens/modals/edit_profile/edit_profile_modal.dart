@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:song_hub/components/buttons.dart';
 import 'package:song_hub/components/dropdown_field.dart';
 import 'package:song_hub/components/image_input.dart';
+import 'package:song_hub/components/spinner.dart';
 import 'package:song_hub/components/text_input.dart';
 import 'package:song_hub/models/user.dart';
 import 'package:song_hub/screens/modals/edit_profile/edit_profile_view_model.dart';
@@ -48,7 +49,8 @@ class EditProfileModal extends StatelessWidget {
           title: Text("User Settings"),
           elevation: 0.0,
         ),
-        body: EditProfileForm(user: snapshot.data),
+        body:
+            snapshot.hasData ? EditProfileForm(user: snapshot.data) : Spinner(),
         backgroundColor: Colors.white,
       ),
     );

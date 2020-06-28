@@ -9,17 +9,18 @@ import 'package:song_hub/components/image_input.dart';
 import 'package:song_hub/components/text_input.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 
-typedef void OnSubmit(
-    {@required GlobalKey<FormState> formKey,
-    @required String title,
-    @required String artist,
-    @required String lyrics,
-    @required String mood,
-    @required File imageFile,
-    @required String status,
-    @required String songId,
-    @required List<String> participants,
-    @required BuildContext context});
+typedef void OnSubmit({
+  @required GlobalKey<FormState> formKey,
+  @required BuildContext context,
+  String title,
+  String artist,
+  String lyrics,
+  String mood,
+  File imageFile,
+  String status,
+  String songId,
+  List<String> participants,
+});
 
 class SongForm extends StatefulWidget {
   final SongWithImages song;
