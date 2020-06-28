@@ -8,40 +8,62 @@ import 'package:song_hub/components/dropdown_field.dart';
 import 'package:song_hub/components/image_input.dart';
 import 'package:song_hub/components/text_input.dart';
 import 'package:song_hub/models/user.dart';
-import 'package:song_hub/services/db_service.dart';
+import 'package:song_hub/screens/modals/edit_profile/edit_profile_view_model.dart';
+import 'package:song_hub/services/firebase_auth_service.dart';
+import 'package:song_hub/services/firestore_database.dart';
 import 'package:song_hub/services/storage_service.dart';
 import 'package:song_hub/utils/show_snackbar.dart';
+import 'package:song_hub/viewModels/user_profile.dart';
 
-class UserSettingsModal extends StatelessWidget {
+class EditProfileModal extends StatelessWidget {
   static const routeId = "/profile/edit";
+
+  static Widget create(BuildContext context) {
+    final database = Provider.of<FirestoreDatabase>(context, listen: false);
+    final storageService = Provider.of<StorageService>(context, listen: false);
+    final authService =
+        Provider.of<FirebaseAuthService>(context, listen: false);
+
+    return Provider<EditProfileViewModel>(
+      create: (_) => EditProfileViewModel(
+          database: database,
+          storageService: storageService,
+          authService: authService),
+      child: EditProfileModal(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    User user = Provider.of<User>(context);
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.close, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
+    final vm = Provider.of<EditProfileViewModel>(context);
+    return StreamBuilder<UserProfile>(
+      stream: vm.userProfile,
+      builder: (context, snapshot) => Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.close, color: Colors.black),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          centerTitle: true,
+          title: Text("User Settings"),
+          elevation: 0.0,
         ),
-        centerTitle: true,
-        title: Text("User Settings"),
-        elevation: 0.0,
+        body: EditProfileForm(user: snapshot.data),
+        backgroundColor: Colors.white,
       ),
-      body: UserSettingsForm(user: user),
-      backgroundColor: Colors.white,
     );
   }
 }
 
-class UserSettingsForm extends StatefulWidget {
-  final User user;
-  UserSettingsForm({this.user});
+class EditProfileForm extends StatefulWidget {
+  final UserProfile user;
+  EditProfileForm({this.user});
 
   @override
-  _UserSettingsFormState createState() => _UserSettingsFormState();
+  _EditProfileFormState createState() => _EditProfileFormState();
 }
 
-class _UserSettingsFormState extends State<UserSettingsForm> {
+class _EditProfileFormState extends State<EditProfileForm> {
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController _firstNameController,
@@ -55,10 +77,13 @@ class _UserSettingsFormState extends State<UserSettingsForm> {
   @override
   void initState() {
     if (widget.user != null) {
-      _firstNameController = TextEditingController(text: widget.user.firstName);
-      _lastNameController = TextEditingController(text: widget.user.lastName);
-      _stageNameController = TextEditingController(text: widget.user.stageName);
-      _selectedRole = widget.user.role;
+      _firstNameController =
+          TextEditingController(text: widget.user.userDocument.firstName);
+      _lastNameController =
+          TextEditingController(text: widget.user.userDocument.lastName);
+      _stageNameController =
+          TextEditingController(text: widget.user.userDocument.stageName);
+      _selectedRole = widget.user.userDocument.role;
     }
     super.initState();
   }
@@ -74,15 +99,21 @@ class _UserSettingsFormState extends State<UserSettingsForm> {
   void _handleSubmit(BuildContext context) async {
     try {
       if (_imageFile != null) {
-        await StorageService().uploadProfileImg(widget.user.id, _imageFile);
+        final storage = Provider.of<StorageService>(context, listen: false);
+        await storage.uploadProfileImg(widget.user.userDocument.id, _imageFile);
       }
       if (_formKey.currentState.validate()) {
-        await DatabaseService().updateUserData(
-          _firstNameController.text ?? widget.user.firstName,
-          _lastNameController.text ?? widget.user.lastName,
-          _stageNameController.text ?? widget.user.stageName,
-          _selectedRole ?? widget.user.role,
+        final database = Provider.of<FirestoreDatabase>(context, listen: false);
+        final newUser = User(
+          firstName:
+              _firstNameController.text ?? widget.user.userDocument.firstName,
+          lastName:
+              _lastNameController.text ?? widget.user.userDocument.lastName,
+          stageName:
+              _stageNameController.text ?? widget.user.userDocument.stageName,
+          role: _selectedRole ?? widget.user.userDocument.role,
         );
+        await database.setUser(newUser);
         Navigator.pop(context, "Your profile has been updated");
       }
     } catch (err) {

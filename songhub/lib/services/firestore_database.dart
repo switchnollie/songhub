@@ -82,7 +82,7 @@ class FirestoreDatabase {
         path: FirestorePath.user(uid),
       );
 
-  Stream<User> streamUser() => _service.documentStream(
+  Stream<User> userStream() => _service.documentStream(
         path: FirestorePath.user(uid),
         builder: (data, documentId) => User.fromMap(data, documentId),
       );
