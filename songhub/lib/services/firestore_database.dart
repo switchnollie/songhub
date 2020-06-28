@@ -89,17 +89,15 @@ class FirestoreDatabase {
 
   /// Updates a message. Updating all associated data with that message must
   /// not implemented on the client side but in a dedicated cloud function
-  Future<void> setMessage(
-          Message message, String songId, String recordingId) async =>
+  Future<void> setMessage(Message message, String songId) async =>
       await _service.setData(
-        path: FirestorePath.message(uid, songId, recordingId, message.id),
+        path: FirestorePath.message(uid, songId, message.id),
         data: message.toMap(),
       );
 
-  Stream<List<Message>> messagesStream(
-          {@required String recordingId, @required String songId}) =>
+  Stream<List<Message>> messagesStream({@required String songId}) =>
       _service.collectionStream(
-        path: FirestorePath.messages(uid, songId, recordingId),
+        path: FirestorePath.messages(uid, songId),
         builder: (data, documentId) => Message.fromMap(data, documentId),
       );
 }

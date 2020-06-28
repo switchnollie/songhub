@@ -1,14 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:song_hub/components/avatar.dart';
 import 'package:song_hub/components/text_input.dart';
-import 'package:song_hub/models/message.dart';
-import 'package:song_hub/models/models.dart';
-import 'package:song_hub/services/db_service.dart';
+import 'package:song_hub/screens/app/song_details/song_details_view_model.dart';
+import 'package:song_hub/viewModels/message_with_images.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
-import 'package:uuid/uuid.dart';
 
 class DiscussionTabView extends StatelessWidget {
   final SongWithImages song;
@@ -16,68 +12,65 @@ class DiscussionTabView extends StatelessWidget {
   DiscussionTabView({this.song});
 
   final _formKey = GlobalKey<FormState>();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final _db = DatabaseService();
   final messageController = TextEditingController();
 
   /// Handle message input submit
-  void _handleSubmit(BuildContext context) async {
-    final FirebaseUser user = await _auth.currentUser();
-
+  void _handleSubmit(BuildContext context, SongDetailsViewModel vm) async {
     if (_formKey.currentState.validate()) {
-      final messageId = Uuid().v4();
-      await _db.createMessage(
-        song,
-        Message(
-          id: messageId,
-          creator: user.uid,
-          content: messageController.text,
-          createdAt: Timestamp.fromDate(DateTime.now().toUtc()),
-        ),
-      );
-      messageController.clear();
+      try {
+        await vm.createMessage(messageController.text);
+        messageController.clear();
+      } catch (err) {
+        print(err);
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Message> messages = Provider.of<List<Message>>(context);
-    return Container(
-      color: Color(0xFFf1f7ff),
-      child: Stack(children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(bottom: 50),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            reverse: true,
-            child: ListView.builder(
-                shrinkWrap: true,
-                padding: EdgeInsets.all(16.0),
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: messages != null ? messages.length : 0,
-                itemBuilder: (BuildContext context, int index) {
-                  return messages[index].isMyMessage
-                      ? MessageContainerRight(
-                          message: messages[index].content,
-                          image: messages[index].creatorImg,
-                        )
-                      : MessageContainerLeft(
-                          message: messages[index].content,
-                          image: messages[index].creatorImg,
-                        );
-                }),
-          ),
-        ),
-        MessageForm(
-          onPressed: _handleSubmit,
-          controller: messageController,
-          formKey: _formKey,
-        ),
-      ]),
+    final vm = Provider.of<SongDetailsViewModel>(context);
+    return StreamBuilder<List<MessageWithImages>>(
+      stream: vm.messages,
+      builder: (context, snapshot) => Container(
+          color: Color(0xFFf1f7ff),
+          child: Stack(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(bottom: 50),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  reverse: true,
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      padding: EdgeInsets.all(16.0),
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount:
+                          snapshot.data != null ? snapshot.data.length : 0,
+                      itemBuilder: (BuildContext context, int index) {
+                        return snapshot.data[index].isMyMessage
+                            ? MessageContainerRight(
+                                message: snapshot.data[index].message.content,
+                                image: snapshot.data[index].authorImgUrl,
+                              )
+                            : MessageContainerLeft(
+                                message: snapshot.data[index].message.content,
+                                image: snapshot.data[index].authorImgUrl,
+                              );
+                      }),
+                ),
+              ),
+              MessageForm(
+                onPressed: _handleSubmit,
+                controller: messageController,
+                formKey: _formKey,
+              ),
+            ],
+          )),
     );
   }
 }
 
+// TODO: Create shared message component with isLeft and isRight Properties
 class MessageContainerLeft extends StatelessWidget {
   final String message;
   final String image;

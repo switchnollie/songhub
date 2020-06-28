@@ -7,9 +7,8 @@ class FirestorePath {
       'users/$uid/songs/$songId/recordings/$recordingId';
   static String recordings(String uid, String songId) =>
       'users/$uid/songs/$songId/recordings';
-  static String message(
-          String uid, String songId, String recordingId, String messageId) =>
-      'users/$uid/songs/$songId/recordings/$recordingId/messages/$messageId';
-  static String messages(String uid, String songId, String recordingId) =>
-      'users/$uid/songs/$songId/recordings/$recordingId/messages';
+  static String message(String uid, String songId, String messageId) =>
+      'users/$uid/songs/$songId/messages/$messageId';
+  static String messages(String uid, String songId) =>
+      'users/$uid/songs/$songId/messages';
 }

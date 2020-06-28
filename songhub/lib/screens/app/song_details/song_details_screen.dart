@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:song_hub/screens/app/song_details/body_tabs.dart';
 import 'package:song_hub/screens/app/song_details/edit_song_sheet.dart';
 import 'package:song_hub/screens/app/song_details/song_details_view_model.dart';
+import 'package:song_hub/services/firebase_auth_service.dart';
 import 'package:song_hub/services/firestore_database.dart';
 import 'package:song_hub/services/storage_service.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
@@ -16,12 +17,17 @@ class SongDetailsScreen extends StatelessWidget {
   static Widget create(BuildContext context) {
     final database = Provider.of<FirestoreDatabase>(context, listen: false);
     final storageService = Provider.of<StorageService>(context, listen: false);
+    final authService =
+        Provider.of<FirebaseAuthService>(context, listen: false);
     final SongDetailsScreenRouteParams args =
         ModalRoute.of(context).settings.arguments;
 
     return Provider<SongDetailsViewModel>(
       create: (_) => SongDetailsViewModel(
-          database: database, storageService: storageService, song: args.song),
+          song: args.song,
+          database: database,
+          storageService: storageService,
+          authService: authService),
       child: SongDetailsScreen(),
     );
   }
@@ -111,11 +117,9 @@ class DetailsViewHeader extends StatelessWidget {
 
 class SongTitle extends StatelessWidget {
   final String titleText;
-
   SongTitle({
     @required this.titleText,
   });
-
   @override
   Widget build(BuildContext context) {
     return Padding(
