@@ -152,7 +152,7 @@ class RecordingItemHeader extends StatelessWidget {
           recording.recordingDocument.creator != null
               ? CircleAvatar(
                   child: ClipOval(
-                    child: Image.network(recording.recordingDocument.creator),
+                    child: Image.network(recording.creatorImgUrl),
                   ),
                   radius: 14,
                 )

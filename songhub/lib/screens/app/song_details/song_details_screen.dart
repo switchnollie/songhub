@@ -88,7 +88,7 @@ class DetailsViewHeader extends StatelessWidget {
                 children: <Widget>[
                   SongTitle(titleText: song.songDocument.title),
                   Artist(artist: song.songDocument.artist),
-                  AvatarRow(imgs: song.songDocument.participants),
+                  AvatarRow(imgs: song.participantImgUrls),
                   IconButton(
                     icon: Icon(
                       Icons.more_horiz,
