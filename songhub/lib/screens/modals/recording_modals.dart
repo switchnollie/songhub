@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:song_hub/components/buttons.dart';
 import 'package:song_hub/components/dropdown_field.dart';
 import 'package:song_hub/components/text_input.dart';
+import 'package:song_hub/models/models.dart';
 import 'package:song_hub/models/recording.dart';
 import 'package:song_hub/routing.dart';
 import 'package:song_hub/services/firestore_database.dart';
@@ -51,11 +52,62 @@ class EditRecordingModal extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
         elevation: 0.0,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () => _showDeleteAlert(context, args),
+          )
+        ],
       ),
       body: RecordingModal(
           song: args.song, recording: args.recording, isAdd: false),
       backgroundColor: Colors.white,
     );
+  }
+
+  /// Render alert for recording delete
+  Future<void> _showDeleteAlert(
+      BuildContext context, RecordingModalRouteParams args) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete recording'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(
+                    'Are you sure you want to delete the current selected recording? This action can\'t be undone!'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+                child: Text('Cancel'), onPressed: () => Navigator.pop(context)),
+            FlatButton(
+              child: Text('Delete'),
+              onPressed: () {
+                Navigator.pop(context);
+                _handleDelete(context, args.song, args.recording);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _handleDelete(
+      BuildContext context, SongWithImages song, Recording recording) async {
+    final database = Provider.of<FirestoreDatabase>(context, listen: false);
+    final storageService = Provider.of<StorageService>(context, listen: false);
+
+    try {
+      database.deleteRecording(recording, song.songDocument.id);
+      storageService.deleteFile(recording.storagePath);
+      Navigator.pop(context);
+    } catch (e) {}
   }
 }
 

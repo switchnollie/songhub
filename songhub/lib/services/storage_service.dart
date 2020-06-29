@@ -119,4 +119,13 @@ class StorageService {
 
     return StorageMetadata(customMetadata: data);
   }
+
+  Future<void> deleteFile(String path) async {
+    StorageReference ref = _storage.ref().child(path);
+    try {
+      ref.delete();
+    } catch (e) {
+      print(e);
+    }
+  }
 }
