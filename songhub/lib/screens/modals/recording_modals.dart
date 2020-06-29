@@ -84,9 +84,17 @@ class EditRecordingModal extends StatelessWidget {
           ),
           actions: <Widget>[
             FlatButton(
-                child: Text('Cancel'), onPressed: () => Navigator.pop(context)),
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                      color: Theme.of(context).accentColor.withAlpha(0x88)),
+                ),
+                onPressed: () => Navigator.pop(context)),
             FlatButton(
-              child: Text('Delete'),
+              child: Text(
+                'Delete',
+                style: TextStyle(color: Theme.of(context).accentColor),
+              ),
               onPressed: () {
                 Navigator.pop(context);
                 _handleDelete(context, args.song, args.recording);
