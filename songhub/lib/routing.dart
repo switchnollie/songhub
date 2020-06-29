@@ -3,13 +3,16 @@ import 'package:song_hub/screens/app/song_details/song_details_screen.dart';
 import 'package:song_hub/screens/app/songs_overview/songs_overview_screen.dart';
 import 'package:song_hub/screens/app/user_settings/user_settings_screen.dart';
 import 'package:song_hub/screens/authentication/sign_in/sign_in_screen.dart';
+import 'package:song_hub/screens/modals/add_recording/add_recording_modal.dart';
 import 'package:song_hub/screens/modals/add_song/add_song_modal.dart';
 import 'package:song_hub/screens/modals/edit_profile/edit_profile_modal.dart';
+import 'package:song_hub/screens/modals/edit_recording/edit_recording_modal.dart';
 import 'package:song_hub/screens/modals/edit_song/edit_song_modal.dart';
-import 'package:song_hub/screens/modals/recording_modals.dart';
+import 'package:song_hub/screens/modals/recording_form.dart';
 import 'package:song_hub/screens/app/placeholder.dart';
 import 'package:flutter/material.dart';
 import 'package:song_hub/screens/authentication/sign_up/sign_up_screen.dart';
+import 'package:song_hub/screens/modals/recording_modals.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 
 class SongDetailsScreenRouteParams {

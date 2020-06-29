@@ -3,7 +3,7 @@ import 'package:song_hub/components/avatar.dart';
 import 'package:song_hub/components/cover.dart';
 import 'package:song_hub/routing.dart';
 import 'package:flutter/material.dart';
-import 'package:song_hub/screens/app/song_details/body_tabs.dart';
+import 'package:song_hub/screens/app/song_details/feature_tabs.dart';
 import 'package:song_hub/screens/app/song_details/edit_song_sheet.dart';
 import 'package:song_hub/screens/app/song_details/song_details_view_model.dart';
 import 'package:song_hub/services/firebase_auth_service.dart';
