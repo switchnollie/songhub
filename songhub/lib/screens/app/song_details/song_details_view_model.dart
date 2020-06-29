@@ -53,7 +53,6 @@ class SongDetailsViewModel {
   }
 
   Stream<List<RecordingWithImages>> get recordings {
-    // TODO: Bring back .orderBy('createdAt', descending: true) on collection ref
     return database
         .recordingsStream(songId: song.songDocument.id)
         .switchMap((List<Recording> recordings) {

@@ -67,6 +67,7 @@ class FirestoreDatabase {
   Stream<List<Recording>> recordingsStream({@required String songId}) =>
       _service.collectionStream(
         path: FirestorePath.recordings(uid, songId),
+        queryBuilder: (query) => query.orderBy('createdAt', descending: true),
         builder: (data, documentId) => Recording.fromMap(data, documentId),
       );
 
@@ -105,12 +106,9 @@ class FirestoreDatabase {
   /// Stream all songs that get returned by a collectionGroup query on songs.
   /// Firebase Security Rules will restrict the retrieved documents to songs
   /// in which the uid is part of the participants array.
-  Stream<List<Song>> songsStreamAll() => Firestore.instance
-      .collectionGroup('songs')
-      .where('participants', arrayContains: uid)
-      .snapshots()
-      .map((snapshot) => snapshot.documents
-          .map((snapshot) => Song.fromMap(snapshot.data, snapshot.documentID))
-          .where((value) => value != null)
-          .toList());
+  Stream<List<Song>> songsStreamAll() => _service.collectionGroupStream(
+        path: FirestorePath.songsAll(),
+        queryBuilder: (query) => query.orderBy("artist"),
+        builder: (data, documentId) => Song.fromMap(data, documentId),
+      );
 }

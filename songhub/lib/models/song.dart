@@ -13,18 +13,21 @@ class Song {
   final String status;
   final String ownedBy;
   final Timestamp updatedAt;
+  final Timestamp createdAt;
 
-  Song(
-      {this.id,
-      this.title,
-      this.artist,
-      this.coverImg,
-      this.participants,
-      this.lyrics,
-      this.mood,
-      this.status,
-      this.ownedBy,
-      this.updatedAt});
+  Song({
+    this.id,
+    this.title,
+    this.artist,
+    this.coverImg,
+    this.participants,
+    this.lyrics,
+    this.mood,
+    this.status,
+    this.ownedBy,
+    this.updatedAt,
+    this.createdAt,
+  });
 
   /// Create song by deserializing a Firestore DocumentSnapshot
   factory Song.fromMap(Map<String, dynamic> data, String documentId) {
@@ -32,15 +35,17 @@ class Song {
       return null;
     }
     return Song(
-        id: documentId,
-        title: data["title"] ?? "",
-        artist: data["artist"] ?? "",
-        coverImg: data["coverImg"] ?? "",
-        participants: List.from(data["participants"]),
-        lyrics: data["lyrics"] ?? "",
-        status: data["status"] ?? "",
-        ownedBy: data['ownedBy'],
-        updatedAt: data["updatedAt"]);
+      id: documentId,
+      title: data["title"] ?? "",
+      artist: data["artist"] ?? "",
+      coverImg: data["coverImg"] ?? "",
+      participants: List.from(data["participants"]),
+      lyrics: data["lyrics"] ?? "",
+      status: data["status"] ?? "",
+      ownedBy: data['ownedBy'],
+      updatedAt: data["updatedAt"],
+      createdAt: data["createdAt"],
+    );
   }
 
   String toString() {
@@ -68,12 +73,13 @@ class Song {
       "status": status,
       "ownedBy": ownedBy,
       "updatedAt": updatedAt,
+      "createdAt": createdAt,
     };
   }
 
   @override
   int get hashCode => hashValues(id, title, artist, lyrics, coverImg, mood,
-      participants, status, ownedBy, updatedAt);
+      participants, status, ownedBy, updatedAt, createdAt);
 
   @override
   bool operator ==(dynamic other) {
@@ -89,6 +95,7 @@ class Song {
         participants == otherSong.participants &&
         status == otherSong.status &&
         ownedBy == otherSong.ownedBy &&
-        updatedAt == otherSong.updatedAt;
+        updatedAt == otherSong.updatedAt &&
+        createdAt == otherSong.createdAt;
   }
 }
