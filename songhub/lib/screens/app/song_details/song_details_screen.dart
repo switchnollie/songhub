@@ -42,9 +42,7 @@ class SongDetailsScreen extends StatelessWidget {
       appBar: AppBar(
         elevation: 0.0,
       ),
-      body: SingleChildScrollView(
-        child: DetailsView(song: args.song),
-      ),
+      body: DetailsView(song: args.song),
     );
   }
 }
