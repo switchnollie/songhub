@@ -1,4 +1,5 @@
 // Following bizz84's provider based architecture for flutter and firebase (https://github.com/bizz84/starter_architecture_flutter_firebase)
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:meta/meta.dart';
 import 'package:song_hub/models/message.dart';
 import 'package:song_hub/models/recording.dart';
@@ -100,4 +101,16 @@ class FirestoreDatabase {
         path: FirestorePath.messages(uid, songId),
         builder: (data, documentId) => Message.fromMap(data, documentId),
       );
+
+  /// Stream all songs that get returned by a collectionGroup query on songs.
+  /// Firebase Security Rules will restrict the retrieved documents to songs
+  /// in which the uid is part of the participants array.
+  Stream<List<Song>> songsStreamAll() => Firestore.instance
+      .collectionGroup('songs')
+      .where('participants', arrayContains: uid)
+      .snapshots()
+      .map((snapshot) => snapshot.documents
+          .map((snapshot) => Song.fromMap(snapshot.data, snapshot.documentID))
+          .where((value) => value != null)
+          .toList());
 }

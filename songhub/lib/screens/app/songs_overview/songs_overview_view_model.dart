@@ -30,7 +30,7 @@ class SongsOverviewViewModel {
   }
 
   Stream<List<SongWithImages>> get songs {
-    return database.songsStream().switchMap((List<Song> songs) {
+    return database.songsStreamAll().switchMap((List<Song> songs) {
       final mergedValuesFutures =
           songs.map((Song song) => _getSongDataWithImageUrls(song)).toList();
       final mergedValues = Future.wait(mergedValuesFutures);
