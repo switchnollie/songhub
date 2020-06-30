@@ -6,6 +6,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as Path;
 import 'package:provider/provider.dart';
+import 'package:song_hub/components/alert.dart';
 import 'package:song_hub/components/buttons.dart';
 import 'package:song_hub/components/dropdown_field.dart';
 import 'package:song_hub/components/text_input.dart';
@@ -65,48 +66,26 @@ class EditRecordingModal extends StatelessWidget {
     );
   }
 
-  /// Render alert for recording delete
+  /// Show alert to confirm recording delete
   Future<void> _showDeleteAlert(
       BuildContext context, RecordingModalRouteParams args) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Delete recording'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(
-                    'Are you sure you want to delete the current selected recording? This action can\'t be undone!'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-                child: Text(
-                  'Cancel',
-                  style: TextStyle(
-                      color: Theme.of(context).accentColor.withAlpha(0x88)),
-                ),
-                onPressed: () => Navigator.pop(context)),
-            FlatButton(
-              child: Text(
-                'Delete',
-                style: TextStyle(color: Theme.of(context).accentColor),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-                _handleDelete(context, args.song, args.recording);
-              },
-            ),
-          ],
+        return AlertWidget(
+          title: 'Delete recording',
+          text: 'This action can\'t be undone!',
+          option1: 'CANCEL',
+          option2: 'DELETE',
+          onTap: () =>
+              _handleRecordingDelete(context, args.song, args.recording),
         );
       },
     );
   }
 
-  void _handleDelete(
+  void _handleRecordingDelete(
       BuildContext context, SongWithImages song, Recording recording) async {
     final database = Provider.of<FirestoreDatabase>(context, listen: false);
     final storageService = Provider.of<StorageService>(context, listen: false);
@@ -114,8 +93,10 @@ class EditRecordingModal extends StatelessWidget {
     try {
       database.deleteRecording(recording, song.songDocument.id);
       storageService.deleteFile(recording.storagePath);
-      Navigator.pop(context);
-    } catch (e) {}
+      Navigator.of(context).pop();
+    } catch (e) {
+      print(e);
+    }
   }
 }
 
