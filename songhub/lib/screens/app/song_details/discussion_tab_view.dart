@@ -33,32 +33,30 @@ class DiscussionTabView extends StatelessWidget {
     return StreamBuilder<List<MessageWithImages>>(
       stream: vm.messages,
       builder: (context, snapshot) => Container(
-          color: Color(0xFFf1f7ff),
           child: Stack(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(bottom: 50),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  reverse: true,
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.all(16.0),
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount:
-                          snapshot.data != null ? snapshot.data.length : 0,
-                      itemBuilder: (BuildContext context, int index) {
-                        return MessageContainer(data: snapshot.data[index]);
-                      }),
-                ),
-              ),
-              MessageForm(
-                onPressed: _handleSubmit,
-                controller: messageController,
-                formKey: _formKey,
-              ),
-            ],
-          )),
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(bottom: 56),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              reverse: true,
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.all(16.0),
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: snapshot.data != null ? snapshot.data.length : 0,
+                  itemBuilder: (BuildContext context, int index) {
+                    return MessageContainer(data: snapshot.data[index]);
+                  }),
+            ),
+          ),
+          MessageForm(
+            onPressed: _handleSubmit,
+            controller: messageController,
+            formKey: _formKey,
+          ),
+        ],
+      )),
     );
   }
 }

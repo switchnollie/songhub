@@ -25,6 +25,7 @@ class AddRecordingModal extends StatelessWidget {
     final RecordingModalRouteParams args =
         ModalRoute.of(context).settings.arguments;
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text('Add recording'),
         leading: IconButton(
@@ -32,6 +33,7 @@ class AddRecordingModal extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
         elevation: 0.0,
+        backgroundColor: Colors.transparent,
       ),
       body: RecordingModal(song: args.song, recording: null, isAdd: true),
       backgroundColor: Colors.white,
@@ -46,16 +48,18 @@ class EditRecordingModal extends StatelessWidget {
     final RecordingModalRouteParams args =
         ModalRoute.of(context).settings.arguments;
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text("Edit recording"),
+        title: Text('Edit recording'),
         leading: IconButton(
           icon: Icon(Icons.close, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
         ),
         elevation: 0.0,
+        backgroundColor: Colors.transparent,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.delete),
+            icon: Icon(Icons.delete_outline),
             onPressed: () => _showDeleteAlert(context, args),
           )
         ],
@@ -227,10 +231,13 @@ class _RecordingModalState extends State<RecordingModal> {
                 child: Stack(
                   alignment: Alignment.center,
                   children: <Widget>[
-                    Image.asset("assets/hero_recording_small.jpg"),
-                    IconButton(
-                      icon: Icon(Icons.add),
-                      onPressed: getFile,
+                    Image.asset("assets/hero_recording.jpg"),
+                    Padding(
+                      padding: const EdgeInsets.only(top: kToolbarHeight),
+                      child: IconButton(
+                        icon: Icon(Icons.add),
+                        onPressed: getFile,
+                      ),
                     )
                   ],
                 ),
