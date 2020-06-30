@@ -15,7 +15,7 @@ class SongList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       scrollDirection: Axis.vertical,
-      itemCount: songs != null ? songs.length + 1 : 0,
+      itemCount: songs != null ? songs.length : 0,
       padding: EdgeInsets.zero,
       itemBuilder: (context, index) {
         if (index == songs.length) {
