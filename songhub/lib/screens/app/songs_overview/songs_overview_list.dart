@@ -42,7 +42,7 @@ class SongListEntry extends StatelessWidget {
         alignment: AlignmentDirectional.centerEnd,
         color: Color(0xFFF0597E),
         child: Padding(
-          padding: const EdgeInsets.only(right: 16.0),
+          padding: const EdgeInsets.only(right: 31),
           child: Icon(
             Icons.delete,
             color: Colors.white,

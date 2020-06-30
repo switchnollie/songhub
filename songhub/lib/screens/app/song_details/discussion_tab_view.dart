@@ -15,17 +15,18 @@ class DiscussionTabView extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final messageController = TextEditingController();
 
+  // TODO: Uplifting? not working -> handleSubmit currently in text input MessageForm
   /// Handle message input submit
-  void _handleSubmit(BuildContext context, SongDetailsViewModel vm) async {
-    if (_formKey.currentState.validate()) {
-      try {
-        await vm.createMessage(messageController.text);
-        messageController.clear();
-      } catch (err) {
-        print(err);
-      }
-    }
-  }
+  // void _handleSubmit(BuildContext context, SongDetailsViewModel vm) async {
+  //   if (_formKey.currentState.validate()) {
+  //     try {
+  //       await vm.createMessage(messageController.text);
+  //       messageController.clear();
+  //     } catch (err) {
+  //       print(err);
+  //     }
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +52,7 @@ class DiscussionTabView extends StatelessWidget {
             ),
           ),
           MessageForm(
-            onPressed: _handleSubmit,
+            // onPressed: _handleSubmit,
             controller: messageController,
             formKey: _formKey,
           ),
@@ -92,10 +93,6 @@ Widget defineMessageLayout(BuildContext context, MessageWithImages data) {
               topRight: const Radius.circular(5.0),
               bottomLeft: const Radius.circular(5.0)),
           child: MessageContent(message: data.messageDocument.content),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 12.0),
-          child: MessageAuthor(authorImage: data.authorImgUrl),
         ),
       ],
     );

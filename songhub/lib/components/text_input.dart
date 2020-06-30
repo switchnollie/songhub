@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:song_hub/screens/app/song_details/song_details_view_model.dart';
 
 class TextInput extends StatelessWidget {
   final bool obscureText;
@@ -59,14 +61,28 @@ class TextInput extends StatelessWidget {
 }
 
 class MessageForm extends StatelessWidget {
-  final Function onPressed;
+  // final Function onPressed;
   final TextEditingController controller;
   final GlobalKey<FormState> formKey;
+  final BuildContext context;
 
-  MessageForm({this.onPressed, this.controller, this.formKey});
+  MessageForm({this.controller, this.formKey, this.context});
+
+  /// Handle message input submit
+  void _handleSubmit(BuildContext context, SongDetailsViewModel vm) async {
+    if (formKey.currentState.validate()) {
+      try {
+        await vm.createMessage(controller.text);
+        controller.clear();
+      } catch (err) {
+        print(err);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final vm = Provider.of<SongDetailsViewModel>(context);
     return Align(
       alignment: FractionalOffset.bottomCenter,
       child: Padding(
@@ -89,7 +105,7 @@ class MessageForm extends StatelessWidget {
                     icon: Icon(
                       Icons.send,
                     ),
-                    onPressed: () => onPressed(context),
+                    onPressed: () => _handleSubmit(context, vm),
                   )
                 ],
               ),
