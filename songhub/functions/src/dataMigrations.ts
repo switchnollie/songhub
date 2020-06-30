@@ -1,24 +1,23 @@
-import { https }from "firebase-functions";
-import { storageService, storageBucket } from "./globals";
+import { https } from "firebase-functions";
+import { storageBucket } from "./globals";
 
 // manually set metadata of example data
 export const updateStorage = https.onRequest(async (req, res) => {
-  
   const requests = [];
 
-  requests.push(storageService
-    .bucket(storageBucket)
-    .file("9jJgSgk2eVQF35Pa3GkvpH5RoU03/covers/mBXkgfEmb4phulWGgTrz.jpg")
-    .setMetadata({
-      metadata: {
-        owner: "9jJgSgk2eVQF35Pa3GkvpH5RoU03",
-        ypVCXwADSWSToxsRpyspWWAHNfJ2: "allowRead",
-        dMxDgggEyDTYgkcDW8O6MMOPNiD2: "allowRead",
-      },
-    }));
   requests.push(
-    storageService
-      .bucket(storageBucket)
+    storageBucket
+      .file("9jJgSgk2eVQF35Pa3GkvpH5RoU03/covers/mBXkgfEmb4phulWGgTrz.jpg")
+      .setMetadata({
+        metadata: {
+          owner: "9jJgSgk2eVQF35Pa3GkvpH5RoU03",
+          ypVCXwADSWSToxsRpyspWWAHNfJ2: "allowRead",
+          dMxDgggEyDTYgkcDW8O6MMOPNiD2: "allowRead",
+        },
+      })
+  );
+  requests.push(
+    storageBucket
       .file("dMxDgggEyDTYgkcDW8O6MMOPNiD2/covers/TdJyipldM6RrD3kzN74z.jpg")
       .setMetadata({
         metadata: {
@@ -28,8 +27,7 @@ export const updateStorage = https.onRequest(async (req, res) => {
       })
   );
   requests.push(
-    storageService
-      .bucket(storageBucket)
+    storageBucket
       .file("ypVCXwADSWSToxsRpyspWWAHNfJ2/covers/RCpg9NEGLSZ4rGRM9iHH.jpg")
       .setMetadata({
         metadata: {

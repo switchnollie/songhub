@@ -1,33 +1,20 @@
-import * as functions from "firebase-functions";
-import { storageService, db, storageBucket } from "./globals";
-import { Bucket, DeleteFilesOptions } from "@google-cloud/storage";
+import { firestore } from "firebase-functions";
+import { db, storageBucket } from "./globals";
+import { deleteFilesPromisified } from "./utils";
 
-function deleteFilesPromisified(bucket: Bucket, options: DeleteFilesOptions) {
-  return new Promise<void>((resolve, reject) => {
-    bucket.deleteFiles(options, (err) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve();
-      }
-    });
-  });
-}
-
-// Delete recordings, cover images, profile picture and reference in participants on user delete
-export const cascadeOnUserDelete = functions.firestore
+/**
+ * Delete recordings, cover images, profile picture and reference in participants on user delete
+ */
+export const cascadeOnUserDelete = firestore
   .document("users/{userId}")
   .onDelete(async (_, context) => {
     const userId = context.params.userId;
 
     console.log(`Deleting private files from ${userId}`);
-    const bucket = storageService.bucket(storageBucket);
-    await deleteFilesPromisified(bucket, { prefix: `${userId}/` });
+    await deleteFilesPromisified(storageBucket, { prefix: `${userId}/` });
 
     console.log(`Deleting profile image of ${userId}`);
-    await storageService
-      .bucket(storageBucket)
-      .file(`public/profileImgs/${userId}.jpg`);
+    await storageBucket.file(`public/profileImgs/${userId}.jpg`);
 
     console.log(
       `Deleting all references to ${userId} in songs (participants arrays)`
@@ -47,4 +34,23 @@ export const cascadeOnUserDelete = functions.firestore
       }
     );
     return await Promise.all(songUpdateRequests);
+  });
+
+/**
+ * delete all recordings on song delete
+ */
+export const cascadeOnSongDelete = firestore
+  .document("users/{userId}/songs/{songId}")
+  .onDelete(async (_, context) => {
+    const { userId, songId } = context.params;
+    console.log(`Deleting all recordings of song ${songId} by user ${userId}`);
+    console.log(`Storage path is: ${userId}/recordings/${songId}/`);
+    try {
+      await deleteFilesPromisified(storageBucket, {
+        prefix: `${userId}/recordings/${songId}/`,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+    return null;
   });

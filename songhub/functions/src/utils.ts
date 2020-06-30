@@ -1,3 +1,5 @@
+import { Bucket, DeleteFilesOptions } from "@google-cloud/storage";
+
 type ChangeVal = FirebaseFirestore.DocumentData | undefined;
 
 export function shallowDiff(oldVal: ChangeVal, newVal: ChangeVal) {
@@ -10,4 +12,19 @@ export function shallowDiff(oldVal: ChangeVal, newVal: ChangeVal) {
     }
   }
   return diffObj;
+}
+
+export function deleteFilesPromisified(
+  bucket: Bucket,
+  options: DeleteFilesOptions
+) {
+  return new Promise<void>((resolve, reject) => {
+    bucket.deleteFiles(options, (err) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
+  });
 }
