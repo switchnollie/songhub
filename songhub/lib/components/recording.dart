@@ -1,3 +1,5 @@
+import 'package:audioplayer/audioplayer.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:song_hub/routing.dart';
@@ -66,6 +68,7 @@ class RecordingItem extends StatelessWidget {
             children: <Widget>[
               RecordingItemHeader(recording: recording),
               RecordingItemBody(recording: recording),
+              RecordingPlaybackButton(recording: recording),
             ],
           ),
         ),
@@ -159,5 +162,39 @@ class RecordingItemBody extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class RecordingPlaybackButton extends StatelessWidget {
+  final RecordingWithImages recording;
+
+  RecordingPlaybackButton({this.recording});
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.bottomRight,
+      child: InkWell(
+        onTap: () => playAudio(recording.recordingDocument.storagePath),
+        child: Icon(
+          Icons.play_arrow,
+          color: Colors.grey,
+        ),
+      ),
+    );
+  }
+
+  /// TODO: Move out of component
+  /// Playback file from Firebase Storage
+  void playAudio(String storagePath) async {
+    FirebaseStorage _storage = FirebaseStorage.instance;
+    try {
+      final String fileUrl =
+          await _storage.ref().child(storagePath).getDownloadURL();
+      AudioPlayer ap = AudioPlayer();
+      ap.play(fileUrl);
+    } catch (e) {
+      print('Couldn\'t playback file! $e');
+    }
   }
 }
