@@ -15,17 +15,14 @@ class SongList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       scrollDirection: Axis.vertical,
-      itemCount: songs != null ? songs.length : 0,
+      itemCount: songs != null ? songs.length + 1 : 0,
       padding: EdgeInsets.zero,
       itemBuilder: (context, index) {
-        final song = songs[index];
-        return Column(
-          children: <Widget>[
-            Divider(height: 1),
-            SongListEntry(
-              song: song,
-            ),
-          ],
+        if (index == songs.length) {
+          return Divider(height: 1);
+        }
+        return SongListEntry(
+          song: songs[index],
         );
       },
     );
@@ -55,23 +52,29 @@ class SongListEntry extends StatelessWidget {
       confirmDismiss: (DismissDirection direction) async {
         return await showDeleteAlert(context);
       },
-      child: ListTile(
-        // Song entry widget
-        leading: Cover(
-          img: song.coverImgUrl,
-          size: CoverSize.SMALL,
-        ),
-        title: ListTitle(title: song.songDocument.title),
-        subtitle: ListSubtitle(artist: song.songDocument.artist),
-        trailing: AvatarRow(imgs: song.participantImgUrls),
-        contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        onTap: () {
-          Navigator.pushNamed(
-            context,
-            "/songs/details",
-            arguments: SongDetailsScreenRouteParams(song: song),
-          );
-        },
+      child: Column(
+        children: <Widget>[
+          Divider(height: 1),
+          ListTile(
+            // Song entry widget
+            leading: Cover(
+              img: song.coverImgUrl,
+              size: CoverSize.SMALL,
+            ),
+            title: ListTitle(title: song.songDocument.title),
+            subtitle: ListSubtitle(artist: song.songDocument.artist),
+            trailing: AvatarRow(imgs: song.participantImgUrls),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                "/songs/details",
+                arguments: SongDetailsScreenRouteParams(song: song),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
@@ -101,8 +104,7 @@ class SongListEntry extends StatelessWidget {
     // final storageService = Provider.of<StorageService>(context, listen: false);
 
     try {
-      print(database);
-      // database.deleteSong(song.songDocument);
+      database.deleteSong(song.songDocument);
     } catch (e) {
       print(e);
     }

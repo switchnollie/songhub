@@ -23,7 +23,8 @@ class ImageInput extends StatelessWidget {
       this.maxWidth = 300,
       this.maxHeight = 300,
       this.onPickedError = print,
-      this.source = ImageSource.gallery,
+      // TODO: Change to gallery at end of project
+      this.source = ImageSource.camera,
       this.quality,
       this.imageUrl,
       this.isAvatar = false});

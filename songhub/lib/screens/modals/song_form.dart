@@ -9,22 +9,24 @@ import 'package:song_hub/components/image_input.dart';
 import 'package:song_hub/components/text_input.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 
-typedef void OnSubmit({
-  @required GlobalKey<FormState> formKey,
-  @required BuildContext context,
-  String title,
-  String artist,
-  String lyrics,
-  String mood,
-  File imageFile,
-  String status,
-  String songId,
-  List<String> participants,
-});
+// TODO: Don't get it why we shouldn't pass parameters directly to onSubmit
+// typedef void OnSubmit({
+//   @required GlobalKey<FormState> formKey,
+//   @required BuildContext context,
+//   String title,
+//   String artist,
+//   String lyrics,
+//   String mood,
+//   File imageFile,
+//   String status,
+//   String songId,
+//   List<String> participants,
+// });
 
 class SongForm extends StatefulWidget {
   final SongWithImages song;
-  final OnSubmit onSubmit;
+  // final OnSubmit onSubmit;
+  final Function onSubmit;
   final String submitButtonText;
 
   SongForm({this.song, this.onSubmit, this.submitButtonText});
@@ -71,20 +73,20 @@ class _SongFormState extends State<SongForm> {
   }
 
   /// Push data to firebase if form fields are valid
-  void _handleSubmit(BuildContext context) {
-    widget.onSubmit(
-      formKey: _formKey,
-      title: _titleController.text,
-      artist: _artistController.text,
-      imageFile: imageFile,
-      lyrics: _lyricsController.text,
-      status: selectedStatus,
-      mood: _moodController.text,
-      songId: widget.song.songDocument.id,
-      participants: widget.song.songDocument.participants,
-      context: context,
-    );
-  }
+  // void _handleSubmit(BuildContext context) {
+  //   widget.onSubmit(
+  //     formKey: _formKey,
+  //     title: _titleController.text,
+  //     artist: _artistController.text,
+  //     imageFile: imageFile,
+  //     lyrics: _lyricsController.text,
+  //     status: selectedStatus,
+  //     mood: _moodController.text,
+  //     songId: widget.song.songDocument.id,
+  //     participants: widget.song.songDocument.participants,
+  //     context: context,
+  //   );
+  // }
 
   @override
   void dispose() {
@@ -179,7 +181,23 @@ class _SongFormState extends State<SongForm> {
               _buildRow(
                 PrimaryButton(
                   text: widget.submitButtonText,
-                  onPressed: () => _handleSubmit(context),
+                  // onPressed: () => _handleSubmit(context),
+                  onPressed: () => widget.onSubmit(
+                    _formKey,
+                    context,
+                    _titleController.text,
+                    _artistController.text,
+                    _lyricsController.text,
+                    _moodController.text,
+                    imageFile,
+                    selectedStatus,
+                    widget.song,
+                    // TODO: Add real participants by email
+                    [
+                      "ypVCXwADSWSToxsRpyspWWAHNfJ2",
+                      "dMxDgggEyDTYgkcDW8O6MMOPNiD2"
+                    ],
+                  ),
                 ),
               ),
             ],

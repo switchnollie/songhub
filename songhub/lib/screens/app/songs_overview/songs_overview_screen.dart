@@ -30,7 +30,7 @@ class SongsOverviewScreen extends StatelessWidget {
       builder: (context, snapshot) {
         return ScreenContainer(
           header: ScreenHeader(
-            title: "Songs",
+            title: "Projects",
             actionButton: IconButton(
               icon: Icon(
                 Icons.add,

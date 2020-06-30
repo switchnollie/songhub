@@ -43,7 +43,7 @@ class _AppState extends State<App> {
               Icons.queue_music,
             ),
             title: Text(
-              "Songs",
+              "Projects",
             ),
           ),
           BottomNavigationBarItem(

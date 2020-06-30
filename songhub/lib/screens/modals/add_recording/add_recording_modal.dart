@@ -18,6 +18,7 @@ class AddRecordingModal extends StatelessWidget {
   void _handleSubmit(
       BuildContext context,
       GlobalKey<FormState> formKey,
+      // TODO: File type will generate error!
       recordingFile,
       String storagePath,
       SongWithImages song,

@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:song_hub/models/song.dart';
+import 'package:song_hub/viewModels/song_with_images.dart';
 import 'package:uuid/uuid.dart';
 import 'package:song_hub/screens/modals/song_form.dart';
 import 'package:song_hub/services/firebase_auth_service.dart';
@@ -13,18 +15,18 @@ import 'package:song_hub/utils/show_snackbar.dart';
 class AddSongModal extends StatelessWidget {
   static const routeId = "/songs/add";
 
-  void handleSubmit({
-    @required GlobalKey<FormState> formKey,
-    @required BuildContext context,
+  void handleSubmit(
+    GlobalKey<FormState> formKey,
+    BuildContext context,
     String title,
     String artist,
     String lyrics,
     String mood,
     File imageFile,
     String status,
-    String songId,
+    SongWithImages song,
     List<String> participants,
-  }) async {
+  ) async {
     try {
       final database = Provider.of<FirestoreDatabase>(context, listen: false);
       final storageService =
@@ -34,28 +36,26 @@ class AddSongModal extends StatelessWidget {
       final FireUser user = await authService.currentUser();
       if (formKey.currentState.validate()) {
         final String songId = Uuid().v4();
-        final List<String> participants = [
-          // TODO: Add real participants
-          "ypVCXwADSWSToxsRpyspWWAHNfJ2",
-          "dMxDgggEyDTYgkcDW8O6MMOPNiD2"
-        ];
         String imageUrl;
         if (imageFile != null) {
           imageUrl = await storageService.uploadCoverImg(songId, imageFile,
               FileUserPermissions(owner: user.uid, participants: participants));
         }
-        database.setSong(Song(
-            id: songId,
-            title: title,
-            artist: artist,
-            coverImg: imageUrl,
-            participants: participants,
-            lyrics: lyrics,
-            status: status,
-            mood: mood,
-            ownedBy: user.uid));
+        await database.setSong(Song(
+          id: songId,
+          title: title,
+          artist: artist,
+          coverImg: imageUrl,
+          participants: participants,
+          lyrics: lyrics,
+          status: status,
+          mood: mood,
+          ownedBy: user.uid,
+          createdAt: Timestamp.fromDate(DateTime.now().toUtc()),
+          updatedAt: Timestamp.fromDate(DateTime.now().toUtc()),
+        ));
       }
-      Navigator.pop(context, "Successfully updated song");
+      Navigator.pop(context, "Successfully added song");
     } catch (err) {
       // use 'on' clause and handle errors in more detail
       showSnackBarByContext(context, "Error submitting data");
@@ -66,6 +66,7 @@ class AddSongModal extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text('Add new project'),
         leading: IconButton(
           icon: Icon(Icons.close, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
