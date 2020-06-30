@@ -8,11 +8,9 @@ import 'package:song_hub/screens/modals/add_song/add_song_modal.dart';
 import 'package:song_hub/screens/modals/edit_profile/edit_profile_modal.dart';
 import 'package:song_hub/screens/modals/edit_recording/edit_recording_modal.dart';
 import 'package:song_hub/screens/modals/edit_song/edit_song_modal.dart';
-import 'package:song_hub/screens/modals/recording_form.dart';
 import 'package:song_hub/screens/app/placeholder.dart';
 import 'package:flutter/material.dart';
 import 'package:song_hub/screens/authentication/sign_up/sign_up_screen.dart';
-import 'package:song_hub/screens/modals/recording_modals.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 
 class SongDetailsScreenRouteParams {
