@@ -107,4 +107,3 @@ Refactored and redesigned components of discussion features (message container, 
 #### Questions
 
 * Do we need to create tests and what are your requirements therefore?
-
