@@ -99,6 +99,7 @@ class FirestoreDatabase {
   Stream<List<Message>> messagesStream({@required String songId}) =>
       _service.collectionStream(
         path: FirestorePath.messages(uid, songId),
+        queryBuilder: (query) => query.orderBy('createdAt'),
         builder: (data, documentId) => Message.fromMap(data, documentId),
       );
 
@@ -107,7 +108,8 @@ class FirestoreDatabase {
   /// in which the uid is part of the participants array.
   Stream<List<Song>> songsStreamAll() => _service.collectionGroupStream(
         path: FirestorePath.songsAll(),
-        queryBuilder: (query) => query.where('participants', arrayContains: uid).orderBy("artist"),
+        queryBuilder: (query) =>
+            query.where('participants', arrayContains: uid).orderBy("artist"),
         builder: (data, documentId) => Song.fromMap(data, documentId),
       );
 }
