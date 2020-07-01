@@ -72,6 +72,7 @@ class EditSongModal extends StatelessWidget {
     final EditSongModalRouteParams args =
         ModalRoute.of(context).settings.arguments;
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Text('Edit existing project'),
         leading: IconButton(

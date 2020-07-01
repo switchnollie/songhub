@@ -26,7 +26,8 @@ class EditSongModalRouteParams {
 class RecordingModalRouteParams {
   final SongWithImages song;
   final Recording recording;
-  RecordingModalRouteParams({this.song, this.recording});
+  final String index;
+  RecordingModalRouteParams({this.song, this.recording, this.index});
 }
 
 Map<String, Widget Function(BuildContext)> routes = {

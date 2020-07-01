@@ -33,11 +33,13 @@ class _RecordingsGridState extends State<RecordingsGridTabView> {
           ),
           itemBuilder: (BuildContext context, int index) {
             if (index == 0) {
-              return RecordingInputItem(song: widget.song);
+              return RecordingInputItem(
+                  song: widget.song, index: index.toString());
             }
             return RecordingItem(
               song: widget.song,
               recording: snapshot.data[index - 1],
+              index: index.toString(),
             );
           },
         ),

@@ -108,100 +108,98 @@ class _SongFormState extends State<SongForm> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.0),
-      child: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: <Widget>[
-              Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    // AddCoverImage(),
-                    ImageInput(
-                        imageFile: imageFile,
-                        onPicked: _handleImagePicked,
-                        imageUrl: imageUrl),
-                    Expanded(
-                      child: Column(
-                        children: <Widget>[
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: <Widget>[
+            Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  // AddCoverImage(),
+                  ImageInput(
+                      imageFile: imageFile,
+                      onPicked: _handleImagePicked,
+                      imageUrl: imageUrl),
+                  Expanded(
+                    child: Column(
+                      children: <Widget>[
+                        TextInput(
+                          controller: _titleController,
+                          label: "Title",
+                          icon: Icons.title,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter a title';
+                            }
+                            return null;
+                          },
+                        ),
+                        _buildRow(
                           TextInput(
-                            controller: _titleController,
-                            label: "Title",
-                            icon: Icons.title,
+                            controller: _artistController,
+                            label: "Artist",
+                            icon: Icons.person,
                             validator: (value) {
                               if (value.isEmpty) {
-                                return 'Please enter a title';
+                                return 'Please enter an artist';
                               }
                               return null;
                             },
                           ),
-                          _buildRow(
-                            TextInput(
-                              controller: _artistController,
-                              label: "Artist",
-                              icon: Icons.person,
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return 'Please enter an artist';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ]),
-              _buildRow(
-                DropdownInput(
-                  items: ["Initiation", "Idea", "Demo", "Release"],
-                  icon: Icons.label,
-                  value: selectedStatus,
-                  onChanged: (newVal) {
-                    setState(() {
-                      selectedStatus = newVal;
-                    });
-                  },
-                ),
-              ),
-              _buildRow(
-                TextInput(
-                  controller: _lyricsController,
-                  label: "Lyrics",
-                  icon: Icons.subject,
-                ),
-              ),
-              _buildRow(
-                TextInput(
-                  controller: _moodController,
-                  label: "Mood",
-                  icon: Icons.mood,
-                ),
-              ),
-              _buildRow(
-                PrimaryButton(
-                  text: widget.submitButtonText,
-                  // onPressed: () => _handleSubmit(context),
-                  onPressed: () => widget.onSubmit(
-                    _formKey,
-                    context,
-                    _titleController.text,
-                    _artistController.text,
-                    _lyricsController.text,
-                    _moodController.text,
-                    imageFile,
-                    selectedStatus,
-                    widget.song,
-                    // TODO: Add real participants by email
-                    [
-                      "ypVCXwADSWSToxsRpyspWWAHNfJ2",
-                      "dMxDgggEyDTYgkcDW8O6MMOPNiD2"
-                    ],
                   ),
+                ]),
+            _buildRow(
+              DropdownInput(
+                items: ["Initiation", "Idea", "Demo", "Release"],
+                icon: Icons.label,
+                value: selectedStatus,
+                onChanged: (newVal) {
+                  setState(() {
+                    selectedStatus = newVal;
+                  });
+                },
+              ),
+            ),
+            _buildRow(
+              TextInput(
+                controller: _lyricsController,
+                label: "Lyrics",
+                icon: Icons.subject,
+              ),
+            ),
+            _buildRow(
+              TextInput(
+                controller: _moodController,
+                label: "Mood",
+                icon: Icons.mood,
+              ),
+            ),
+            _buildRow(
+              PrimaryButton(
+                text: widget.submitButtonText,
+                // onPressed: () => _handleSubmit(context),
+                onPressed: () => widget.onSubmit(
+                  _formKey,
+                  context,
+                  _titleController.text,
+                  _artistController.text,
+                  _lyricsController.text,
+                  _moodController.text,
+                  imageFile,
+                  selectedStatus,
+                  widget.song,
+                  // TODO: Add real participants by email
+                  [
+                    "ypVCXwADSWSToxsRpyspWWAHNfJ2",
+                    "dMxDgggEyDTYgkcDW8O6MMOPNiD2"
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

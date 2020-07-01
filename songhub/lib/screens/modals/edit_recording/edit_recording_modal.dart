@@ -92,7 +92,8 @@ class EditRecordingModal extends StatelessWidget {
           song: args.song,
           recording: args.recording,
           submitButtonText: 'SAVE',
-          onSubmit: _handleSubmit),
+          onSubmit: _handleSubmit,
+          index: args.index),
       backgroundColor: Colors.white,
     );
   }

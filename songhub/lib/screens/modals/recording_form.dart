@@ -15,12 +15,14 @@ class RecordingModal extends StatefulWidget {
   final Recording recording;
   final String submitButtonText;
   final Function onSubmit;
+  final String index;
 
   RecordingModal(
       {@required this.song,
       @required this.recording,
       @required this.submitButtonText,
-      @required this.onSubmit});
+      @required this.onSubmit,
+      @required this.index});
 
   @override
   _RecordingModalState createState() => _RecordingModalState();
@@ -78,7 +80,7 @@ class _RecordingModalState extends State<RecordingModal> {
         child: Column(
           children: <Widget>[
             Hero(
-              tag: "file",
+              tag: widget.index,
               child: Material(
                 child: Stack(
                   alignment: Alignment.center,

@@ -75,10 +75,12 @@ class AddRecordingModal extends StatelessWidget {
         backgroundColor: Colors.transparent,
       ),
       body: RecordingModal(
-          song: args.song,
-          recording: null,
-          submitButtonText: 'CREATE',
-          onSubmit: _handleSubmit),
+        song: args.song,
+        recording: null,
+        submitButtonText: 'CREATE',
+        onSubmit: _handleSubmit,
+        index: args.index,
+      ),
       backgroundColor: Colors.white,
     );
   }

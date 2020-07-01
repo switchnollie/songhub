@@ -9,13 +9,14 @@ import 'package:song_hub/viewModels/song_with_images.dart';
 /// File input container
 class RecordingInputItem extends StatelessWidget {
   final SongWithImages song;
+  final String index;
 
-  RecordingInputItem({this.song});
+  RecordingInputItem({this.song, this.index});
 
   @override
   Widget build(BuildContext context) {
     return Hero(
-      tag: "file",
+      tag: "$index",
       child: Material(
         child: ClipRRect(
           borderRadius: BorderRadius.circular(5.0),
@@ -28,8 +29,8 @@ class RecordingInputItem extends StatelessWidget {
                   Navigator.pushNamed(
                     context,
                     "/recordings/add",
-                    arguments:
-                        RecordingModalRouteParams(song: song, recording: null),
+                    arguments: RecordingModalRouteParams(
+                        song: song, recording: null, index: index),
                   );
                 },
               ),
@@ -45,31 +46,39 @@ class RecordingInputItem extends StatelessWidget {
 class RecordingItem extends StatelessWidget {
   final SongWithImages song;
   final RecordingWithImages recording;
+  final String index;
 
-  RecordingItem({@required this.song, @required this.recording});
+  RecordingItem({@required this.song, @required this.recording, this.index});
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(5.0),
-      child: InkWell(
-        onTap: () {
-          Navigator.pushNamed(
-            context,
-            "/recordings/edit",
-            arguments: RecordingModalRouteParams(
-                song: song, recording: recording.recordingDocument),
-          );
-        },
-        child: Container(
-          color: Theme.of(context).accentColor.withAlpha(0x22),
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            children: <Widget>[
-              RecordingItemHeader(recording: recording),
-              RecordingItemBody(recording: recording),
-              RecordingPlaybackButton(recording: recording),
-            ],
+    return Hero(
+      tag: index,
+      child: Material(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(5.0),
+          child: InkWell(
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                "/recordings/edit",
+                arguments: RecordingModalRouteParams(
+                    song: song,
+                    recording: recording.recordingDocument,
+                    index: index),
+              );
+            },
+            child: Container(
+              color: Theme.of(context).accentColor.withAlpha(0x22),
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                children: <Widget>[
+                  RecordingItemHeader(recording: recording),
+                  RecordingItemBody(recording: recording),
+                  RecordingPlaybackButton(recording: recording),
+                ],
+              ),
+            ),
           ),
         ),
       ),
