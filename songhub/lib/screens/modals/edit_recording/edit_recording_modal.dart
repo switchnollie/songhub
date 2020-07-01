@@ -105,8 +105,9 @@ class EditRecordingModal extends StatelessWidget {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertWidget(
-          title: 'Delete recording',
-          text: 'This action can\'t be undone!',
+          title: 'Delete file',
+          text:
+              'Are you sure you want to delete this file? This action can\'t be undone!',
           option1: 'CANCEL',
           option2: 'DELETE',
           onTap: () =>

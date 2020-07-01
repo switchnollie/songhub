@@ -88,7 +88,7 @@ class SongListEntry extends StatelessWidget {
         return AlertWidget(
           title: 'Delete project',
           text:
-              'This action can\'t be undone and will also remove all files and messages!',
+              'Are you sure you want to delete this project? This action can\'t be undone and will remove all files and messages too!',
           option1: 'CANCEL',
           option2: 'DELETE',
           onTap: () => _handleSongDelete(context, song),
