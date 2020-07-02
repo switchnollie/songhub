@@ -41,10 +41,7 @@ class SongForm extends StatefulWidget {
 class _SongFormState extends State<SongForm> {
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController _titleController,
-      _artistController,
-      _lyricsController,
-      _moodController;
+  TextEditingController _titleController, _lyricsController, _moodController;
 
   File imageFile;
   String selectedStatus, imageUrl;
@@ -54,13 +51,12 @@ class _SongFormState extends State<SongForm> {
   void initState() {
     _titleController =
         TextEditingController(text: widget.song?.songDocument?.title ?? "");
-    _artistController =
-        TextEditingController(text: widget.song?.songDocument?.artist ?? "");
     _lyricsController =
         TextEditingController(text: widget.song?.songDocument?.lyrics ?? "");
     _moodController =
         TextEditingController(text: widget.song?.songDocument?.mood ?? "");
-    selectedStatus = widget.song?.songDocument?.status;
+    selectedStatus =
+        widget.song != null ? widget.song.songDocument.status : 'Initiation';
     imageUrl = widget.song?.coverImgUrl;
     super.initState();
   }
@@ -92,7 +88,6 @@ class _SongFormState extends State<SongForm> {
   @override
   void dispose() {
     _titleController.dispose();
-    _artistController.dispose();
     _lyricsController.dispose();
     _moodController.dispose();
     super.dispose();
@@ -136,18 +131,21 @@ class _SongFormState extends State<SongForm> {
                           },
                         ),
                         // TODO: Get artist name in add
+                        // Add wont work without name
                         _buildRow(ReadOnlyField(
-                            icon: Icons.person,
-                            text: widget.song != null
-                                ? widget.song.songDocument.artist
-                                : 'Artist name',
-                            prefix: '')),
+                          icon: Icons.person,
+                          label: 'Author',
+                          text: widget.song != null
+                              ? widget.song.songDocument.artist
+                              : 'Artist name',
+                        )),
                       ],
                     ),
                   ),
                 ]),
             _buildRow(
               DropdownInput(
+                label: 'Status',
                 items: ["Initiation", "Idea", "Demo", "Release"],
                 icon: Icons.label,
                 value: selectedStatus,
@@ -180,7 +178,6 @@ class _SongFormState extends State<SongForm> {
                   _formKey,
                   context,
                   _titleController.text,
-                  _artistController.text,
                   _lyricsController.text,
                   _moodController.text,
                   imageFile,

@@ -14,7 +14,7 @@ class TextInput extends StatelessWidget {
 
   TextInput({
     this.controller,
-    this.label,
+    @required this.label,
     this.onChanged,
     this.obscureText,
     this.icon,
@@ -24,38 +24,50 @@ class TextInput extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 54,
-      child: TextFormField(
-        initialValue: initialValue != null ? initialValue : null,
-        // obscureText: obscureText ?? false,
-        decoration: InputDecoration(
-          labelText: label,
-          floatingLabelBehavior: FloatingLabelBehavior.never,
-          filled: true,
-          fillColor: Theme.of(context).colorScheme.background,
-          prefixIcon: icon != null
-              ? Icon(
-                  icon,
-                  color: Theme.of(context).colorScheme.onBackground,
-                )
-              : null,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.0),
-            borderSide: BorderSide(
-              width: 0,
-              style: BorderStyle.none,
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide:
-                BorderSide(color: Theme.of(context).accentColor, width: 2.0),
-          ),
-          hintText: hintText,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(left: 16.0, bottom: 6.0),
+          child: Text(label,
+              style: TextStyle(
+                  fontSize: 13,
+                  color: Theme.of(context).colorScheme.onBackground)),
         ),
-        validator: validator,
-        controller: controller,
-      ),
+        Container(
+          height: 54,
+          child: TextFormField(
+            initialValue: initialValue != null ? initialValue : null,
+            // obscureText: obscureText ?? false,
+            decoration: InputDecoration(
+              labelText: label,
+              floatingLabelBehavior: FloatingLabelBehavior.never,
+              filled: true,
+              fillColor: Theme.of(context).colorScheme.background,
+              prefixIcon: icon != null
+                  ? Icon(
+                      icon,
+                      color: Theme.of(context).colorScheme.onBackground,
+                    )
+                  : null,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(
+                  width: 0,
+                  style: BorderStyle.none,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: Theme.of(context).accentColor, width: 2.0),
+              ),
+              hintText: hintText,
+            ),
+            validator: validator,
+            controller: controller,
+          ),
+        ),
+      ],
     );
   }
 }

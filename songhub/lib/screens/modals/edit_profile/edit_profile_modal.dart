@@ -166,6 +166,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
               ),
               _buildRow(
                 TextInput(
+                  label: 'First name',
                   controller: _firstNameController,
                   icon: Icons.person,
                   hintText: "First Name",
@@ -179,6 +180,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
               ),
               _buildRow(
                 TextInput(
+                  label: 'Last name',
                   controller: _lastNameController,
                   icon: Icons.person,
                   validator: (value) {
@@ -192,6 +194,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
               ),
               _buildRow(
                 TextInput(
+                  label: 'Stage name',
                   controller: _stageNameController,
                   icon: Icons.person,
                   validator: (value) {
@@ -205,6 +208,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
               ),
               _buildRow(
                 DropdownInput(
+                  label: 'Role',
                   items: [
                     "Song Writer",
                     "Producer",

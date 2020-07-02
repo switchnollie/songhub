@@ -3,42 +3,54 @@ import 'package:flutter/material.dart';
 /// Read only container
 class ReadOnlyField extends StatelessWidget {
   final String text;
+  final String label;
   final IconData icon;
-  final String prefix;
 
   ReadOnlyField({
     this.text,
     this.icon,
-    @required this.prefix,
+    @required this.label,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      // TODO: Fix border
-      borderRadius: BorderRadius.circular(8.0),
-      child: Container(
-        height: 54,
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Theme.of(context).colorScheme.onBackground,
-            width: 2,
-          ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(left: 16.0, bottom: 6.0),
+          child: Text(label,
+              style: TextStyle(
+                  fontSize: 13,
+                  color: Theme.of(context).colorScheme.onBackground)),
         ),
-        child: Row(
-          children: <Widget>[
-            Icon(icon, color: Theme.of(context).colorScheme.onBackground),
-            Padding(
-              padding: const EdgeInsets.only(left: 12.0),
-              child: Text(
-                '${prefix ?? ''} ${text ?? ''}',
-                style: TextStyle(fontSize: 16),
+        ClipRRect(
+          // TODO: Fix border
+          borderRadius: BorderRadius.circular(8.0),
+          child: Container(
+            height: 54,
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Theme.of(context).colorScheme.onBackground,
+                width: 2,
               ),
             ),
-          ],
+            child: Row(
+              children: <Widget>[
+                Icon(icon, color: Theme.of(context).colorScheme.onBackground),
+                Padding(
+                  padding: const EdgeInsets.only(left: 12.0),
+                  child: Text(
+                    '${text ?? ''}',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
 }

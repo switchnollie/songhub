@@ -39,7 +39,7 @@ class _RecordingModalState extends State<RecordingModal> {
   /// Init state
   @override
   void initState() {
-    selectedStatus = widget.recording?.label;
+    selectedStatus = widget.recording != null ? widget.recording.label : 'Idea';
     _versionDescriptionController =
         TextEditingController(text: widget.recording?.versionDescription ?? '');
     super.initState();
@@ -100,7 +100,7 @@ class _RecordingModalState extends State<RecordingModal> {
             ),
             _buildRow(
               ReadOnlyField(
-                  prefix: 'File: ',
+                  label: 'File',
                   icon: Icons.audiotrack,
                   text: recordingFile != null
                       ? Path.basename(recordingFile.path).toString()
@@ -111,6 +111,7 @@ class _RecordingModalState extends State<RecordingModal> {
             ),
             _buildRow(
               DropdownInput(
+                label: 'Label',
                 // TODO: Define other labels?
                 items: ["Idea", "Lyrics", "Voice memo", "Demo tape"],
                 icon: Icons.label,

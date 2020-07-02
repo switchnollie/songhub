@@ -83,6 +83,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         children: <Widget>[
                           SizedBox(height: 40.0),
                           TextInput(
+                            label: 'E-Mail',
                             controller: _email,
                             icon: Icons.mail,
                             hintText: "E-Mail",
@@ -91,6 +92,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           ),
                           SizedBox(height: 20.0),
                           TextInput(
+                            label: 'Password',
                             obscureText: true,
                             icon: Icons.lock,
                             controller: _password,
