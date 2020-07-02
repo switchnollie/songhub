@@ -50,23 +50,7 @@ class SongHub extends StatelessWidget {
         ],
         builder: (BuildContext context, AsyncSnapshot<FireUser> userSnapshot) {
           return MaterialApp(
-            theme: ThemeData(
-              primaryColor: Color(0xFFFFFFFF),
-              accentColor: kAccentColor,
-              hintColor: kPlaceholderColor,
-              fontFamily: "Roboto",
-              textTheme: TextTheme(
-                bodyText1: TextStyle(
-                  fontSize: 16.0,
-                  color: kTextSecondary,
-                ),
-                headline3: TextStyle(
-                  fontSize: 22.0,
-                  color: kAccentColor,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
+            theme: appTheme,
             home: AuthWidget(
               userSnapshot: userSnapshot,
               nonSignedInBuilder: (_) => SignInScreenBuilder(),

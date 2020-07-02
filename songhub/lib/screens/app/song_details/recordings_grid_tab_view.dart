@@ -20,6 +20,7 @@ class _RecordingsGridState extends State<RecordingsGridTabView> {
   Widget build(BuildContext context) {
     final vm = Provider.of<SongDetailsViewModel>(context);
     return Container(
+      color: Theme.of(context).colorScheme.background,
       child: StreamBuilder<List<RecordingWithImages>>(
         stream: vm.recordings,
         builder: (context, snapshot) => GridView.builder(

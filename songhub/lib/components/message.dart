@@ -11,7 +11,7 @@ class MessageContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width / 1.8,
-      color: Theme.of(context).accentColor.withAlpha(0x22),
+      color: Theme.of(context).colorScheme.surface,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Text(message),
@@ -32,7 +32,7 @@ class MessageAuthor extends StatelessWidget {
         ? Avatar(img: authorImage)
         : Icon(
             Icons.account_circle,
-            color: Colors.grey,
+            color: Theme.of(context).colorScheme.surface,
           );
   }
 }

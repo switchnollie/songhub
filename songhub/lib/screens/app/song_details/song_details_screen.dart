@@ -38,7 +38,7 @@ class SongDetailsScreen extends StatelessWidget {
         ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       appBar: AppBar(
         elevation: 0.0,
       ),

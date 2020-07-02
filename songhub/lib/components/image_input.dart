@@ -46,12 +46,12 @@ class ImageInput extends StatelessWidget {
     return Center(
       child: imageFile == null && imageUrl == null
           ? Container(
-              color: Theme.of(context).accentColor.withAlpha(0x22),
+              color: Theme.of(context).colorScheme.background,
               width: 125,
               height: 125,
               child: IconButton(
                 icon: Icon(Icons.add),
-                color: Colors.black,
+                color: Theme.of(context).colorScheme.secondary,
                 onPressed: _handlePickerButtonPressed,
               ),
             )
@@ -74,7 +74,7 @@ class ImageInput extends StatelessWidget {
                   ),
                   IconButton(
                     icon: Icon(imageUrl != null ? Icons.edit : Icons.add),
-                    color: Colors.black,
+                    color: Theme.of(context).colorScheme.secondary,
                     onPressed: _handlePickerButtonPressed,
                   ),
                 ],
@@ -89,7 +89,7 @@ class ImageInput extends StatelessWidget {
       padding: EdgeInsets.only(right: 16.0),
       child: isAvatar
           ? CircleAvatar(
-              backgroundColor: Theme.of(context).accentColor.withAlpha(0x22),
+              backgroundColor: Theme.of(context).colorScheme.background,
               child: ClipOval(child: _buildMaskedContent(context)),
               radius: 62.5,
             )

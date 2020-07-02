@@ -69,7 +69,8 @@ class AddSongModal extends StatelessWidget {
       appBar: AppBar(
         title: Text('Add new project'),
         leading: IconButton(
-          icon: Icon(Icons.close, color: Colors.black),
+          icon:
+              Icon(Icons.close, color: Theme.of(context).colorScheme.secondary),
           onPressed: () => Navigator.of(context).pop(),
         ),
         elevation: 0.0,
@@ -79,7 +80,7 @@ class AddSongModal extends StatelessWidget {
         onSubmit: handleSubmit,
         submitButtonText: "ADD",
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.primary,
     );
   }
 }

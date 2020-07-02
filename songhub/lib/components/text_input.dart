@@ -33,11 +33,11 @@ class TextInput extends StatelessWidget {
           labelText: label,
           floatingLabelBehavior: FloatingLabelBehavior.never,
           filled: true,
-          fillColor: Theme.of(context).accentColor.withAlpha(0x1E),
+          fillColor: Theme.of(context).colorScheme.background,
           prefixIcon: icon != null
               ? Icon(
                   icon,
-                  color: Theme.of(context).hintColor,
+                  color: Theme.of(context).colorScheme.onBackground,
                 )
               : null,
           border: OutlineInputBorder(
@@ -86,11 +86,11 @@ class MessageForm extends StatelessWidget {
     return Align(
       alignment: FractionalOffset.bottomCenter,
       child: Padding(
-        padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
+        padding: const EdgeInsets.all(8.0),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(5.0),
+          borderRadius: BorderRadius.circular(14.0),
           child: Container(
-            color: Theme.of(context).accentColor.withAlpha(0x22),
+            color: Theme.of(context).primaryColor,
             child: Form(
               key: formKey,
               child: Row(
@@ -146,7 +146,7 @@ class MessageInput extends StatelessWidget {
       height: 25,
       child: TextFormField(
         style: TextStyle(
-          color: Colors.black,
+          color: Theme.of(context).colorScheme.secondary,
         ),
         initialValue: initialValue != null ? initialValue : null,
         obscureText: obscureText ?? false,
@@ -154,7 +154,7 @@ class MessageInput extends StatelessWidget {
           labelText: label,
           filled: true,
           hintText: hintText,
-          fillColor: Colors.white.withAlpha(0),
+          fillColor: Theme.of(context).colorScheme.primary,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5),
             borderSide: BorderSide(

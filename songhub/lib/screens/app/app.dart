@@ -34,9 +34,9 @@ class _AppState extends State<App> {
     return Scaffold(
       body: _getSelectedScreen(context, _selectedIndex), //_buildOverview(),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color(0xFFF2F5FA),
+        backgroundColor: Theme.of(context).colorScheme.background,
         selectedItemColor: Theme.of(context).accentColor,
-        unselectedItemColor: Color(0xFFD2D4DC),
+        unselectedItemColor: Theme.of(context).colorScheme.onBackground,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(

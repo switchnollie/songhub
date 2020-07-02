@@ -12,7 +12,7 @@ class ScreenContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        color: color != null ? color : Colors.white,
+        color: color != null ? color : Theme.of(context).colorScheme.primary,
         child: Column(children: <Widget>[
           header != null ? header : SizedBox.shrink(),
           Expanded(child: body),

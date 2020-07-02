@@ -36,7 +36,7 @@ class SongsOverviewScreen extends StatelessWidget {
                 Icons.add,
                 size: 32.0,
               ),
-              color: Color(0xFFD2D4DC),
+              color: Theme.of(context).colorScheme.onBackground,
               onPressed: () {
                 navigateAndDisplayReturnedMessage(
                   context,

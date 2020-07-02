@@ -14,8 +14,9 @@ class DropdownInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return InputDecorator(
       decoration: InputDecoration(
-        errorStyle: TextStyle(color: Colors.redAccent, fontSize: 16.0),
-        fillColor: Theme.of(context).accentColor.withAlpha(0x22),
+        errorStyle: TextStyle(
+            color: Theme.of(context).colorScheme.error, fontSize: 16.0),
+        fillColor: Theme.of(context).colorScheme.background,
         contentPadding:
             const EdgeInsets.symmetric(vertical: 4.0, horizontal: 12.0),
         filled: true,
@@ -29,7 +30,7 @@ class DropdownInput extends StatelessWidget {
         prefixIcon: icon != null
             ? Icon(
                 icon,
-                color: Theme.of(context).hintColor,
+                color: Theme.of(context).colorScheme.onBackground,
               )
             : null,
       ),

@@ -5,7 +5,7 @@ class Spinner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).colorScheme.primary,
       child: Center(
         child: SpinKitPulse(
           color: Theme.of(context).accentColor,

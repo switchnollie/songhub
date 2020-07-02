@@ -42,7 +42,8 @@ class EditProfileModal extends StatelessWidget {
       builder: (context, snapshot) => Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(Icons.close, color: Colors.black),
+            icon: Icon(Icons.close,
+                color: Theme.of(context).colorScheme.secondary),
             onPressed: () => Navigator.of(context).pop(),
           ),
           centerTitle: true,
@@ -51,7 +52,7 @@ class EditProfileModal extends StatelessWidget {
         ),
         body:
             snapshot.hasData ? EditProfileForm(user: snapshot.data) : Spinner(),
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
     );
   }

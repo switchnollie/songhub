@@ -19,9 +19,9 @@ class RecordingInputItem extends StatelessWidget {
       tag: "$index",
       child: Material(
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(5.0),
+          borderRadius: BorderRadius.circular(14.0),
           child: Container(
-            color: Theme.of(context).accentColor.withAlpha(0x22),
+            color: Theme.of(context).colorScheme.surface,
             child: Center(
               child: IconButton(
                 icon: Icon(Icons.add),
@@ -56,7 +56,7 @@ class RecordingItem extends StatelessWidget {
       tag: index,
       child: Material(
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(5.0),
+          borderRadius: BorderRadius.circular(14),
           child: InkWell(
             onTap: () {
               Navigator.pushNamed(
@@ -69,7 +69,7 @@ class RecordingItem extends StatelessWidget {
               );
             },
             child: Container(
-              color: Theme.of(context).accentColor.withAlpha(0x22),
+              color: Theme.of(context).colorScheme.surface,
               padding: EdgeInsets.all(16.0),
               child: Column(
                 children: <Widget>[
@@ -104,7 +104,7 @@ class RecordingItemHeader extends StatelessWidget {
               Icon(
                 Icons.timeline,
                 size: 16,
-                color: Colors.grey,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 4.0),
@@ -113,7 +113,8 @@ class RecordingItemHeader extends StatelessWidget {
                       recording.recordingDocument.updatedAt != null
                           ? recording.recordingDocument.updatedAt.toDate()
                           : recording.recordingDocument.createdAt.toDate()),
-                  style: TextStyle(color: Colors.grey),
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.onSurface),
                 ),
               ),
             ],
@@ -127,7 +128,7 @@ class RecordingItemHeader extends StatelessWidget {
                 )
               : Icon(
                   Icons.account_circle,
-                  color: Colors.grey,
+                  color: Theme.of(context).colorScheme.onSurface,
                   size: 28,
                 )
         ],
@@ -187,7 +188,7 @@ class RecordingPlaybackButton extends StatelessWidget {
         onTap: () => playAudio(recording.recordingDocument.storagePath),
         child: Icon(
           Icons.play_arrow,
-          color: Colors.grey,
+          color: Theme.of(context).colorScheme.onSurface,
         ),
       ),
     );

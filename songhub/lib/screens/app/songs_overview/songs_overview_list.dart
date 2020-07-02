@@ -40,12 +40,12 @@ class SongListEntry extends StatelessWidget {
       key: Key(song.songDocument.id),
       background: Container(
         alignment: AlignmentDirectional.centerEnd,
-        color: Color(0xFFF0597E),
+        color: Theme.of(context).colorScheme.error,
         child: Padding(
           padding: const EdgeInsets.only(right: 31),
           child: Icon(
             Icons.delete,
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.primary,
           ),
         ),
       ),

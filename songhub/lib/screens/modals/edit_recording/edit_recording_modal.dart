@@ -76,7 +76,8 @@ class EditRecordingModal extends StatelessWidget {
       appBar: AppBar(
         title: Text('Edit recording'),
         leading: IconButton(
-          icon: Icon(Icons.close, color: Colors.black),
+          icon:
+              Icon(Icons.close, color: Theme.of(context).colorScheme.secondary),
           onPressed: () => Navigator.of(context).pop(),
         ),
         elevation: 0.0,
@@ -94,7 +95,7 @@ class EditRecordingModal extends StatelessWidget {
           submitButtonText: 'SAVE',
           onSubmit: _handleSubmit,
           index: args.index),
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.primary,
     );
   }
 

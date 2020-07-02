@@ -31,33 +31,36 @@ class DiscussionTabView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<SongDetailsViewModel>(context);
-    return StreamBuilder<List<MessageWithImages>>(
-      stream: vm.messages,
-      builder: (context, snapshot) => Container(
-          child: Stack(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(bottom: 56),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              reverse: true,
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.all(16.0),
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: snapshot.data != null ? snapshot.data.length : 0,
-                  itemBuilder: (BuildContext context, int index) {
-                    return MessageContainer(data: snapshot.data[index]);
-                  }),
+    return Container(
+      color: Theme.of(context).colorScheme.background,
+      child: StreamBuilder<List<MessageWithImages>>(
+        stream: vm.messages,
+        builder: (context, snapshot) => Container(
+            child: Stack(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(bottom: 56),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                reverse: true,
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.all(16.0),
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: snapshot.data != null ? snapshot.data.length : 0,
+                    itemBuilder: (BuildContext context, int index) {
+                      return MessageContainer(data: snapshot.data[index]);
+                    }),
+              ),
             ),
-          ),
-          MessageForm(
-            // onPressed: _handleSubmit,
-            controller: messageController,
-            formKey: _formKey,
-          ),
-        ],
-      )),
+            MessageForm(
+              // onPressed: _handleSubmit,
+              controller: messageController,
+              formKey: _formKey,
+            ),
+          ],
+        )),
+      ),
     );
   }
 }
@@ -89,9 +92,9 @@ Widget defineMessageLayout(BuildContext context, MessageWithImages data) {
       children: <Widget>[
         ClipRRect(
           borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(5.0),
-              topRight: const Radius.circular(5.0),
-              bottomLeft: const Radius.circular(5.0)),
+              topLeft: const Radius.circular(14.0),
+              topRight: const Radius.circular(14.0),
+              bottomLeft: const Radius.circular(14.0)),
           child: MessageContent(message: data.messageDocument.content),
         ),
       ],
@@ -105,9 +108,9 @@ Widget defineMessageLayout(BuildContext context, MessageWithImages data) {
           padding: const EdgeInsets.only(left: 12.0),
           child: ClipRRect(
             borderRadius: BorderRadius.only(
-                topLeft: const Radius.circular(5.0),
-                topRight: const Radius.circular(5.0),
-                bottomRight: const Radius.circular(5.0)),
+                topLeft: const Radius.circular(14.0),
+                topRight: const Radius.circular(14.0),
+                bottomRight: const Radius.circular(14.0)),
             child: MessageContent(
               message: data.messageDocument.content,
             ),

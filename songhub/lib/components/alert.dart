@@ -25,8 +25,7 @@ class AlertWidget extends StatelessWidget {
         FlatButton(
           child: Text(
             option1,
-            style:
-                TextStyle(color: Theme.of(context).accentColor.withAlpha(0x88)),
+            style: TextStyle(color: Theme.of(context).colorScheme.surface),
           ),
           onPressed: () => Navigator.of(context).pop(false),
         ),

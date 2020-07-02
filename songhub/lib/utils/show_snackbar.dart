@@ -13,6 +13,7 @@ void showSnackBarByScaffoldId(
 void showSnackBarByContext(BuildContext context, String text) {
   final currentScaffold = Scaffold.of(context);
   final snackBarContent = SnackBar(
+    backgroundColor: Theme.of(context).colorScheme.onSecondary,
     content: Text(text),
     action: SnackBarAction(
         label: 'OK', onPressed: currentScaffold.hideCurrentSnackBar),

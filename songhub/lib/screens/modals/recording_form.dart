@@ -105,14 +105,14 @@ class _RecordingModalState extends State<RecordingModal> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Theme.of(context).hintColor,
+                      color: Theme.of(context).colorScheme.onBackground,
                       width: 2,
                     ),
                   ),
                   child: Row(
                     children: <Widget>[
                       Icon(Icons.audiotrack,
-                          color: Theme.of(context).hintColor),
+                          color: Theme.of(context).colorScheme.onBackground),
                       Padding(
                         padding: const EdgeInsets.only(left: 12.0),
                         child: Text(recordingFile != null
