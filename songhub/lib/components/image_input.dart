@@ -94,7 +94,7 @@ class ImageInput extends StatelessWidget {
               radius: 62.5,
             )
           : ClipRRect(
-              borderRadius: BorderRadius.circular(5.0),
+              borderRadius: BorderRadius.circular(14.0),
               child: _buildMaskedContent(context),
             ),
     );

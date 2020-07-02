@@ -16,7 +16,7 @@ class Cover extends StatelessWidget {
   Widget build(BuildContext context) {
     return size == CoverSize.LARGE
         ? ClipRRect(
-            borderRadius: BorderRadius.circular(5.0),
+            borderRadius: BorderRadius.circular(14.0),
             child: (() => _isValidUrl(img)
                 ? Image.network(
                     img,
@@ -25,7 +25,7 @@ class Cover extends StatelessWidget {
                 : Image.asset(img, width: 125))(),
           )
         : ClipRRect(
-            borderRadius: BorderRadius.circular(5.0),
+            borderRadius: BorderRadius.circular(8.0),
             child: (() =>
                 _isValidUrl(img) ? Image.network(img) : Image.asset(img))(),
           );

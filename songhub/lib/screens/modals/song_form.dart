@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:song_hub/components/buttons.dart';
 import 'package:song_hub/components/dropdown_field.dart';
 import 'package:song_hub/components/image_input.dart';
+import 'package:song_hub/components/read_only_field.dart';
 import 'package:song_hub/components/text_input.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 
@@ -134,19 +135,13 @@ class _SongFormState extends State<SongForm> {
                             return null;
                           },
                         ),
-                        _buildRow(
-                          TextInput(
-                            controller: _artistController,
-                            label: "Artist",
+                        // TODO: Get artist name in add
+                        _buildRow(ReadOnlyField(
                             icon: Icons.person,
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Please enter an artist';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
+                            text: widget.song != null
+                                ? widget.song.songDocument.artist
+                                : 'Artist name',
+                            prefix: '')),
                       ],
                     ),
                   ),

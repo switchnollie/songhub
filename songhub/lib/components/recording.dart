@@ -56,6 +56,7 @@ class RecordingItem extends StatelessWidget {
       tag: index,
       child: Material(
         child: ClipRRect(
+          // TODO: White borders
           borderRadius: BorderRadius.circular(14),
           child: InkWell(
             onTap: () {

@@ -41,7 +41,7 @@ class TextInput extends StatelessWidget {
                 )
               : null,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: BorderRadius.circular(8.0),
             borderSide: BorderSide(
               width: 0,
               style: BorderStyle.none,
@@ -88,7 +88,7 @@ class MessageForm extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(14.0),
+          borderRadius: BorderRadius.circular(8.0),
           child: Container(
             color: Theme.of(context).primaryColor,
             child: Form(
@@ -156,7 +156,7 @@ class MessageInput extends StatelessWidget {
           hintText: hintText,
           fillColor: Theme.of(context).colorScheme.primary,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(
               width: 0,
               style: BorderStyle.none,

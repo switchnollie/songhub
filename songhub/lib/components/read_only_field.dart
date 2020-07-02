@@ -15,13 +15,14 @@ class ReadOnlyField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(5),
+      // TODO: Fix border
+      borderRadius: BorderRadius.circular(8.0),
       child: Container(
         height: 54,
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
         decoration: BoxDecoration(
           border: Border.all(
-            color: Theme.of(context).colorScheme.background,
+            color: Theme.of(context).colorScheme.onBackground,
             width: 2,
           ),
         ),
@@ -30,7 +31,10 @@ class ReadOnlyField extends StatelessWidget {
             Icon(icon, color: Theme.of(context).colorScheme.onBackground),
             Padding(
               padding: const EdgeInsets.only(left: 12.0),
-              child: Text('${prefix ?? ''}: ${text ?? ''}'),
+              child: Text(
+                '${prefix ?? ''} ${text ?? ''}',
+                style: TextStyle(fontSize: 16),
+              ),
             ),
           ],
         ),

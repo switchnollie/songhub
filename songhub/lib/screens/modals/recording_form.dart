@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart' as Path;
 import 'package:song_hub/components/buttons.dart';
 import 'package:song_hub/components/dropdown_field.dart';
+import 'package:song_hub/components/read_only_field.dart';
 import 'package:song_hub/components/text_input.dart';
 import 'package:song_hub/models/models.dart';
 import 'package:song_hub/models/recording.dart';
@@ -98,35 +99,15 @@ class _RecordingModalState extends State<RecordingModal> {
               ),
             ),
             _buildRow(
-              ClipRRect(
-                borderRadius: BorderRadius.circular(5),
-                child: Container(
-                  height: 54,
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Theme.of(context).colorScheme.onBackground,
-                      width: 2,
-                    ),
-                  ),
-                  child: Row(
-                    children: <Widget>[
-                      Icon(Icons.audiotrack,
-                          color: Theme.of(context).colorScheme.onBackground),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 12.0),
-                        child: Text(recordingFile != null
-                            ? "File: " +
-                                Path.basename(recordingFile.path).toString()
-                            : widget.recording != null
-                                ? Path.basename(widget.recording.storagePath)
-                                    .toString()
-                                : "File:"),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              ReadOnlyField(
+                  prefix: 'File: ',
+                  icon: Icons.audiotrack,
+                  text: recordingFile != null
+                      ? Path.basename(recordingFile.path).toString()
+                      : widget.recording != null
+                          ? Path.basename(widget.recording.storagePath)
+                              .toString()
+                          : ''),
             ),
             _buildRow(
               DropdownInput(

@@ -21,7 +21,7 @@ class DropdownInput extends StatelessWidget {
             const EdgeInsets.symmetric(vertical: 4.0, horizontal: 12.0),
         filled: true,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(
             width: 0,
             style: BorderStyle.none,
