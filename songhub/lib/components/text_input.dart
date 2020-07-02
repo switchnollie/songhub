@@ -40,7 +40,7 @@ class TextInput extends StatelessWidget {
             initialValue: initialValue != null ? initialValue : null,
             // obscureText: obscureText ?? false,
             decoration: InputDecoration(
-              labelText: label,
+              labelText: hintText,
               floatingLabelBehavior: FloatingLabelBehavior.never,
               filled: true,
               fillColor: Theme.of(context).colorScheme.background,
