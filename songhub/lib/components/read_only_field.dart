@@ -24,30 +24,26 @@ class ReadOnlyField extends StatelessWidget {
                   fontSize: 13,
                   color: Theme.of(context).colorScheme.onBackground)),
         ),
-        ClipRRect(
-          // TODO: Fix border
-          borderRadius: BorderRadius.circular(8.0),
-          child: Container(
-            height: 54,
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Theme.of(context).colorScheme.onBackground,
-                width: 2,
-              ),
-            ),
-            child: Row(
-              children: <Widget>[
-                Icon(icon, color: Theme.of(context).colorScheme.onBackground),
-                Padding(
-                  padding: const EdgeInsets.only(left: 12.0),
-                  child: Text(
-                    '${text ?? ''}',
-                    style: TextStyle(fontSize: 16),
-                  ),
+        Container(
+          // TODO: Delete fixed Form height
+          height: 54,
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          foregroundDecoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
+            border: Border.all(
+                color: Theme.of(context).colorScheme.onBackground, width: 2.0),
+          ),
+          child: Row(
+            children: <Widget>[
+              Icon(icon, color: Theme.of(context).colorScheme.onBackground),
+              Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: Text(
+                  '${text ?? ''}',
+                  style: TextStyle(fontSize: 16),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ],

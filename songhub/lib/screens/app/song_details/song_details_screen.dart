@@ -4,11 +4,12 @@ import 'package:song_hub/components/cover.dart';
 import 'package:song_hub/routing.dart';
 import 'package:flutter/material.dart';
 import 'package:song_hub/screens/app/song_details/feature_tabs.dart';
-import 'package:song_hub/screens/app/song_details/edit_song_sheet.dart';
+// import 'package:song_hub/screens/app/song_details/edit_song_sheet.dart';
 import 'package:song_hub/screens/app/song_details/song_details_view_model.dart';
 import 'package:song_hub/services/firebase_auth_service.dart';
 import 'package:song_hub/services/firestore_database.dart';
 import 'package:song_hub/services/storage_service.dart';
+import 'package:song_hub/utils/show_snackbar.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 
 class SongDetailsScreen extends StatelessWidget {
@@ -91,10 +92,17 @@ class DetailsViewHeader extends StatelessWidget {
                   AvatarRow(imgs: song.participantImgUrls),
                   IconButton(
                     icon: Icon(
-                      Icons.more_horiz,
+                      Icons.edit,
+                      size: 20,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                     onPressed: () {
-                      buildShowModalBottomSheet(context);
+                      navigateAndDisplayReturnedMessage(
+                        context,
+                        "/songs/edit",
+                        arguments: EditSongModalRouteParams(song: song),
+                      );
+                      // buildShowModalBottomSheet(context);
                     },
                   ),
                 ],
@@ -104,13 +112,14 @@ class DetailsViewHeader extends StatelessWidget {
     );
   }
 
-  Future<void> buildShowModalBottomSheet(BuildContext context) {
-    return showModalBottomSheet<void>(
-        context: context,
-        builder: (BuildContext context) {
-          return EditSongSheet(song: song);
-        });
-  }
+  // TODO: Delete? Have only one entry when removing share
+  // Future<void> buildShowModalBottomSheet(BuildContext context) {
+  //   return showModalBottomSheet<void>(
+  //       context: context,
+  //       builder: (BuildContext context) {
+  //         return EditSongSheet(song: song);
+  //       });
+  // }
 }
 
 class SongTitle extends StatelessWidget {

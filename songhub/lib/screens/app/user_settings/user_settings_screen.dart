@@ -37,14 +37,19 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
     return loading
         ? Spinner()
         : ScreenContainer(
-            header: ScreenHeader(title: "Profile"),
+            header: ScreenHeader(
+              title: "Profile",
+              actionButton: IconButton(
+                icon: Icon(
+                  Icons.exit_to_app,
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
+                onPressed: () => _handleLogoutTap(auth),
+              ),
+            ),
             body: ListView(
               children: <Widget>[
-                ListTile(
-                  leading: Icon(Icons.exit_to_app),
-                  title: ListTitle(title: "Logout"),
-                  onTap: () => _handleLogoutTap(auth),
-                ),
+                Divider(height: 1),
                 ListTile(
                   leading: Icon(Icons.settings),
                   title: ListTitle(title: "User Settings"),
@@ -52,6 +57,12 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                     navigateAndDisplayReturnedMessage(context, "/profile/edit");
                   },
                 ),
+                // ListTile(
+                //   leading: Icon(Icons.exit_to_app),
+                //   title: ListTitle(title: "Logout"),
+                //   onTap: () => _handleLogoutTap(auth),
+                // ),
+                // Divider(height: 1),
               ],
             ),
           );
