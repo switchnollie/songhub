@@ -15,14 +15,14 @@ class SongList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       scrollDirection: Axis.vertical,
-      itemCount: songs != null ? songs.length : 0,
+      itemCount: songs != null ? songs.length + 1 : 0,
       padding: EdgeInsets.zero,
       itemBuilder: (context, index) {
-        if (index == songs.length) {
+        if (index == 0) {
           return Divider(height: 1);
         }
         return SongListEntry(
-          song: songs[index],
+          song: songs[index - 1],
         );
       },
     );
@@ -54,7 +54,6 @@ class SongListEntry extends StatelessWidget {
       },
       child: Column(
         children: <Widget>[
-          Divider(height: 1),
           ListTile(
             // Song entry widget
             leading: Cover(
@@ -74,6 +73,7 @@ class SongListEntry extends StatelessWidget {
               );
             },
           ),
+          Divider(height: 1),
         ],
       ),
     );

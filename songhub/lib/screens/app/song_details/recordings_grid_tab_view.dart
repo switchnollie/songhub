@@ -25,7 +25,6 @@ class _RecordingsGridState extends State<RecordingsGridTabView> {
         stream: vm.recordings,
         builder: (context, snapshot) => GridView.builder(
           padding: EdgeInsets.all(16.0),
-          // itemCount: content.length,
           itemCount: snapshot.data != null ? snapshot.data.length + 1 : 0,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
