@@ -24,6 +24,7 @@ class AddSongModal extends StatelessWidget {
     String mood,
     File imageFile,
     String status,
+    String genre,
     SongWithImages song,
     List<String> participants,
   ) async {
@@ -49,6 +50,7 @@ class AddSongModal extends StatelessWidget {
           participants: participants,
           lyrics: lyrics,
           status: status,
+          genre: genre,
           mood: mood,
           ownedBy: user.uid,
           createdAt: Timestamp.fromDate(DateTime.now().toUtc()),
@@ -65,7 +67,6 @@ class AddSongModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
       body: SongForm(
         song: null,
         onSubmit: handleSubmit,

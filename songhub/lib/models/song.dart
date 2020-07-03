@@ -11,6 +11,7 @@ class Song {
   final String mood;
   final List<String> participants;
   final String status;
+  final String genre;
   final String ownedBy;
   final Timestamp updatedAt;
   final Timestamp createdAt;
@@ -24,6 +25,7 @@ class Song {
     this.lyrics,
     this.mood,
     this.status,
+    this.genre,
     this.ownedBy,
     this.updatedAt,
     this.createdAt,
@@ -36,15 +38,16 @@ class Song {
     }
     return Song(
       id: documentId,
-      title: data["title"] ?? "",
-      artist: data["artist"] ?? "",
-      coverImg: data["coverImg"] ?? "",
-      participants: List.from(data["participants"]),
-      lyrics: data["lyrics"] ?? "",
-      status: data["status"] ?? "",
+      title: data['title'] ?? '',
+      artist: data['artist'] ?? '',
+      coverImg: data['coverImg'] ?? '',
+      participants: List.from(data['participants']),
+      lyrics: data['lyrics'] ?? '',
+      status: data['status'] ?? '',
+      genre: data['genre'] ?? '',
       ownedBy: data['ownedBy'],
-      updatedAt: data["updatedAt"],
-      createdAt: data["createdAt"],
+      updatedAt: data['updatedAt'],
+      createdAt: data['createdAt'],
     );
   }
 
@@ -58,22 +61,24 @@ class Song {
     Image URL $coverImg
     Participants IDs $participants
     Status $status
+    Genre $genre
     ''';
   }
 
   /// Serialize song to update or add in Firestore
   Map<String, dynamic> toMap() {
     return {
-      "title": title,
-      "artist": artist,
-      "coverImg": coverImg,
-      "participants": participants,
-      "lyrics": lyrics,
-      "mood": mood,
-      "status": status,
-      "ownedBy": ownedBy,
-      "updatedAt": updatedAt,
-      "createdAt": createdAt,
+      'title': title,
+      'artist': artist,
+      'coverImg': coverImg,
+      'participants': participants,
+      'lyrics': lyrics,
+      'mood': mood,
+      'status': status,
+      'genre': genre,
+      'ownedBy': ownedBy,
+      'updatedAt': updatedAt,
+      'createdAt': createdAt,
     };
   }
 
@@ -94,6 +99,7 @@ class Song {
         mood == otherSong.mood &&
         participants == otherSong.participants &&
         status == otherSong.status &&
+        genre == otherSong.genre &&
         ownedBy == otherSong.ownedBy &&
         updatedAt == otherSong.updatedAt &&
         createdAt == otherSong.createdAt;

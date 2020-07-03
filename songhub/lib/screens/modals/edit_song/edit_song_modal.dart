@@ -24,6 +24,7 @@ class EditSongModal extends StatelessWidget {
       String mood,
       File imageFile,
       String status,
+      String genre,
       SongWithImages song,
       List<String> participants) async {
     try {
@@ -52,6 +53,7 @@ class EditSongModal extends StatelessWidget {
           participants: participants,
           lyrics: lyrics,
           status: status,
+          genre: genre,
           mood: mood,
           ownedBy: song.songDocument.ownedBy,
           createdAt: song.songDocument.createdAt,
@@ -72,7 +74,6 @@ class EditSongModal extends StatelessWidget {
     final EditSongModalRouteParams args =
         ModalRoute.of(context).settings.arguments;
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
       body: SongForm(
         song: args.song,
         onSubmit: handleSubmit,

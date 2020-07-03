@@ -48,8 +48,8 @@ class ImageInput extends StatelessWidget {
     return imageFile == null && imageUrl == null
         ? Container(
             color: Theme.of(context).colorScheme.background,
-            width: 125,
-            height: 125,
+            width: 150,
+            height: 150,
             child: IconButton(
               icon: Icon(Icons.add),
               color: Theme.of(context).colorScheme.secondary,

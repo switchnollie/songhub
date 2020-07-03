@@ -161,6 +161,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                       onPicked: _handleImagePicked,
                       imageUrl: widget.user.profileImgUrl,
                       isAvatar: true,
+                      label: 'Profile image',
                     ),
                   ),
                   _buildRow(

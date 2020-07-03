@@ -11,6 +11,7 @@ class TextInput extends StatelessWidget {
   final IconData icon;
   final Function validator;
   final String initialValue;
+  final bool isMultiline;
 
   TextInput({
     this.controller,
@@ -21,6 +22,7 @@ class TextInput extends StatelessWidget {
     this.hintText,
     this.validator,
     this.initialValue,
+    this.isMultiline = false,
   });
   @override
   Widget build(BuildContext context) {
@@ -34,38 +36,41 @@ class TextInput extends StatelessWidget {
                   fontSize: 13,
                   color: Theme.of(context).colorScheme.onBackground)),
         ),
-        Container(
-          height: 54,
-          child: TextFormField(
-            initialValue: initialValue != null ? initialValue : null,
-            // obscureText: obscureText ?? false,
-            decoration: InputDecoration(
-              labelText: hintText,
-              floatingLabelBehavior: FloatingLabelBehavior.never,
-              filled: true,
-              fillColor: Theme.of(context).colorScheme.background,
-              prefixIcon: icon != null
-                  ? Icon(
-                      icon,
-                      color: Theme.of(context).colorScheme.onBackground,
-                    )
-                  : null,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0),
-                borderSide: BorderSide(
-                  width: 0,
-                  style: BorderStyle.none,
-                ),
+        TextFormField(
+          keyboardType:
+              isMultiline ? TextInputType.multiline : TextInputType.text,
+          maxLines: isMultiline ? null : 1,
+          initialValue: initialValue != null ? initialValue : null,
+          minLines: isMultiline ? 7 : 1,
+          // obscureText: obscureText ?? false,
+          decoration: InputDecoration(
+            labelText: hintText,
+            floatingLabelBehavior: FloatingLabelBehavior.never,
+            filled: true,
+            fillColor: Theme.of(context).colorScheme.background,
+            alignLabelWithHint: true,
+            prefixIcon: icon != null
+                ? Icon(
+                    icon,
+                    color: Theme.of(context).colorScheme.onBackground,
+                  )
+                : null,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0),
+              borderSide: BorderSide(
+                width: 0,
+                style: BorderStyle.none,
               ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: Theme.of(context).accentColor, width: 2.0),
-              ),
-              hintText: hintText,
             ),
-            validator: validator,
-            controller: controller,
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0),
+              borderSide:
+                  BorderSide(color: Theme.of(context).accentColor, width: 2.0),
+            ),
+            hintText: hintText,
           ),
+          validator: validator,
+          controller: controller,
         ),
       ],
     );
@@ -154,30 +159,27 @@ class MessageInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 25,
-      child: TextFormField(
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-        initialValue: initialValue != null ? initialValue : null,
-        obscureText: obscureText ?? false,
-        decoration: InputDecoration(
-          labelText: label,
-          filled: true,
-          hintText: hintText,
-          fillColor: Theme.of(context).colorScheme.primary,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(
-              width: 0,
-              style: BorderStyle.none,
-            ),
+    return TextFormField(
+      style: TextStyle(
+        color: Theme.of(context).colorScheme.secondary,
+      ),
+      initialValue: initialValue != null ? initialValue : null,
+      obscureText: obscureText ?? false,
+      decoration: InputDecoration(
+        labelText: label,
+        filled: true,
+        hintText: hintText,
+        fillColor: Theme.of(context).colorScheme.primary,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(
+            width: 0,
+            style: BorderStyle.none,
           ),
         ),
-        validator: validator,
-        controller: controller,
       ),
+      validator: validator,
+      controller: controller,
     );
   }
 }
