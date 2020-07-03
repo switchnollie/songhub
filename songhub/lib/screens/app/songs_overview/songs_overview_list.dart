@@ -69,8 +69,9 @@ class SongListEntry extends StatelessWidget {
               Navigator.pushNamed(
                 context,
                 "/songs/details",
-                arguments:
-                    SongDetailsScreenRouteParams(songId: song.songDocument.id),
+                arguments: SongDetailsScreenRouteParams(
+                    songId: song.songDocument.id,
+                    userId: song.songDocument.ownedBy),
               );
             },
           ),

@@ -15,6 +15,7 @@ import 'package:uuid/uuid.dart';
 class SongDetailsViewModel {
   SongDetailsViewModel(
       {@required this.songId,
+      @required this.userId,
       @required this.database,
       @required this.storageService,
       @required this.authService});
@@ -22,6 +23,7 @@ class SongDetailsViewModel {
   final StorageService storageService;
   final FirebaseAuthService authService;
   final String songId;
+  final String userId;
 
   /// Get recording creator image from Firebase Storage
   Future<RecordingWithImages> _getRecordingDataWithImageUrl(
@@ -91,7 +93,9 @@ class SongDetailsViewModel {
 
   /// Song stream
   Stream<SongWithImages> get song {
-    return database.songStream(songId: songId).switchMap((song) {
+    return database
+        .singleSongStream(songId: songId, userId: userId)
+        .switchMap((song) {
       final mergedValuesFutures = _getSongDataWithImageUrls(song);
       return Stream.fromFuture(mergedValuesFutures);
     });

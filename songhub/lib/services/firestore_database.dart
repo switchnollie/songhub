@@ -36,6 +36,12 @@ class FirestoreDatabase {
         builder: (data, documentId) => Song.fromMap(data, documentId),
       );
 
+  Stream<Song> singleSongStream({@required String songId, @required userId}) =>
+      _service.documentStream(
+        path: FirestorePath.song(userId, songId),
+        builder: (data, documentId) => Song.fromMap(data, documentId),
+      );
+
   Stream<List<Song>> songsStream() => _service.collectionStream(
         path: FirestorePath.songs(uid),
         builder: (data, documentId) => Song.fromMap(data, documentId),
