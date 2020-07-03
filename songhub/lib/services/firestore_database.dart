@@ -36,6 +36,7 @@ class FirestoreDatabase {
         builder: (data, documentId) => Song.fromMap(data, documentId),
       );
 
+  /// TODO: Added singleSongStream for SongDetailsViewModal to fetch song by userId and songId; Delete to do if ok or refactor songStream
   Stream<Song> singleSongStream({@required String songId, @required userId}) =>
       _service.documentStream(
         path: FirestorePath.song(userId, songId),

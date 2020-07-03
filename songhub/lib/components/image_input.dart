@@ -48,8 +48,8 @@ class ImageInput extends StatelessWidget {
     return imageFile == null && imageUrl == null
         ? Container(
             color: Theme.of(context).colorScheme.background,
-            width: 150,
-            height: 150,
+            width: 155,
+            height: 155,
             child: IconButton(
               icon: Icon(Icons.add),
               color: Theme.of(context).colorScheme.secondary,
@@ -58,13 +58,13 @@ class ImageInput extends StatelessWidget {
           )
         : Container(
             color: Colors.transparent,
-            width: 125,
-            height: 125,
+            width: 155,
+            height: 155,
             child: Stack(
               alignment: Alignment.center,
               children: <Widget>[
                 Opacity(
-                  opacity: 0.33,
+                  opacity: 0.5,
                   child: SizedBox.expand(
                     child: FittedBox(
                         fit: BoxFit.fill,

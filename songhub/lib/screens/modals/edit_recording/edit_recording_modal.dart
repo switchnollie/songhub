@@ -58,7 +58,7 @@ class EditRecordingModal extends StatelessWidget {
                       : recording.versionDescription,
             ),
             song.songDocument.id);
-        Navigator.pop(context, "Successfully added recording");
+        showSnackBarByContext(context, "Successfully added recording");
       }
     } catch (err) {
       // use 'on' clause and handle errors in more detail

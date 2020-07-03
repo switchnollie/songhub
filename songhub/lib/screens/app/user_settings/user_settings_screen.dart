@@ -3,10 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:song_hub/components/custom_app_bar.dart';
 import 'package:song_hub/components/screen_container.dart';
 // TODO: create a shared list component
-import 'package:song_hub/screens/app/songs_overview/songs_overview_list.dart';
+// import 'package:song_hub/screens/app/songs_overview/songs_overview_list.dart';
 import 'package:song_hub/components/spinner.dart';
+import 'package:song_hub/screens/modals/edit_profile/edit_profile_modal.dart';
 import 'package:song_hub/services/firebase_auth_service.dart';
-import 'package:song_hub/utils/show_snackbar.dart';
+// import 'package:song_hub/utils/show_snackbar.dart';
 
 class UserSettingsScreen extends StatefulWidget {
   static const routeId = "/profile";
@@ -49,24 +50,19 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
               isHeader: true,
               isTransparent: false,
             ),
-            body: ListView(
-              children: <Widget>[
-                Divider(height: 1),
-                ListTile(
-                  leading: Icon(Icons.settings),
-                  title: ListTitle(title: "User Settings"),
-                  onTap: () {
-                    navigateAndDisplayReturnedMessage(context, "/profile/edit");
-                  },
-                ),
-                // ListTile(
-                //   leading: Icon(Icons.exit_to_app),
-                //   title: ListTitle(title: "Logout"),
-                //   onTap: () => _handleLogoutTap(auth),
-                // ),
-                // Divider(height: 1),
-              ],
-            ),
+            body: EditProfileModal.create(context),
+            // body: ListView(
+            //   children: <Widget>[
+            //     Divider(height: 1),
+            //     ListTile(
+            //       leading: Icon(Icons.settings),
+            //       title: ListTitle(title: "User Settings"),
+            //       onTap: () {
+            //         navigateAndDisplayReturnedMessage(context, "/profile/edit");
+            //       },
+            //     ),
+            //   ],
+            // ),
           );
   }
 }

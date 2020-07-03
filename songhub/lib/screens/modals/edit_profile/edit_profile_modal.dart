@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:song_hub/components/buttons.dart';
-import 'package:song_hub/components/custom_app_bar.dart';
+// import 'package:song_hub/components/custom_app_bar.dart';
 import 'package:song_hub/components/dropdown_field.dart';
 import 'package:song_hub/components/image_input.dart';
 import 'package:song_hub/components/spinner.dart';
@@ -108,7 +108,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
           role: _selectedRole ?? widget.user.userDocument.role,
         );
         await database.setUser(newUser);
-        Navigator.pop(context, "Your profile has been updated");
+        showSnackBarByContext(context, "Your profile has been updated!");
       }
     } catch (err) {
       print(err);
@@ -139,102 +139,103 @@ class _EditProfileFormState extends State<EditProfileForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        CustomAppBar(
-          title: 'Edit profile',
-          isHeader: false,
-          isTransparent: false,
-          backIcon: Icons.close,
-        ),
-        Container(
-          padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+    return Container(
+      padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+      child: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   _buildRow(
                     ImageInput(
                       imageFile: _imageFile,
                       onPicked: _handleImagePicked,
                       imageUrl: widget.user.profileImgUrl,
-                      isAvatar: true,
-                      label: 'Profile image',
+                      isAvatar: false,
+                      label: 'Image',
                     ),
                   ),
-                  _buildRow(
-                    TextInput(
-                      label: 'First name',
-                      controller: _firstNameController,
-                      icon: Icons.person,
-                      hintText: "First Name",
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Please enter a first name';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  _buildRow(
-                    TextInput(
-                      label: 'Last name',
-                      controller: _lastNameController,
-                      icon: Icons.person,
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Please enter a last name';
-                        }
-                        return null;
-                      },
-                      hintText: "Last Name",
-                    ),
-                  ),
-                  _buildRow(
-                    TextInput(
-                      label: 'Stage name',
-                      controller: _stageNameController,
-                      icon: Icons.person,
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Please enter a stage name';
-                        }
-                        return null;
-                      },
-                      hintText: "Stage Name",
-                    ),
-                  ),
-                  _buildRow(
-                    DropdownInput(
-                      label: 'Role',
-                      items: [
-                        "Song Writer",
-                        "Producer",
+                  Expanded(
+                    child: Column(
+                      children: <Widget>[
+                        _buildRow(
+                          TextInput(
+                            label: 'First name',
+                            controller: _firstNameController,
+                            icon: Icons.person,
+                            hintText: "First Name",
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please enter a first name';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        _buildRow(
+                          TextInput(
+                            label: 'Last name',
+                            controller: _lastNameController,
+                            icon: Icons.group,
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please enter a last name';
+                              }
+                              return null;
+                            },
+                            hintText: "Last Name",
+                          ),
+                        ),
                       ],
-                      icon: Icons.label,
-                      value: _selectedRole,
-                      initialValue: "Song Writer",
-                      onChanged: (newVal) {
-                        setState(() {
-                          _selectedRole = newVal;
-                        });
-                      },
-                    ),
-                  ),
-                  _buildRow(
-                    PrimaryButton(
-                      text: "SAVE",
-                      onPressed: () => _handleSubmit(context),
                     ),
                   ),
                 ],
               ),
-            ),
+              _buildRow(
+                TextInput(
+                  label: 'Stage name',
+                  controller: _stageNameController,
+                  icon: Icons.face,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter a stage name';
+                    }
+                    return null;
+                  },
+                  hintText: "Stage Name",
+                ),
+              ),
+              _buildRow(
+                DropdownInput(
+                  label: 'Role',
+                  items: [
+                    "Song Writer",
+                    "Producer",
+                  ],
+                  icon: Icons.work,
+                  value: _selectedRole,
+                  initialValue: "Song Writer",
+                  onChanged: (newVal) {
+                    setState(() {
+                      _selectedRole = newVal;
+                    });
+                  },
+                ),
+              ),
+              _buildRow(
+                PrimaryButton(
+                  text: "SAVE",
+                  onPressed: () => _handleSubmit(context),
+                ),
+              ),
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
 }

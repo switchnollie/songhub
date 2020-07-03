@@ -25,8 +25,7 @@ class ReadOnlyField extends StatelessWidget {
                   color: Theme.of(context).colorScheme.onBackground)),
         ),
         Container(
-          // TODO: Delete fixed Form height
-          height: 54,
+          height: 59,
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           foregroundDecoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.0),

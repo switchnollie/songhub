@@ -50,7 +50,9 @@ class AddRecordingModal extends StatelessWidget {
           versionDescription: versionDescription,
         );
         await database.setRecording(recording, song.songDocument.id);
-        Navigator.pop(context, "Successfully added recording");
+        // TODO : Snackbar currently not working
+        Navigator.of(context).pop();
+        showSnackBarByContext(context, "Successfully added recording");
       }
     } catch (err) {
       // use 'on' clause and handle errors in more detail

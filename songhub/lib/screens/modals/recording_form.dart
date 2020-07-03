@@ -40,6 +40,8 @@ class _RecordingModalState extends State<RecordingModal> {
   File recordingFile;
   String selectedStatus, storagePath;
   TextEditingController _versionDescriptionController;
+  // TODO: Define other labels?
+  final List<String> labels = ["Idea", "Lyrics", "Voice memo", "Demo tape"];
 
   /// Init state
   @override
@@ -127,8 +129,7 @@ class _RecordingModalState extends State<RecordingModal> {
             _buildRow(
               DropdownInput(
                 label: 'Label',
-                // TODO: Define other labels?
-                items: ["Idea", "Lyrics", "Voice memo", "Demo tape"],
+                items: labels,
                 icon: Icons.label,
                 value: selectedStatus,
                 onChanged: (newVal) {
