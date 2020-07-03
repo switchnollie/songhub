@@ -14,6 +14,7 @@ class ImageInput extends StatelessWidget {
   final double maxHeight;
   final int quality;
   final ImageSource source;
+  final String label;
 
   final ImagePicker _picker = ImagePicker();
 
@@ -26,7 +27,8 @@ class ImageInput extends StatelessWidget {
       this.source = ImageSource.gallery,
       this.quality,
       this.imageUrl,
-      this.isAvatar = false});
+      this.isAvatar = false,
+      this.label});
 
   void _handlePickerButtonPressed() async {
     try {
@@ -83,18 +85,30 @@ class ImageInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(right: 16.0),
-      child: isAvatar
-          ? CircleAvatar(
-              backgroundColor: Theme.of(context).colorScheme.background,
-              child: ClipOval(child: _buildMaskedContent(context)),
-              radius: 62.5,
-            )
-          : ClipRRect(
-              borderRadius: BorderRadius.circular(14.0),
-              child: _buildMaskedContent(context),
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(left: 16.0, bottom: 6.0),
+          child: Text(label,
+              style: TextStyle(
+                  fontSize: 13,
+                  color: Theme.of(context).colorScheme.onBackground)),
+        ),
+        Padding(
+          padding: EdgeInsets.only(right: 16.0),
+          child: isAvatar
+              ? CircleAvatar(
+                  backgroundColor: Theme.of(context).colorScheme.background,
+                  child: ClipOval(child: _buildMaskedContent(context)),
+                  radius: 62.5,
+                )
+              : ClipRRect(
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: _buildMaskedContent(context),
+                ),
+        ),
+      ],
     );
   }
 }

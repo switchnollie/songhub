@@ -120,7 +120,7 @@ class _SongFormState extends State<SongForm> {
           isTransparent: false,
         ),
         Container(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
           child: Form(
             key: _formKey,
             child: Column(
@@ -132,7 +132,8 @@ class _SongFormState extends State<SongForm> {
                       ImageInput(
                           imageFile: imageFile,
                           onPicked: _handleImagePicked,
-                          imageUrl: imageUrl),
+                          imageUrl: imageUrl,
+                          label: 'Cover'),
                       Expanded(
                         child: Column(
                           children: <Widget>[
