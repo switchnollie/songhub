@@ -27,7 +27,7 @@ class SongDetailsScreen extends StatelessWidget {
 
     return Provider<SongDetailsViewModel>(
       create: (_) => SongDetailsViewModel(
-          songId: args.song.songDocument.id,
+          songId: args.songId,
           database: database,
           storageService: storageService,
           authService: authService),
