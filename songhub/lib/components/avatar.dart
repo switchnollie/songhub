@@ -11,8 +11,8 @@ class AvatarRow extends StatelessWidget {
       spacing: -10,
       children: imgs
           .map((img) => CircleAvatar(
-                radius: 15,
-                backgroundColor: Theme.of(context).colorScheme.background,
+                radius: 16,
+                backgroundColor: Theme.of(context).colorScheme.primary,
                 child: Avatar(img: img),
               ))
           .toList(),

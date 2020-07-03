@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:song_hub/components/spinner.dart';
 import 'package:song_hub/models/song.dart';
+import 'package:song_hub/screens/app/song_details/add_song_view_modal.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 import 'package:uuid/uuid.dart';
 import 'package:song_hub/screens/modals/song_form.dart';
@@ -64,16 +66,34 @@ class AddSongModal extends StatelessWidget {
     }
   }
 
+  static Widget create(BuildContext context) {
+    final database = Provider.of<FirestoreDatabase>(context, listen: false);
+
+    return Provider<AddSongViewModal>(
+      create: (_) => AddSongViewModal(
+        database: database,
+      ),
+      child: AddSongModal(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SongForm(
-        song: null,
-        onSubmit: handleSubmit,
-        submitButtonText: "ADD",
-        appBarTitle: 'New project',
+    final vm = Provider.of<AddSongViewModal>(context);
+    return StreamBuilder<String>(
+      stream: vm.stageName,
+      builder: (context, snapshot) => Scaffold(
+        body: snapshot.hasData
+            ? SongForm(
+                song: null,
+                onSubmit: handleSubmit,
+                submitButtonText: "ADD",
+                appBarTitle: 'New project',
+                stageName: snapshot.data,
+              )
+            : Spinner(),
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
-      backgroundColor: Theme.of(context).colorScheme.primary,
     );
   }
 }

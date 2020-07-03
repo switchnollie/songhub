@@ -32,13 +32,15 @@ class SongForm extends StatefulWidget {
   // final OnSubmit onSubmit;
   final Function onSubmit;
   final String submitButtonText;
+  final String stageName;
 
   SongForm(
       {this.song,
       this.onSubmit,
       this.submitButtonText,
       this.appBarAction,
-      this.appBarTitle});
+      this.appBarTitle,
+      this.stageName});
 
   @override
   _SongFormState createState() {
@@ -69,8 +71,9 @@ class _SongFormState extends State<SongForm> {
   /// Init state
   @override
   void initState() {
-    artist =
-        widget.song != null ? widget.song.songDocument.artist : 'Artist name';
+    artist = widget.song != null
+        ? widget.song.songDocument.artist
+        : widget.stageName;
     _titleController =
         TextEditingController(text: widget.song?.songDocument?.title ?? '');
     _lyricsController =
@@ -165,14 +168,12 @@ class _SongFormState extends State<SongForm> {
                                   return null;
                                 },
                               ),
-                              // TODO: Get artist name in add
-                              // Add wont work without name
                               _buildRow(ReadOnlyField(
                                 icon: Icons.person,
                                 label: 'Author',
                                 text: widget.song != null
                                     ? widget.song.songDocument.artist
-                                    : 'Artist name',
+                                    : artist,
                               )),
                             ],
                           ),

@@ -41,6 +41,7 @@ class CustomAppBar extends StatelessWidget {
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: isHeader ? 32 : 24,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       )
                     : SizedBox.shrink(),

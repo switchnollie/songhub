@@ -34,7 +34,7 @@ class RecordingModalRouteParams {
 Map<String, Widget Function(BuildContext)> routes = {
   SongsOverviewScreen.routeId: SongsOverviewScreen.create,
   SongDetailsScreen.routeId: SongDetailsScreen.create,
-  AddSongModal.routeId: (_) => AddSongModal(),
+  AddSongModal.routeId: AddSongModal.create,
   EditSongModal.routeId: (_) => EditSongModal(),
   AddRecordingModal.routeId: (_) => AddRecordingModal(),
   EditRecordingModal.routeId: (_) => EditRecordingModal(),

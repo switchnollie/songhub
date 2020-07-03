@@ -39,7 +39,7 @@ class DiscussionTabView extends StatelessWidget {
             child: Stack(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(bottom: 56),
+              padding: const EdgeInsets.only(bottom: 91),
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 reverse: true,

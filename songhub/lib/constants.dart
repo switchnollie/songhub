@@ -22,7 +22,7 @@ final ColorScheme colorScheme = ColorScheme.light(
   // secondaryVariant: null,
   surface: Color(0xFFD9E9FF), //Color(0xFFD5DBF4),
   background: Color(0xFFf1f7ff), //Color(0xFFF2F6FF),
-  error: Color(0xFFF07A59),
+  error: Color(0xFFD95045),
   onPrimary: Color(0xFFFFFFFF),
   onSecondary: Color(0xFF4066F0),
   onSurface: Color(0xFFA3AFBF), //Color(0xFFD2D4DC),
