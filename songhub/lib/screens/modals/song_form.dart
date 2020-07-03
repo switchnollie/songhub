@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:song_hub/components/buttons.dart';
+import 'package:song_hub/components/custom_app_bar.dart';
 import 'package:song_hub/components/dropdown_field.dart';
 import 'package:song_hub/components/image_input.dart';
 import 'package:song_hub/components/read_only_field.dart';
@@ -25,12 +26,19 @@ import 'package:song_hub/viewModels/song_with_images.dart';
 // });
 
 class SongForm extends StatefulWidget {
+  final String appBarTitle;
+  final IconButton appBarAction;
   final SongWithImages song;
   // final OnSubmit onSubmit;
   final Function onSubmit;
   final String submitButtonText;
 
-  SongForm({this.song, this.onSubmit, this.submitButtonText});
+  SongForm(
+      {this.song,
+      this.onSubmit,
+      this.submitButtonText,
+      this.appBarAction,
+      this.appBarTitle});
 
   @override
   _SongFormState createState() {
@@ -102,98 +110,109 @@ class _SongFormState extends State<SongForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: <Widget>[
-            Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  // AddCoverImage(),
-                  ImageInput(
-                      imageFile: imageFile,
-                      onPicked: _handleImagePicked,
-                      imageUrl: imageUrl),
-                  Expanded(
-                    child: Column(
-                      children: <Widget>[
-                        TextInput(
-                          controller: _titleController,
-                          label: "Title",
-                          icon: Icons.title,
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please enter a title';
-                            }
-                            return null;
-                          },
+    return Column(
+      children: <Widget>[
+        CustomAppBar(
+          title: widget.appBarTitle,
+          action: widget.appBarAction,
+          backIcon: Icons.close,
+          isHeader: false,
+          isTransparent: false,
+        ),
+        Container(
+          padding: EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: <Widget>[
+                Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      // AddCoverImage(),
+                      ImageInput(
+                          imageFile: imageFile,
+                          onPicked: _handleImagePicked,
+                          imageUrl: imageUrl),
+                      Expanded(
+                        child: Column(
+                          children: <Widget>[
+                            TextInput(
+                              controller: _titleController,
+                              label: "Title",
+                              icon: Icons.title,
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'Please enter a title';
+                                }
+                                return null;
+                              },
+                            ),
+                            // TODO: Get artist name in add
+                            // Add wont work without name
+                            _buildRow(ReadOnlyField(
+                              icon: Icons.person,
+                              label: 'Author',
+                              text: widget.song != null
+                                  ? widget.song.songDocument.artist
+                                  : 'Artist name',
+                            )),
+                          ],
                         ),
-                        // TODO: Get artist name in add
-                        // Add wont work without name
-                        _buildRow(ReadOnlyField(
-                          icon: Icons.person,
-                          label: 'Author',
-                          text: widget.song != null
-                              ? widget.song.songDocument.artist
-                              : 'Artist name',
-                        )),
+                      ),
+                    ]),
+                _buildRow(
+                  DropdownInput(
+                    label: 'Status',
+                    items: ["Initiation", "Idea", "Demo", "Release"],
+                    icon: Icons.label,
+                    value: selectedStatus,
+                    onChanged: (newVal) {
+                      setState(() {
+                        selectedStatus = newVal;
+                      });
+                    },
+                  ),
+                ),
+                _buildRow(
+                  TextInput(
+                    controller: _lyricsController,
+                    label: "Lyrics",
+                    icon: Icons.subject,
+                  ),
+                ),
+                _buildRow(
+                  TextInput(
+                    controller: _moodController,
+                    label: "Mood",
+                    icon: Icons.mood,
+                  ),
+                ),
+                _buildRow(
+                  PrimaryButton(
+                    text: widget.submitButtonText,
+                    // onPressed: () => _handleSubmit(context),
+                    onPressed: () => widget.onSubmit(
+                      _formKey,
+                      context,
+                      _titleController.text,
+                      _lyricsController.text,
+                      _moodController.text,
+                      imageFile,
+                      selectedStatus,
+                      widget.song,
+                      // TODO: Add real participants by email
+                      [
+                        "ypVCXwADSWSToxsRpyspWWAHNfJ2",
+                        "dMxDgggEyDTYgkcDW8O6MMOPNiD2"
                       ],
                     ),
                   ),
-                ]),
-            _buildRow(
-              DropdownInput(
-                label: 'Status',
-                items: ["Initiation", "Idea", "Demo", "Release"],
-                icon: Icons.label,
-                value: selectedStatus,
-                onChanged: (newVal) {
-                  setState(() {
-                    selectedStatus = newVal;
-                  });
-                },
-              ),
-            ),
-            _buildRow(
-              TextInput(
-                controller: _lyricsController,
-                label: "Lyrics",
-                icon: Icons.subject,
-              ),
-            ),
-            _buildRow(
-              TextInput(
-                controller: _moodController,
-                label: "Mood",
-                icon: Icons.mood,
-              ),
-            ),
-            _buildRow(
-              PrimaryButton(
-                text: widget.submitButtonText,
-                // onPressed: () => _handleSubmit(context),
-                onPressed: () => widget.onSubmit(
-                  _formKey,
-                  context,
-                  _titleController.text,
-                  _lyricsController.text,
-                  _moodController.text,
-                  imageFile,
-                  selectedStatus,
-                  widget.song,
-                  // TODO: Add real participants by email
-                  [
-                    "ypVCXwADSWSToxsRpyspWWAHNfJ2",
-                    "dMxDgggEyDTYgkcDW8O6MMOPNiD2"
-                  ],
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }

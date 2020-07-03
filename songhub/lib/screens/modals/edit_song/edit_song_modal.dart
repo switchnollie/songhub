@@ -73,19 +73,11 @@ class EditSongModal extends StatelessWidget {
         ModalRoute.of(context).settings.arguments;
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      appBar: AppBar(
-        title: Text('Edit existing project'),
-        leading: IconButton(
-          icon:
-              Icon(Icons.close, color: Theme.of(context).colorScheme.secondary),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        elevation: 0.0,
-      ),
       body: SongForm(
         song: args.song,
         onSubmit: handleSubmit,
         submitButtonText: "SAVE",
+        appBarTitle: 'Edit project',
       ),
       backgroundColor: Theme.of(context).colorScheme.primary,
     );

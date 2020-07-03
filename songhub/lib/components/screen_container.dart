@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:song_hub/components/screen_header.dart';
+import 'package:song_hub/components/custom_app_bar.dart';
 
 class ScreenContainer extends StatelessWidget {
   final Color color;
-  final ScreenHeader header;
+  final CustomAppBar header;
   final Widget body;
 
   ScreenContainer({this.color, this.header, @required this.body});

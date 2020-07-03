@@ -1,6 +1,7 @@
 import 'package:provider/provider.dart';
 import 'package:song_hub/components/avatar.dart';
 import 'package:song_hub/components/cover.dart';
+import 'package:song_hub/components/custom_app_bar.dart';
 import 'package:song_hub/routing.dart';
 import 'package:flutter/material.dart';
 import 'package:song_hub/screens/app/song_details/feature_tabs.dart';
@@ -40,9 +41,6 @@ class SongDetailsScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
-      appBar: AppBar(
-        elevation: 0.0,
-      ),
       body: DetailsView(song: args.song),
     );
   }
@@ -57,6 +55,7 @@ class DetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        CustomAppBar(title: 'Details', isHeader: false, isTransparent: false),
         DetailsViewHeader(song: song),
         FeatureTabs(
           song: song,
@@ -94,7 +93,7 @@ class DetailsViewHeader extends StatelessWidget {
                     icon: Icon(
                       Icons.edit,
                       size: 20,
-                      color: Theme.of(context).colorScheme.secondary,
+                      color: Theme.of(context).colorScheme.onBackground,
                     ),
                     onPressed: () {
                       navigateAndDisplayReturnedMessage(

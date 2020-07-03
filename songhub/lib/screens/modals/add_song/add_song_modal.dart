@@ -66,19 +66,11 @@ class AddSongModal extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      appBar: AppBar(
-        title: Text('Add new project'),
-        leading: IconButton(
-          icon:
-              Icon(Icons.close, color: Theme.of(context).colorScheme.secondary),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        elevation: 0.0,
-      ),
       body: SongForm(
         song: null,
         onSubmit: handleSubmit,
         submitButtonText: "ADD",
+        appBarTitle: 'New project',
       ),
       backgroundColor: Theme.of(context).colorScheme.primary,
     );

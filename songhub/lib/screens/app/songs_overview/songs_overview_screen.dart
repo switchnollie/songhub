@@ -1,7 +1,7 @@
 import 'package:provider/provider.dart';
+import 'package:song_hub/components/custom_app_bar.dart';
 import 'package:song_hub/components/screen_container.dart';
 import 'package:song_hub/screens/app/songs_overview/songs_overview_list.dart';
-import 'package:song_hub/components/screen_header.dart';
 import 'package:flutter/material.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 import 'package:song_hub/screens/app/songs_overview/songs_overview_view_model.dart';
@@ -29,12 +29,11 @@ class SongsOverviewScreen extends StatelessWidget {
       stream: vm.songs,
       builder: (context, snapshot) {
         return ScreenContainer(
-          header: ScreenHeader(
-            title: "Projects",
-            actionButton: IconButton(
+          header: CustomAppBar(
+            title: 'Projects',
+            action: IconButton(
               icon: Icon(
                 Icons.add,
-                size: 32.0,
               ),
               color: Theme.of(context).colorScheme.onBackground,
               onPressed: () {
@@ -44,6 +43,8 @@ class SongsOverviewScreen extends StatelessWidget {
                 );
               },
             ),
+            isHeader: true,
+            isTransparent: false,
           ),
           body: SongList(songs: snapshot.data),
         );

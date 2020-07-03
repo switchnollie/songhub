@@ -43,44 +43,42 @@ class ImageInput extends StatelessWidget {
   }
 
   Widget _buildMaskedContent(BuildContext context) {
-    return Center(
-      child: imageFile == null && imageUrl == null
-          ? Container(
-              color: Theme.of(context).colorScheme.background,
-              width: 125,
-              height: 125,
-              child: IconButton(
-                icon: Icon(Icons.add),
-                color: Theme.of(context).colorScheme.secondary,
-                onPressed: _handlePickerButtonPressed,
-              ),
-            )
-          : Container(
-              color: Colors.transparent,
-              width: 125,
-              height: 125,
-              child: Stack(
-                alignment: Alignment.center,
-                children: <Widget>[
-                  Opacity(
-                    opacity: 0.33,
-                    child: SizedBox.expand(
-                      child: FittedBox(
-                          fit: BoxFit.fill,
-                          child: imageFile != null
-                              ? Image.file(imageFile)
-                              : Image.network(imageUrl)),
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(imageUrl != null ? Icons.edit : Icons.add),
-                    color: Theme.of(context).colorScheme.secondary,
-                    onPressed: _handlePickerButtonPressed,
-                  ),
-                ],
-              ),
+    return imageFile == null && imageUrl == null
+        ? Container(
+            color: Theme.of(context).colorScheme.background,
+            width: 125,
+            height: 125,
+            child: IconButton(
+              icon: Icon(Icons.add),
+              color: Theme.of(context).colorScheme.secondary,
+              onPressed: _handlePickerButtonPressed,
             ),
-    );
+          )
+        : Container(
+            color: Colors.transparent,
+            width: 125,
+            height: 125,
+            child: Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                Opacity(
+                  opacity: 0.33,
+                  child: SizedBox.expand(
+                    child: FittedBox(
+                        fit: BoxFit.fill,
+                        child: imageFile != null
+                            ? Image.file(imageFile)
+                            : Image.network(imageUrl)),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(imageUrl != null ? Icons.edit : Icons.add),
+                  color: Theme.of(context).colorScheme.secondary,
+                  onPressed: _handlePickerButtonPressed,
+                ),
+              ],
+            ),
+          );
   }
 
   @override

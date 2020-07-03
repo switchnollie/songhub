@@ -18,7 +18,6 @@ class EditRecordingModal extends StatelessWidget {
   void _handleSubmit(
       BuildContext context,
       GlobalKey<FormState> formKey,
-      // TODO: File type will generate error!
       recordingFile,
       String storagePath,
       SongWithImages song,
@@ -73,28 +72,18 @@ class EditRecordingModal extends StatelessWidget {
         ModalRoute.of(context).settings.arguments;
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        title: Text('Edit recording'),
-        leading: IconButton(
-          icon:
-              Icon(Icons.close, color: Theme.of(context).colorScheme.secondary),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        elevation: 0.0,
-        backgroundColor: Colors.transparent,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.delete_outline),
-            onPressed: () => _showDeleteAlert(context, args),
-          )
-        ],
-      ),
       body: RecordingModal(
-          song: args.song,
-          recording: args.recording,
-          submitButtonText: 'SAVE',
-          onSubmit: _handleSubmit,
-          index: args.index),
+        song: args.song,
+        recording: args.recording,
+        submitButtonText: 'SAVE',
+        onSubmit: _handleSubmit,
+        index: args.index,
+        appBarTitle: 'Edit recording',
+        appBarAction: IconButton(
+          icon: Icon(Icons.delete),
+          onPressed: () => _showDeleteAlert(context, args),
+        ),
+      ),
       backgroundColor: Theme.of(context).colorScheme.primary,
     );
   }

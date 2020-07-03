@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:song_hub/components/custom_app_bar.dart';
 import 'package:song_hub/components/screen_container.dart';
-import 'package:song_hub/components/screen_header.dart';
 // TODO: create a shared list component
 import 'package:song_hub/screens/app/songs_overview/songs_overview_list.dart';
 import 'package:song_hub/components/spinner.dart';
@@ -37,15 +37,17 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
     return loading
         ? Spinner()
         : ScreenContainer(
-            header: ScreenHeader(
-              title: "Profile",
-              actionButton: IconButton(
+            header: CustomAppBar(
+              title: 'Profile',
+              action: IconButton(
                 icon: Icon(
                   Icons.exit_to_app,
                   color: Theme.of(context).colorScheme.onBackground,
                 ),
                 onPressed: () => _handleLogoutTap(auth),
               ),
+              isHeader: true,
+              isTransparent: false,
             ),
             body: ListView(
               children: <Widget>[

@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as Path;
 import 'package:song_hub/components/buttons.dart';
+import 'package:song_hub/components/custom_app_bar.dart';
 import 'package:song_hub/components/dropdown_field.dart';
 import 'package:song_hub/components/read_only_field.dart';
 import 'package:song_hub/components/text_input.dart';
@@ -17,13 +18,17 @@ class RecordingModal extends StatefulWidget {
   final String submitButtonText;
   final Function onSubmit;
   final String index;
+  final String appBarTitle;
+  final IconButton appBarAction;
 
   RecordingModal(
       {@required this.song,
       @required this.recording,
       @required this.submitButtonText,
       @required this.onSubmit,
-      @required this.index});
+      @required this.index,
+      @required this.appBarTitle,
+      this.appBarAction});
 
   @override
   _RecordingModalState createState() => _RecordingModalState();
@@ -80,23 +85,33 @@ class _RecordingModalState extends State<RecordingModal> {
         key: _formKey,
         child: Column(
           children: <Widget>[
-            Hero(
-              tag: widget.index,
-              child: Material(
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: <Widget>[
-                    Image.asset("assets/hero_recording.jpg"),
-                    Padding(
-                      padding: const EdgeInsets.only(top: kToolbarHeight),
-                      child: IconButton(
-                        icon: Icon(Icons.add),
-                        onPressed: getFile,
-                      ),
-                    )
-                  ],
+            Stack(
+              children: <Widget>[
+                Hero(
+                  tag: widget.index,
+                  child: Material(
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: <Widget>[
+                        Image.asset("assets/hero_recording.jpg"),
+                        Padding(
+                          padding: const EdgeInsets.only(top: kToolbarHeight),
+                          child: IconButton(
+                            icon: Icon(Icons.add),
+                            onPressed: getFile,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+                CustomAppBar(
+                    title: widget.appBarTitle,
+                    backIcon: Icons.close,
+                    isHeader: false,
+                    isTransparent: true,
+                    action: widget.appBarAction),
+              ],
             ),
             _buildRow(
               ReadOnlyField(
