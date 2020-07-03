@@ -40,6 +40,7 @@ class ReadOnlyField extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 12.0),
                 child: Text(
                   '${text ?? ''}',
+                  overflow: TextOverflow.fade,
                   style: TextStyle(fontSize: 16),
                 ),
               ),

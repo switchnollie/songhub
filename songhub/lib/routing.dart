@@ -14,8 +14,8 @@ import 'package:song_hub/screens/authentication/sign_up/sign_up_screen.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 
 class SongDetailsScreenRouteParams {
-  final SongWithImages song;
-  SongDetailsScreenRouteParams({this.song});
+  final String songId;
+  SongDetailsScreenRouteParams({this.songId});
 }
 
 class EditSongModalRouteParams {

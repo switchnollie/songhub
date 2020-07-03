@@ -1,4 +1,5 @@
 import 'package:song_hub/models/message.dart';
+import 'package:song_hub/models/models.dart';
 import 'package:song_hub/models/recording.dart';
 import 'package:song_hub/services/firebase_auth_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,14 +14,14 @@ import 'package:uuid/uuid.dart';
 
 class SongDetailsViewModel {
   SongDetailsViewModel(
-      {@required this.song,
+      {@required this.songId,
       @required this.database,
       @required this.storageService,
       @required this.authService});
   final FirestoreDatabase database;
   final StorageService storageService;
   final FirebaseAuthService authService;
-  final SongWithImages song;
+  final String songId;
 
   /// Get recording creator image from Firebase Storage
   Future<RecordingWithImages> _getRecordingDataWithImageUrl(
@@ -54,7 +55,7 @@ class SongDetailsViewModel {
 
   Stream<List<RecordingWithImages>> get recordings {
     return database
-        .recordingsStream(songId: song.songDocument.id)
+        .recordingsStream(songId: songId)
         .switchMap((List<Recording> recordings) {
       final mergedValuesFutures = recordings
           .map((recording) => _getRecordingDataWithImageUrl(recording))
@@ -66,9 +67,7 @@ class SongDetailsViewModel {
 
   /// Messages stream
   Stream<List<MessageWithImages>> get messages {
-    return database
-        .messagesStream(songId: song.songDocument.id)
-        .switchMap((messages) {
+    return database.messagesStream(songId: songId).switchMap((messages) {
       final mergedValuesFuture = messages
           .map((message) => _getMessageDataWithImageUrl(message))
           .toList();
@@ -87,6 +86,34 @@ class SongDetailsViewModel {
       content: content,
       createdAt: Timestamp.fromDate(DateTime.now().toUtc()),
     );
-    database.setMessage(message, song.songDocument.id);
+    database.setMessage(message, songId);
+  }
+
+  /// Song stream
+  Stream<SongWithImages> get song {
+    return database.songStream(songId: songId).switchMap((song) {
+      final mergedValuesFutures = _getSongDataWithImageUrls(song);
+      return Stream.fromFuture(mergedValuesFutures);
+    });
+  }
+
+  /// Get song with image urls
+  Future<String> _getParticipantImageUrl(String participant) async {
+    return await storageService
+        .loadImage('public/profileImgs/$participant.jpg');
+  }
+
+  Future<SongWithImages> _getSongDataWithImageUrls(Song song) async {
+    final coverImgUrl = await storageService.loadImage(song.coverImg);
+    final participantImgUrlFutures = song.participants
+        .map<Future<String>>(
+            (participant) async => await _getParticipantImageUrl(participant))
+        .toList();
+    final List<String> participantImgUrls =
+        await Future.wait(participantImgUrlFutures);
+    return SongWithImages(
+        songDocument: song,
+        coverImgUrl: coverImgUrl,
+        participantImgUrls: participantImgUrls);
   }
 }

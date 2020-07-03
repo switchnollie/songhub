@@ -2,6 +2,7 @@ import 'package:provider/provider.dart';
 import 'package:song_hub/components/avatar.dart';
 import 'package:song_hub/components/cover.dart';
 import 'package:song_hub/components/custom_app_bar.dart';
+import 'package:song_hub/components/spinner.dart';
 import 'package:song_hub/routing.dart';
 import 'package:flutter/material.dart';
 import 'package:song_hub/screens/app/song_details/feature_tabs.dart';
@@ -26,7 +27,7 @@ class SongDetailsScreen extends StatelessWidget {
 
     return Provider<SongDetailsViewModel>(
       create: (_) => SongDetailsViewModel(
-          song: args.song,
+          songId: args.song.songDocument.id,
           database: database,
           storageService: storageService,
           authService: authService),
@@ -36,12 +37,13 @@ class SongDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SongDetailsScreenRouteParams args =
-        ModalRoute.of(context).settings.arguments;
-
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      body: DetailsView(song: args.song),
+    final vm = Provider.of<SongDetailsViewModel>(context);
+    return StreamBuilder<SongWithImages>(
+      stream: vm.song,
+      builder: (context, snapshot) => Scaffold(
+        body: snapshot.hasData ? DetailsView(song: snapshot.data) : Spinner(),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+      ),
     );
   }
 }
