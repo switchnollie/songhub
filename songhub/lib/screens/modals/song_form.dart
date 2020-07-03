@@ -169,7 +169,7 @@ class _SongFormState extends State<SongForm> {
                                 },
                               ),
                               _buildRow(ReadOnlyField(
-                                icon: Icons.person,
+                                icon: Icons.face,
                                 label: 'Author',
                                 text: widget.song != null
                                     ? widget.song.songDocument.artist

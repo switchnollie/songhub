@@ -80,7 +80,8 @@ class EditRecordingModal extends StatelessWidget {
         index: args.index,
         appBarTitle: 'Edit recording',
         appBarAction: IconButton(
-          icon: Icon(Icons.delete),
+          icon: Icon(Icons.delete_outline,
+              color: Theme.of(context).colorScheme.secondary),
           onPressed: () => _showDeleteAlert(context, args),
         ),
       ),

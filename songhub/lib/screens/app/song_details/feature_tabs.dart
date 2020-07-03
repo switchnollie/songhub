@@ -16,8 +16,7 @@ class FeatureTabs extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: TabBar(
                 tabs: [Tab(text: 'FILES'), Tab(text: 'DISCUSSION')],
               ),

@@ -17,7 +17,7 @@ class TextInput extends StatelessWidget {
     this.controller,
     @required this.label,
     this.onChanged,
-    this.obscureText,
+    this.obscureText = false,
     this.icon,
     this.hintText,
     this.validator,
@@ -41,8 +41,7 @@ class TextInput extends StatelessWidget {
               isMultiline ? TextInputType.multiline : TextInputType.text,
           maxLines: isMultiline ? null : 1,
           initialValue: initialValue != null ? initialValue : null,
-          minLines: isMultiline ? 7 : 1,
-          // obscureText: obscureText ?? false,
+          obscureText: obscureText,
           decoration: InputDecoration(
             labelText: hintText,
             floatingLabelBehavior: FloatingLabelBehavior.never,

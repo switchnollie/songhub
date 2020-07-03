@@ -14,7 +14,7 @@ final appTheme = ThemeData(
   dividerColor: colorScheme.onBackground,
 );
 
-/// Custom color scheme
+/// Custom light color scheme
 final ColorScheme colorScheme = ColorScheme.light(
   primary: Color(0xFFFFFFFF),
   secondary: Color(0xFF161616),

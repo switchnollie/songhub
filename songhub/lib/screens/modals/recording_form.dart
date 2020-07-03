@@ -95,11 +95,15 @@ class _RecordingModalState extends State<RecordingModal> {
                     child: Stack(
                       alignment: Alignment.center,
                       children: <Widget>[
-                        Image.asset("assets/hero_recording.jpg"),
+                        Image.asset("assets/hero_recording_dark.jpg"),
                         Padding(
                           padding: const EdgeInsets.only(top: kToolbarHeight),
                           child: IconButton(
-                            icon: Icon(Icons.add),
+                            icon: Icon(
+                              Icons.add,
+                              size: 32,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
                             onPressed: getFile,
                           ),
                         )

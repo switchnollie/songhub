@@ -45,7 +45,8 @@ class DiscussionTabView extends StatelessWidget {
                 reverse: true,
                 child: ListView.builder(
                     shrinkWrap: true,
-                    padding: EdgeInsets.all(16.0),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: snapshot.data != null ? snapshot.data.length : 0,
                     itemBuilder: (BuildContext context, int index) {
