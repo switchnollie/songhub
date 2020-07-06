@@ -13,6 +13,7 @@ import 'package:song_hub/components/text_input.dart';
 import 'package:song_hub/models/user.dart';
 import 'package:song_hub/services/firestore_database.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 // TODO: Don't get it why we shouldn't pass parameters directly to onSubmit
 // typedef void OnSubmit({
@@ -91,7 +92,6 @@ class _SongFormState extends State<SongForm> {
     imageUrl = widget.song?.coverImgUrl;
     Future.delayed(Duration.zero, () async {
       final participants = widget.song?.songDocument?.participants;
-      print({"song": widget.song});
       if (participants != null && participants.length > 0) {
         List<User> fetchedParticipants =
             await _getUsersById(context, participants);
@@ -101,13 +101,11 @@ class _SongFormState extends State<SongForm> {
       } else {
         selectedParticipants = [];
       }
-      print(selectedParticipants);
     });
-
     super.initState();
   }
 
-  Future<List<User>> _getUsersByEmailSubstr(
+  Future<List<User>> _getUserSuggestionsByEmailSubstr(
       BuildContext context, String email) async {
     final database = Provider.of<FirestoreDatabase>(context, listen: false);
     return await database.getUsersByEmail(email);
@@ -210,6 +208,74 @@ class _SongFormState extends State<SongForm> {
                           ),
                         ),
                       ]),
+                  _buildRow(
+                    TypeAheadField(
+                      textFieldConfiguration: TextFieldConfiguration(
+                        autofocus: false,
+                        style: DefaultTextStyle.of(context).style,
+                        decoration: InputDecoration(
+                          labelText: "Participants",
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          filled: true,
+                          fillColor: Theme.of(context).colorScheme.background,
+                          alignLabelWithHint: true,
+                          prefixIcon: Icon(Icons.share),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: BorderSide(
+                              width: 0,
+                              style: BorderStyle.none,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).accentColor,
+                              width: 2.0,
+                            ),
+                          ),
+                          hintText: "Search by email to get suggestions...",
+                        ),
+                      ),
+                      itemBuilder: (context, suggestion) {
+                        if (suggestion != null) {
+                          return ListTile(
+                            leading: Icon(Icons.person),
+                            title: Text(suggestion.email),
+                            subtitle: Text(suggestion.stageName),
+                          );
+                        }
+                        return null;
+                      },
+                      errorBuilder: (BuildContext context, Object error) {
+                        if (error.runtimeType != RangeError) {
+                          return Text('$error',
+                              style: TextStyle(
+                                  color: Theme.of(context).errorColor));
+                        }
+                        return null;
+                      },
+                      noItemsFoundBuilder: (BuildContext context) => Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text('No Users found!'),
+                      ),
+                      suggestionsCallback: (pattern) async {
+                        final suggestions =
+                            await _getUserSuggestionsByEmailSubstr(
+                                context, pattern);
+                        print(suggestions);
+                        if (suggestions == null) {
+                          return [];
+                        }
+                        return suggestions;
+                      },
+                      onSuggestionSelected: (suggestion) {
+                        setState(() {
+                          selectedParticipants.add(suggestion);
+                        });
+                      },
+                    ),
+                  ),
                   _buildRow(
                     DropdownInput(
                       label: 'Genre',

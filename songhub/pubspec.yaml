@@ -41,6 +41,7 @@ dependencies:
   uuid: ^2.1.0
   path_provider: ^1.6.11
   audioplayer: ^0.8.1
+  flutter_typeahead: ^1.8.5
 
 dev_dependencies:
   flutter_test:

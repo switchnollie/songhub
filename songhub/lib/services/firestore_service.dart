@@ -20,13 +20,11 @@ class FirestoreService {
   Future<List<T>> getCollectionData<T>({
     @required String path,
     @required T builder(Map<String, dynamic> data, String documentID),
-    CollectionReference queryBuilder(CollectionReference ref),
+    Query queryBuilder(Query ref),
   }) async {
     CollectionReference ref = Firestore.instance.collection(path);
-    if (queryBuilder != null) {
-      ref = queryBuilder(ref);
-    }
-    return (await ref.getDocuments())
+    final finalQuery = queryBuilder != null ? queryBuilder(ref) : ref;
+    return (await finalQuery.getDocuments())
         .documents
         .map((snapshot) => builder(snapshot.data, snapshot.documentID))
         .where((value) => value != null)
