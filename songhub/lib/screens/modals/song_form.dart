@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:song_hub/components/autocomplete_textfield.dart';
 import 'package:song_hub/components/buttons.dart';
 import 'package:song_hub/components/custom_app_bar.dart';
 import 'package:song_hub/components/dropdown_field.dart';
@@ -55,7 +56,10 @@ class SongForm extends StatefulWidget {
 class _SongFormState extends State<SongForm> {
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController _titleController, _lyricsController, _moodController;
+  TextEditingController _titleController,
+      _lyricsController,
+      _moodController,
+      _suggestionsController;
 
   File imageFile;
   String selectedStatus, selectedGenre, imageUrl, artist;
@@ -85,10 +89,12 @@ class _SongFormState extends State<SongForm> {
         TextEditingController(text: widget.song?.songDocument?.lyrics ?? '');
     _moodController =
         TextEditingController(text: widget.song?.songDocument?.mood ?? '');
+    _suggestionsController = TextEditingController();
     selectedStatus =
         widget.song != null ? widget.song.songDocument.status : 'Initiation';
     selectedGenre =
         widget.song != null ? widget.song.songDocument.genre : 'Pop';
+
     imageUrl = widget.song?.coverImgUrl;
     Future.delayed(Duration.zero, () async {
       final participants = widget.song?.songDocument?.participants;
@@ -209,34 +215,10 @@ class _SongFormState extends State<SongForm> {
                         ),
                       ]),
                   _buildRow(
-                    TypeAheadField(
-                      textFieldConfiguration: TextFieldConfiguration(
-                        autofocus: false,
-                        style: DefaultTextStyle.of(context).style,
-                        decoration: InputDecoration(
-                          labelText: "Participants",
-                          floatingLabelBehavior: FloatingLabelBehavior.never,
-                          filled: true,
-                          fillColor: Theme.of(context).colorScheme.background,
-                          alignLabelWithHint: true,
-                          prefixIcon: Icon(Icons.share),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            borderSide: BorderSide(
-                              width: 0,
-                              style: BorderStyle.none,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            borderSide: BorderSide(
-                              color: Theme.of(context).accentColor,
-                              width: 2.0,
-                            ),
-                          ),
-                          hintText: "Search by email to get suggestions...",
-                        ),
-                      ),
+                    AutocompleteTextField(
+                      label: "Participants",
+                      hintText: "Search by email to get suggestions...",
+                      controller: _suggestionsController,
                       itemBuilder: (context, suggestion) {
                         if (suggestion != null) {
                           return ListTile(
@@ -247,19 +229,7 @@ class _SongFormState extends State<SongForm> {
                         }
                         return null;
                       },
-                      errorBuilder: (BuildContext context, Object error) {
-                        if (error.runtimeType != RangeError) {
-                          return Text('$error',
-                              style: TextStyle(
-                                  color: Theme.of(context).errorColor));
-                        }
-                        return null;
-                      },
-                      noItemsFoundBuilder: (BuildContext context) => Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text('No Users found!'),
-                      ),
-                      suggestionsCallback: (pattern) async {
+                      onChanged: (pattern) async {
                         final suggestions =
                             await _getUserSuggestionsByEmailSubstr(
                                 context, pattern);
@@ -269,7 +239,7 @@ class _SongFormState extends State<SongForm> {
                         }
                         return suggestions;
                       },
-                      onSuggestionSelected: (suggestion) {
+                      onSelected: (suggestion) {
                         setState(() {
                           selectedParticipants.add(suggestion);
                         });
