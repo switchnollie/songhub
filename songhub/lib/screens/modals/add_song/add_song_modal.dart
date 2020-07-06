@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:song_hub/components/spinner.dart';
 import 'package:song_hub/models/song.dart';
 import 'package:song_hub/screens/app/song_details/add_song_view_modal.dart';
-import 'package:song_hub/viewModels/song_with_images.dart';
 import 'package:uuid/uuid.dart';
 import 'package:song_hub/screens/modals/song_form.dart';
 import 'package:song_hub/services/firebase_auth_service.dart';
@@ -17,7 +16,7 @@ import 'package:song_hub/utils/show_snackbar.dart';
 class AddSongModal extends StatelessWidget {
   static const routeId = "/songs/add";
 
-  void handleSubmit(
+  void handleSubmit({
     GlobalKey<FormState> formKey,
     BuildContext context,
     String title,
@@ -26,10 +25,10 @@ class AddSongModal extends StatelessWidget {
     String mood,
     File imageFile,
     String status,
+    String songId,
     String genre,
-    SongWithImages song,
     List<String> participants,
-  ) async {
+  }) async {
     try {
       final database = Provider.of<FirestoreDatabase>(context, listen: false);
       final storageService =

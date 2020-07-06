@@ -10,24 +10,26 @@ import 'package:song_hub/services/firebase_auth_service.dart';
 import 'package:song_hub/services/firestore_database.dart';
 import 'package:song_hub/services/storage_service.dart';
 import 'package:song_hub/utils/show_snackbar.dart';
-import 'package:song_hub/viewModels/song_with_images.dart';
 
 class EditSongModal extends StatelessWidget {
   static const routeId = "/songs/edit";
 
-  void handleSubmit(
-      GlobalKey<FormState> formKey,
-      BuildContext context,
-      String title,
-      String artist,
-      String lyrics,
-      String mood,
-      File imageFile,
-      String status,
-      String genre,
-      SongWithImages song,
-      List<String> participants) async {
+  void handleSubmit({
+    GlobalKey<FormState> formKey,
+    BuildContext context,
+    String title,
+    String artist,
+    String lyrics,
+    String mood,
+    File imageFile,
+    String status,
+    String songId,
+    String genre,
+    List<String> participants,
+  }) async {
     try {
+      final EditSongModalRouteParams args =
+          ModalRoute.of(context).settings.arguments;
       final database = Provider.of<FirestoreDatabase>(context, listen: false);
       final storageService =
           Provider.of<StorageService>(context, listen: false);
@@ -38,25 +40,26 @@ class EditSongModal extends StatelessWidget {
         String imageUrl;
         if (imageFile != null) {
           imageUrl = await storageService.uploadCoverImg(
-            song.songDocument.id,
+            args.song.songDocument.id,
             imageFile,
             FileUserPermissions(owner: user.uid, participants: participants),
           );
         }
         await database.setSong(Song(
-          id: song.songDocument.id,
-          title: title != null ? title : song.songDocument.title,
-          artist: artist != null ? artist : song.songDocument.artist,
-          coverImg: imageUrl != song.songDocument.coverImg && imageUrl != null
-              ? imageUrl
-              : song.songDocument.coverImg,
+          id: args.song.songDocument.id,
+          title: title ?? args.song.songDocument.title,
+          artist: artist ?? args.song.songDocument.artist,
+          coverImg:
+              imageUrl != args.song.songDocument.coverImg && imageUrl != null
+                  ? imageUrl
+                  : args.song.songDocument.coverImg,
           participants: participants,
           lyrics: lyrics,
           status: status,
           genre: genre,
           mood: mood,
-          ownedBy: song.songDocument.ownedBy,
-          createdAt: song.songDocument.createdAt,
+          ownedBy: args.song.songDocument.ownedBy,
+          createdAt: args.song.songDocument.createdAt,
           updatedAt: Timestamp.fromDate(DateTime.now().toUtc()),
         ));
       }

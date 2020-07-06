@@ -14,28 +14,26 @@ import 'package:song_hub/components/text_input.dart';
 import 'package:song_hub/models/user.dart';
 import 'package:song_hub/services/firestore_database.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 
-// TODO: Don't get it why we shouldn't pass parameters directly to onSubmit
-// typedef void OnSubmit({
-//   @required GlobalKey<FormState> formKey,
-//   @required BuildContext context,
-//   String title,
-//   String artist,
-//   String lyrics,
-//   String mood,
-//   File imageFile,
-//   String status,
-//   String songId,
-//   List<String> participants,
-// });
+typedef void OnSubmit({
+  @required GlobalKey<FormState> formKey,
+  @required BuildContext context,
+  String title,
+  String artist,
+  String lyrics,
+  String mood,
+  File imageFile,
+  String status,
+  String songId,
+  String genre,
+  List<String> participants,
+});
 
 class SongForm extends StatefulWidget {
   final String appBarTitle;
   final IconButton appBarAction;
   final SongWithImages song;
-  // final OnSubmit onSubmit;
-  final Function onSubmit;
+  final OnSubmit onSubmit;
   final String submitButtonText;
   final String stageName;
 
@@ -64,7 +62,7 @@ class _SongFormState extends State<SongForm> {
   File imageFile;
   String selectedStatus, selectedGenre, imageUrl, artist;
   List<String> statuses = ['Initiation', 'Idea', 'Demo', 'Release'];
-  List<User> selectedParticipants;
+  List<User> selectedParticipants = [];
   List<String> genres = [
     'Pop',
     'Rock',
@@ -132,20 +130,21 @@ class _SongFormState extends State<SongForm> {
   }
 
   /// Push data to firebase if form fields are valid
-  // void _handleSubmit(BuildContext context) {
-  //   widget.onSubmit(
-  //     formKey: _formKey,
-  //     title: _titleController.text,
-  //     artist: _artistController.text,
-  //     imageFile: imageFile,
-  //     lyrics: _lyricsController.text,
-  //     status: selectedStatus,
-  //     mood: _moodController.text,
-  //     songId: widget.song.songDocument.id,
-  //     participants: widget.song.songDocument.participants,
-  //     context: context,
-  //   );
-  // }
+  void _handleSubmit(BuildContext context) {
+    widget.onSubmit(
+      formKey: _formKey,
+      title: _titleController.text,
+      artist: artist,
+      imageFile: imageFile,
+      lyrics: _lyricsController.text,
+      status: selectedStatus,
+      mood: _moodController.text,
+      genre: selectedGenre,
+      songId: widget.song.songDocument.id,
+      participants: widget.song.songDocument.participants,
+      context: context,
+    );
+  }
 
   @override
   void dispose() {
@@ -160,6 +159,14 @@ class _SongFormState extends State<SongForm> {
       padding: const EdgeInsets.only(top: 16.0),
       child: wrappedWidget,
     );
+  }
+
+  _handleChipDelete(String deletedUid) {
+    setState(() {
+      selectedParticipants = selectedParticipants
+          .where((participant) => participant.id != deletedUid)
+          .toList();
+    });
   }
 
   @override
@@ -215,35 +222,51 @@ class _SongFormState extends State<SongForm> {
                         ),
                       ]),
                   _buildRow(
-                    AutocompleteTextField(
-                      label: "Participants",
-                      hintText: "Search by email to get suggestions...",
-                      controller: _suggestionsController,
-                      itemBuilder: (context, suggestion) {
-                        if (suggestion != null) {
-                          return ListTile(
-                            leading: Icon(Icons.person),
-                            title: Text(suggestion.email),
-                            subtitle: Text(suggestion.stageName),
-                          );
-                        }
-                        return null;
-                      },
-                      onChanged: (pattern) async {
-                        final suggestions =
-                            await _getUserSuggestionsByEmailSubstr(
-                                context, pattern);
-                        print(suggestions);
-                        if (suggestions == null) {
-                          return [];
-                        }
-                        return suggestions;
-                      },
-                      onSelected: (suggestion) {
-                        setState(() {
-                          selectedParticipants.add(suggestion);
-                        });
-                      },
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        AutocompleteTextField(
+                          label: "Participants",
+                          hintText: "Search by email to get suggestions...",
+                          controller: _suggestionsController,
+                          itemBuilder: (context, suggestion) {
+                            if (suggestion != null) {
+                              return ListTile(
+                                leading: Icon(Icons.person),
+                                title: Text(suggestion.email),
+                                subtitle: Text(suggestion.stageName),
+                              );
+                            }
+                            return null;
+                          },
+                          onChanged: (pattern) async {
+                            final suggestions =
+                                await _getUserSuggestionsByEmailSubstr(
+                                    context, pattern);
+                            print(suggestions);
+                            if (suggestions == null) {
+                              return [];
+                            }
+                            return suggestions;
+                          },
+                          onSelected: (suggestion) {
+                            setState(() {
+                              selectedParticipants.add(suggestion);
+                            });
+                          },
+                        ),
+                        Wrap(
+                          alignment: WrapAlignment.start,
+                          spacing: 8.0,
+                          children: selectedParticipants
+                              .map((participant) => Chip(
+                                    label: Text(participant.stageName),
+                                    onDeleted: () =>
+                                        _handleChipDelete(participant.id),
+                                  ))
+                              .toList(),
+                        ),
+                      ],
                     ),
                   ),
                   _buildRow(
@@ -290,24 +313,7 @@ class _SongFormState extends State<SongForm> {
                   _buildRow(
                     PrimaryButton(
                       text: widget.submitButtonText,
-                      // onPressed: () => _handleSubmit(context),
-                      onPressed: () => widget.onSubmit(
-                        _formKey,
-                        context,
-                        _titleController.text,
-                        artist,
-                        _lyricsController.text,
-                        _moodController.text,
-                        imageFile,
-                        selectedStatus,
-                        selectedGenre,
-                        widget.song,
-                        // TODO: Add real participants by email
-                        [
-                          'ypVCXwADSWSToxsRpyspWWAHNfJ2',
-                          'dMxDgggEyDTYgkcDW8O6MMOPNiD2'
-                        ],
-                      ),
+                      onPressed: () => _handleSubmit(context),
                     ),
                   ),
                 ],

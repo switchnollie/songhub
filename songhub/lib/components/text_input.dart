@@ -168,6 +168,9 @@ class MessageInput extends StatelessWidget {
         labelText: label,
         filled: true,
         hintText: hintText,
+        hintStyle: TextStyle(
+          color: Theme.of(context).colorScheme.onBackground,
+        ),
         fillColor: Theme.of(context).colorScheme.primary,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
