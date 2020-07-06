@@ -10,6 +10,7 @@ import 'package:song_hub/components/dropdown_field.dart';
 import 'package:song_hub/components/image_input.dart';
 import 'package:song_hub/components/read_only_field.dart';
 import 'package:song_hub/components/text_input.dart';
+import 'package:song_hub/models/user.dart';
 import 'package:song_hub/services/firestore_database.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 
@@ -58,7 +59,7 @@ class _SongFormState extends State<SongForm> {
   File imageFile;
   String selectedStatus, selectedGenre, imageUrl, artist;
   List<String> statuses = ['Initiation', 'Idea', 'Demo', 'Release'];
-  List<String> selectedParticipants;
+  List<User> selectedParticipants;
   List<String> genres = [
     'Pop',
     'Rock',
@@ -88,18 +89,34 @@ class _SongFormState extends State<SongForm> {
     selectedGenre =
         widget.song != null ? widget.song.songDocument.genre : 'Pop';
     imageUrl = widget.song?.coverImgUrl;
-    Future.delayed(Duration.zero, () {
-      selectedParticipants = widget.song?.songDocument?.participants
-          ?.map((participantId) => _getEmailById(context, participantId))
-          ?.toList();
+    Future.delayed(Duration.zero, () async {
+      final participants = widget.song?.songDocument?.participants;
+      print({"song": widget.song});
+      if (participants != null && participants.length > 0) {
+        List<User> fetchedParticipants =
+            await _getUsersById(context, participants);
+        setState(() {
+          selectedParticipants = fetchedParticipants;
+        });
+      } else {
+        selectedParticipants = [];
+      }
+      print(selectedParticipants);
     });
 
     super.initState();
   }
 
-  String _getEmailById(BuildContext context, String id) {
+  Future<List<User>> _getUsersByEmailSubstr(
+      BuildContext context, String email) async {
     final database = Provider.of<FirestoreDatabase>(context, listen: false);
-    // TODO: query for users db.collection('users').where()
+    return await database.getUsersByEmail(email);
+  }
+
+  Future<List<User>> _getUsersById(
+      BuildContext context, List<String> participantIds) async {
+    final database = Provider.of<FirestoreDatabase>(context, listen: false);
+    return await database.getUsersById(participantIds);
   }
 
   void _handleImagePicked(PickedFile image) async {

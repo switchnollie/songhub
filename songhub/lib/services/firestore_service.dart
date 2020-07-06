@@ -17,6 +17,35 @@ class FirestoreService {
     await reference.setData(data, merge: merge);
   }
 
+  Future<List<T>> getCollectionData<T>({
+    @required String path,
+    @required T builder(Map<String, dynamic> data, String documentID),
+    CollectionReference queryBuilder(CollectionReference ref),
+  }) async {
+    CollectionReference ref = Firestore.instance.collection(path);
+    if (queryBuilder != null) {
+      ref = queryBuilder(ref);
+    }
+    return (await ref.getDocuments())
+        .documents
+        .map((snapshot) => builder(snapshot.data, snapshot.documentID))
+        .where((value) => value != null)
+        .toList();
+  }
+
+  Future<T> getDocumentData<T>({
+    @required String path,
+    @required T builder(Map<String, dynamic> data, String documentID),
+    DocumentReference queryBuilder(DocumentReference ref),
+  }) async {
+    DocumentReference ref = Firestore.instance.document(path);
+    if (queryBuilder != null) {
+      ref = queryBuilder(ref);
+    }
+    final DocumentSnapshot doc = await ref.get();
+    return builder(doc.data, doc.documentID);
+  }
+
   Future<void> deleteData({@required String path}) async {
     final reference = Firestore.instance.document(path);
     print('delete: $path');

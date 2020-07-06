@@ -6,6 +6,7 @@ import 'package:song_hub/models/song.dart';
 import 'package:song_hub/models/user.dart';
 import 'package:song_hub/services/firestore_paths.dart';
 import 'package:song_hub/services/firestore_service.dart';
+import 'package:song_hub/utils/get_codes_for_substr.dart';
 
 /// Singleton Service that exposes pure functions to transform
 /// Firestore documents into models and vice versa.
@@ -94,6 +95,27 @@ class FirestoreDatabase {
         path: FirestorePath.user(uid),
         builder: (data, documentId) => User.fromMap(data, documentId),
       );
+
+  Future<List<User>> getUsersByEmail(String emailSubstr) async =>
+      _service.getCollectionData(
+          path: FirestorePath.users(),
+          builder: (data, documentId) => User.fromMap(data, documentId),
+          queryBuilder: (query) {
+            final substrCodes = getCodesStartsWith(emailSubstr);
+            return query.where("email",
+                isGreaterThanOrEqualTo: substrCodes[0],
+                isLessThan: substrCodes[1]);
+          });
+
+  Future<List<User>> getUsersById(List<String> ids) async {
+    final userQueries = ids
+        .map((uid) => _service.getDocumentData(
+              path: FirestorePath.user(uid),
+              builder: (data, documentId) => User.fromMap(data, documentId),
+            ))
+        .toList();
+    return await Future.wait(userQueries);
+  }
 
   /// Updates a message. Updating all associated data with that message must
   /// not implemented on the client side but in a dedicated cloud function

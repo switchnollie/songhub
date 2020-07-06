@@ -1,5 +1,6 @@
 // Following bizz84's provider based architecture for flutter and firebase (https://github.com/bizz84/starter_architecture_flutter_firebase)
 class FirestorePath {
+  static String users() => 'users';
   static String user(String uid) => 'users/$uid';
   static String song(String uid, String songId) => 'users/$uid/songs/$songId';
   static String songs(String uid) => 'users/$uid/songs';
