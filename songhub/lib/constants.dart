@@ -27,7 +27,6 @@ final ColorScheme colorScheme = ColorScheme.light(
   onSecondary: Color(0xFF4066F0),
   onSurface: Color(0xFFA3AFBF), //Color(0xFFD2D4DC),
   onBackground: Color(0xFFD2D4DC),
-  // onBackground: null,
   // onError: null,
   brightness: Brightness.light,
 );

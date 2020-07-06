@@ -60,7 +60,7 @@ class _SongFormState extends State<SongForm> {
     'Pop',
     'Rock',
     'Electro',
-    'House, ',
+    'House',
     'Hip-Hop',
     'Classic',
     'R&B',
