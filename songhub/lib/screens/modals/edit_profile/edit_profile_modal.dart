@@ -99,6 +99,8 @@ class _EditProfileFormState extends State<EditProfileForm> {
       if (_formKey.currentState.validate()) {
         final database = Provider.of<FirestoreDatabase>(context, listen: false);
         final newUser = User(
+          id: widget.user.userDocument.id,
+          email: widget.user.userDocument.email,
           firstName:
               _firstNameController.text ?? widget.user.userDocument.firstName,
           lastName:

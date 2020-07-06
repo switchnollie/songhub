@@ -86,7 +86,6 @@ class _SignInScreenState extends State<SignInScreen> {
                             label: 'E-Mail',
                             controller: _email,
                             icon: Icons.mail,
-                            hintText: "E-Mail",
                             validator: (val) =>
                                 val.isEmpty ? 'Enter an E-Mail.' : null,
                           ),
@@ -96,7 +95,6 @@ class _SignInScreenState extends State<SignInScreen> {
                             obscureText: true,
                             icon: Icons.lock,
                             controller: _password,
-                            hintText: "Password",
                             validator: (val) => val.length < 6
                                 ? 'Enter a Password with more than 6 characters.'
                                 : null,

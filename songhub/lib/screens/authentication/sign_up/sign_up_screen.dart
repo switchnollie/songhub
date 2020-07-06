@@ -106,7 +106,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               label: 'E-Mail',
                               controller: _email,
                               icon: Icons.mail,
-                              hintText: "E-Mail",
                               validator: (val) =>
                                   val.isEmpty ? 'Enter an E-Mail.' : null,
                             ),
@@ -127,7 +126,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               validator: (val) => val.length < 6
                                   ? 'Enter a Password with more than 6 characters.'
                                   : null,
-                              hintText: "Password",
                             ),
                             SizedBox(height: 20.0),
                             TextInput(
@@ -138,7 +136,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               validator: (val) => val != _password.text
                                   ? "Passwords must match"
                                   : null,
-                              hintText: "Confirm Password",
                             ),
                             SizedBox(height: 20.0),
                             PrimaryButton(

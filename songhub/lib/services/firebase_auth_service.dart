@@ -2,6 +2,9 @@
 // https://github.com/bizz84/starter_architecture_flutter_firebase/blob/replace-platform-alert-dialog-show-alert-dialog/lib/services/firestore_auth_service.dart
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:song_hub/models/user.dart';
+import 'package:song_hub/services/firestore_paths.dart';
+import 'package:song_hub/services/firestore_service.dart';
 
 @immutable
 class FireUser {
@@ -23,6 +26,8 @@ class FireUser {
 
 class FirebaseAuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  // Firestore is only used for creating a user document on User Sign Up
+  final FirestoreService _database = FirestoreService.instance;
 
   FireUser _userFromFirebase(FirebaseUser user) {
     if (user == null) {
@@ -65,23 +70,20 @@ class FirebaseAuthService {
     return _userFromFirebase(authResult.user);
   }
 
-  /// Creates a new user in FirebaseAuth.
-  /// The Flutter APIs of FirebaseAuth currently don't provide means
-  /// to create a new user with profile or meta data which means
-  /// a second API call (updateProfile) is necessary to set the stage name
-  /// (called displayName on the FirebaseUser class)
-  ///
-  /// The creation of the corresponding user document in the Firestore
-  /// is handled by a cloud function
+  /// Creates a new user in FirebaseAuth and creates a user document in
+  /// Cloud Firestore
   Future<FireUser> createUserWithEmailAndPassword(
       String email, String password, String stageName) async {
     final AuthResult authResult = await _firebaseAuth
         .createUserWithEmailAndPassword(email: email, password: password);
+    final newUid = authResult.user?.uid;
     final userInfo = UserUpdateInfo();
     userInfo.displayName = stageName;
     await authResult.user.updateProfile(userInfo);
-    return _userFromSignInForm(
-        uid: authResult.user?.uid, email: email, stageName: stageName);
+    await _database.setData(
+        path: FirestorePath.user(newUid),
+        data: User(id: newUid, email: email, stageName: stageName).toMap());
+    return _userFromSignInForm(uid: newUid, email: email, stageName: stageName);
   }
 
   Future<void> sendPasswordResetEmail(String email) async {

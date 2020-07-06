@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
+
 enum UserRole { Artist, Producer }
 
 class User {
@@ -7,14 +9,16 @@ class User {
   final String firstName;
   final String lastName;
   final String stageName;
+  final String email;
   // final UserRole role;
   final String role;
 
   User({
-    this.id,
+    @required this.id,
+    @required this.email,
+    @required this.stageName,
     this.firstName,
     this.lastName,
-    this.stageName,
     this.role,
   });
 
@@ -29,6 +33,7 @@ class User {
       lastName: data['lastName'],
       stageName: data['stageName'],
       role: data['role'],
+      email: data['email'],
     );
   }
 
@@ -39,11 +44,13 @@ class User {
       'lastName': lastName,
       'stageName': stageName,
       'role': role,
+      'email': email,
     };
   }
 
   @override
-  int get hashCode => hashValues(id, firstName, lastName, stageName, role);
+  int get hashCode =>
+      hashValues(id, firstName, lastName, stageName, role, email);
 
   @override
   bool operator ==(dynamic other) {
@@ -54,10 +61,11 @@ class User {
         firstName == otherUser.firstName &&
         lastName == otherUser.lastName &&
         stageName == otherUser.stageName &&
-        role == otherUser.role;
+        role == otherUser.role &&
+        email == otherUser.email;
   }
 
   String toString() {
-    return "$firstName $lastName ($stageName), role: $role, id: $id";
+    return "$firstName $lastName ($stageName), role: $role, id: $id, email: $email";
   }
 }

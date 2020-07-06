@@ -1,15 +1,11 @@
 import { auth } from "firebase-functions";
 import { db } from "./globals";
 
-export const addUserDocumentOnSignUp = auth
+export const addTimestampToUserDocumentOnSignUp = auth
   .user()
-  .onCreate(async (user, context) => {
-    const { uid, email, metadata } = user;
+  .onCreate(async (_, context) => {
     const { timestamp } = context;
-    console.log(`adding user ${uid} with email ${email} to firestore document`);
     const documentRef = await db.collection("users").add({
-      id: uid,
-      email: email,
       createdAt: timestamp,
     });
     return documentRef;

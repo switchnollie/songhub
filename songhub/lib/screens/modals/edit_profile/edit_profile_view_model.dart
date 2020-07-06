@@ -6,18 +6,6 @@ import 'package:song_hub/services/firestore_database.dart';
 import 'package:song_hub/services/storage_service.dart';
 import 'package:song_hub/viewModels/user_profile.dart';
 
-class UserWithProfileImage {
-  UserWithProfileImage({this.profileImgUrl, this.userDocument});
-
-  final String profileImgUrl;
-  final User userDocument;
-
-  @override
-  String toString() {
-    return "UserDocument: ${userDocument.toString()}, profileImgUrl: $profileImgUrl";
-  }
-}
-
 class EditProfileViewModel {
   EditProfileViewModel(
       {@required this.database,
@@ -28,24 +16,15 @@ class EditProfileViewModel {
   final FirebaseAuthService authService;
 
   /// Get recording creator image from Firebase Storage
-  Future<UserWithProfileImage> _getUserDataWithImageUrl(User user) async {
+  Future<UserProfile> _getUserDataWithImageUrl(User user) async {
     String profileImgUrl = await storageService
         .loadRecordingCreatorImage('public/profileImgs/${user.id}.jpg');
-    return UserWithProfileImage(
-        userDocument: user, profileImgUrl: profileImgUrl);
+    return UserProfile(userDocument: user, profileImgUrl: profileImgUrl);
   }
 
   Stream<UserProfile> get userProfile {
-    final userWithProfileImgStream = database
+    return database
         .userStream()
         .switchMap((user) => Stream.fromFuture(_getUserDataWithImageUrl(user)));
-    return Rx.combineLatest2(
-        authService.onAuthStateChanged,
-        userWithProfileImgStream,
-        (FireUser fireUser, UserWithProfileImage user) => UserProfile(
-            email: fireUser.email,
-            uid: fireUser.uid,
-            userDocument: user.userDocument,
-            profileImgUrl: user.profileImgUrl));
   }
 }
