@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:song_hub/components/buttons.dart';
 import 'package:song_hub/components/custom_app_bar.dart';
 import 'package:song_hub/components/dropdown_field.dart';
 import 'package:song_hub/components/image_input.dart';
 import 'package:song_hub/components/read_only_field.dart';
 import 'package:song_hub/components/text_input.dart';
+import 'package:song_hub/services/firestore_database.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 
 // TODO: Don't get it why we shouldn't pass parameters directly to onSubmit
@@ -56,6 +58,7 @@ class _SongFormState extends State<SongForm> {
   File imageFile;
   String selectedStatus, selectedGenre, imageUrl, artist;
   List<String> statuses = ['Initiation', 'Idea', 'Demo', 'Release'];
+  List<String> selectedParticipants;
   List<String> genres = [
     'Pop',
     'Rock',
@@ -85,7 +88,18 @@ class _SongFormState extends State<SongForm> {
     selectedGenre =
         widget.song != null ? widget.song.songDocument.genre : 'Pop';
     imageUrl = widget.song?.coverImgUrl;
+    Future.delayed(Duration.zero, () {
+      selectedParticipants = widget.song?.songDocument?.participants
+          ?.map((participantId) => _getEmailById(context, participantId))
+          ?.toList();
+    });
+
     super.initState();
+  }
+
+  String _getEmailById(BuildContext context, String id) {
+    final database = Provider.of<FirestoreDatabase>(context, listen: false);
+    // TODO: query for users db.collection('users').where()
   }
 
   void _handleImagePicked(PickedFile image) async {

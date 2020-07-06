@@ -38,10 +38,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _password = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _confirmPassword = TextEditingController();
+  final TextEditingController _stageName = TextEditingController();
 
   void _handleSubmit() async {
     if (_formKey.currentState.validate()) {
-      var result = await widget.viewModel.signUp(_email.text, _password.text);
+      var result = await widget.viewModel.signUp(
+          email: _email.text,
+          password: _password.text,
+          stageName: _stageName.text);
       if (result == null) {
         setState(() {
           globalError = 'Registration request failed';
@@ -105,6 +109,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               hintText: "E-Mail",
                               validator: (val) =>
                                   val.isEmpty ? 'Enter an E-Mail.' : null,
+                            ),
+                            SizedBox(height: 20.0),
+                            TextInput(
+                              label: 'Stage Name',
+                              controller: _stageName,
+                              icon: Icons.face,
+                              validator: (val) =>
+                                  val.isEmpty ? 'Enter a Stage Name.' : null,
                             ),
                             SizedBox(height: 20.0),
                             TextInput(

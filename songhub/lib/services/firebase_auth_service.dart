@@ -8,14 +8,16 @@ class FireUser {
   const FireUser({
     @required this.uid,
     this.email,
+    this.displayName,
   });
 
   final String uid;
   final String email;
+  final String displayName;
 
   @override
   String toString() {
-    return "User $uid, email $email";
+    return "User $uid, email $email, displayName $displayName";
   }
 }
 
@@ -29,6 +31,18 @@ class FirebaseAuthService {
     return FireUser(
       uid: user.uid,
       email: user.email,
+      displayName: user.displayName,
+    );
+  }
+
+  FireUser _userFromSignInForm({String uid, String email, String stageName}) {
+    if (uid == null || email == null || stageName == null) {
+      return null;
+    }
+    return FireUser(
+      uid: uid,
+      email: email,
+      displayName: stageName,
     );
   }
 
@@ -51,11 +65,23 @@ class FirebaseAuthService {
     return _userFromFirebase(authResult.user);
   }
 
+  /// Creates a new user in FirebaseAuth.
+  /// The Flutter APIs of FirebaseAuth currently don't provide means
+  /// to create a new user with profile or meta data which means
+  /// a second API call (updateProfile) is necessary to set the stage name
+  /// (called displayName on the FirebaseUser class)
+  ///
+  /// The creation of the corresponding user document in the Firestore
+  /// is handled by a cloud function
   Future<FireUser> createUserWithEmailAndPassword(
-      String email, String password) async {
+      String email, String password, String stageName) async {
     final AuthResult authResult = await _firebaseAuth
         .createUserWithEmailAndPassword(email: email, password: password);
-    return _userFromFirebase(authResult.user);
+    final userInfo = UserUpdateInfo();
+    userInfo.displayName = stageName;
+    await authResult.user.updateProfile(userInfo);
+    return _userFromSignInForm(
+        uid: authResult.user?.uid, email: email, stageName: stageName);
   }
 
   Future<void> sendPasswordResetEmail(String email) async {

@@ -9,11 +9,13 @@ class SignUpViewModel with ChangeNotifier {
   final FirebaseAuthService auth;
   bool isLoading = false;
 
-  Future<FireUser> signUp(String email, String password) async {
+  Future<FireUser> signUp(
+      {String email, String password, String stageName}) async {
     try {
       isLoading = true;
       notifyListeners();
-      return await auth.createUserWithEmailAndPassword(email, password);
+      return await auth.createUserWithEmailAndPassword(
+          email, password, stageName);
     } catch (e) {
       isLoading = false;
       notifyListeners();
