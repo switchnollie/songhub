@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 
 enum UserRole { Artist, Producer }
 
+/// A model for users
 class User {
   final String id;
   final String firstName;

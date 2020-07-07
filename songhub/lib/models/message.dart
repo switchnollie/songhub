@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// A model for messages
 class Message {
   final String id;
   final String creator;

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// A model for recordings
 class Recording {
   final String id;
   final String label;
