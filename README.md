@@ -1,6 +1,6 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+This repository contains all files created for our project in *App Development* (summer semester 2020).
 
 ### What is this repository for? ###
 
@@ -9,6 +9,8 @@ This README would normally document whatever steps are necessary to get your app
 * [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
 
 ### How do I get set up? ###
+
+To run the app you can 
 
 * Summary of set up
 * Configuration
@@ -22,6 +24,12 @@ This README would normally document whatever steps are necessary to get your app
 * Writing tests
 * Code review
 * Other guidelines
+
+### Built with
+
+* Flutter
+* Dart
+* Firebase
 
 ### Project members ###
 

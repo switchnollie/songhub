@@ -260,7 +260,12 @@ class _SongFormState extends State<SongForm> {
                           spacing: 8.0,
                           children: selectedParticipants
                               .map((participant) => Chip(
+                                    backgroundColor: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
                                     label: Text(participant.stageName),
+                                    deleteIconColor:
+                                        Theme.of(context).primaryColor,
                                     onDeleted: () =>
                                         _handleChipDelete(participant.id),
                                   ))

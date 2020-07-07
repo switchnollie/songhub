@@ -15,19 +15,6 @@ class DiscussionTabView extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final messageController = TextEditingController();
 
-  // TODO: Uplifting? not working -> handleSubmit currently in text input MessageForm
-  /// Handle message input submit
-  // void _handleSubmit(BuildContext context, SongDetailsViewModel vm) async {
-  //   if (_formKey.currentState.validate()) {
-  //     try {
-  //       await vm.createMessage(messageController.text);
-  //       messageController.clear();
-  //     } catch (err) {
-  //       print(err);
-  //     }
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<SongDetailsViewModel>(context);

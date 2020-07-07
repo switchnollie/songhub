@@ -113,15 +113,6 @@ class DetailsViewHeader extends StatelessWidget {
       ),
     );
   }
-
-  // TODO: Delete? Have only one entry when removing share
-  // Future<void> buildShowModalBottomSheet(BuildContext context) {
-  //   return showModalBottomSheet<void>(
-  //       context: context,
-  //       builder: (BuildContext context) {
-  //         return EditSongSheet(song: song);
-  //       });
-  // }
 }
 
 class SongTitle extends StatelessWidget {

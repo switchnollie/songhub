@@ -69,8 +69,6 @@ class _RecordingModalState extends State<RecordingModal> {
     }
   }
 
-  // TODO:? Doesn't has custom data structure OnSubmit like song
-
   /// Build form row
   Widget _buildRow(Widget wrappedWidget) {
     return Padding(
@@ -95,14 +93,14 @@ class _RecordingModalState extends State<RecordingModal> {
                     child: Stack(
                       alignment: Alignment.center,
                       children: <Widget>[
-                        Image.asset("assets/hero_recording_dark.jpg"),
+                        Image.asset("assets/hero_recording.jpg"),
                         Padding(
                           padding: const EdgeInsets.only(top: kToolbarHeight),
                           child: IconButton(
                             icon: Icon(
                               Icons.add,
                               size: 32,
-                              color: Theme.of(context).colorScheme.primary,
+                              color: Theme.of(context).colorScheme.secondary,
                             ),
                             onPressed: getFile,
                           ),

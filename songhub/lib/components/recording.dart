@@ -1,10 +1,10 @@
-import 'package:audioplayer/audioplayer.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:song_hub/routing.dart';
 import 'package:song_hub/viewModels/recording_with_images.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
+import 'package:video_player/video_player.dart';
 
 /// File input container
 class RecordingInputItem extends StatelessWidget {
@@ -18,21 +18,24 @@ class RecordingInputItem extends StatelessWidget {
     return Hero(
       tag: "$index",
       child: Material(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(14.0),
-          child: Container(
-            color: Theme.of(context).colorScheme.surface,
-            child: Center(
-              child: IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    "/recordings/add",
-                    arguments: RecordingModalRouteParams(
-                        song: song, recording: null, index: index),
-                  );
-                },
+        child: Container(
+          color: Theme.of(context).colorScheme.background,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(14.0),
+            child: Container(
+              color: Theme.of(context).colorScheme.surface,
+              child: Center(
+                child: IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      "/recordings/add",
+                      arguments: RecordingModalRouteParams(
+                          song: song, recording: null, index: index),
+                    );
+                  },
+                ),
               ),
             ),
           ),
@@ -55,29 +58,31 @@ class RecordingItem extends StatelessWidget {
     return Hero(
       tag: index,
       child: Material(
-        child: ClipRRect(
-          // TODO: White borders
-          borderRadius: BorderRadius.circular(14),
-          child: InkWell(
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                "/recordings/edit",
-                arguments: RecordingModalRouteParams(
-                    song: song,
-                    recording: recording.recordingDocument,
-                    index: index),
-              );
-            },
-            child: Container(
-              color: Theme.of(context).colorScheme.surface,
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                children: <Widget>[
-                  RecordingItemHeader(recording: recording),
-                  RecordingItemBody(recording: recording),
-                  RecordingPlaybackButton(recording: recording),
-                ],
+        child: InkWell(
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              "/recordings/edit",
+              arguments: RecordingModalRouteParams(
+                  song: song,
+                  recording: recording.recordingDocument,
+                  index: index),
+            );
+          },
+          child: Container(
+            color: Theme.of(context).colorScheme.background,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(14.0),
+              child: Container(
+                color: Theme.of(context).colorScheme.surface,
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  children: <Widget>[
+                    RecordingItemHeader(recording: recording),
+                    RecordingItemBody(recording: recording),
+                    RecordingPlaybackButton(recording: recording),
+                  ],
+                ),
               ),
             ),
           ),
@@ -176,36 +181,93 @@ class RecordingItemBody extends StatelessWidget {
   }
 }
 
-class RecordingPlaybackButton extends StatelessWidget {
+class RecordingPlaybackButton extends StatefulWidget {
   final RecordingWithImages recording;
 
   RecordingPlaybackButton({this.recording});
 
   @override
+  _RecordingPlaybackButtonState createState() =>
+      _RecordingPlaybackButtonState();
+}
+
+class _RecordingPlaybackButtonState extends State<RecordingPlaybackButton> {
+  VideoPlayerController _controller;
+  Future<void> _initializeVideoPlayerFuture;
+  // VoidCallback listener;
+  // bool _isPlaying;
+  String fileUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    // listener = () {
+    //   final bool isPlaying = _controller.value.isPlaying;
+    //   if (isPlaying != _isPlaying) {
+    //     setState(() {
+    //       _isPlaying = isPlaying;
+    //     });
+    //   }
+    // };
+    initAudioPlayback(widget.recording.recordingDocument.storagePath);
+  }
+
+  /// Initialize video player and fetch downloadUrl of file
+  void initAudioPlayback(String storagePath) async {
+    FirebaseStorage _storage = FirebaseStorage.instance;
+
+    try {
+      final String currentUrl =
+          await _storage.ref().child(storagePath).getDownloadURL();
+
+      setState(() {
+        fileUrl = currentUrl;
+      });
+      _controller = VideoPlayerController.network(fileUrl);
+      _controller.setLooping(true);
+      // ..addListener(listener);
+      _initializeVideoPlayerFuture = _controller.initialize();
+    } catch (e) {
+      print('Couldn\'t get audio from Storage! $e');
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  // TODO: Move functionality out of component
+  @override
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.bottomRight,
-      child: InkWell(
-        onTap: () => playAudio(recording.recordingDocument.storagePath),
-        child: Icon(
-          Icons.play_arrow,
-          color: Theme.of(context).colorScheme.onSurface,
-        ),
-      ),
+      child: FutureBuilder(
+          future: _initializeVideoPlayerFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return InkWell(
+                onTap: () {
+                  setState(() {
+                    _controller.value.isPlaying
+                        ? _controller.pause()
+                        : _controller.play();
+                  });
+                },
+                child: Icon(
+                  _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              );
+            } else {
+              return SizedBox(
+                height: 24,
+                width: 24,
+                child: CircularProgressIndicator(),
+              );
+            }
+          }),
     );
-  }
-
-  /// TODO: Move out of component
-  /// Playback file from Firebase Storage
-  void playAudio(String storagePath) async {
-    FirebaseStorage _storage = FirebaseStorage.instance;
-    try {
-      final String fileUrl =
-          await _storage.ref().child(storagePath).getDownloadURL();
-      AudioPlayer ap = AudioPlayer();
-      ap.play(fileUrl);
-    } catch (e) {
-      print('Couldn\'t playback file! $e');
-    }
   }
 }

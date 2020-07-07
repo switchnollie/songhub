@@ -32,12 +32,6 @@ class FirestoreDatabase {
 
   /// Updates a song. Updating all associated data with that song must
   /// not implemented on the client side but in a dedicated cloud function
-  Stream<Song> songStream({@required String songId}) => _service.documentStream(
-        path: FirestorePath.song(uid, songId),
-        builder: (data, documentId) => Song.fromMap(data, documentId),
-      );
-
-  /// TODO: Added singleSongStream for SongDetailsViewModal to fetch song by userId and songId; Delete to do if ok or refactor songStream
   Stream<Song> singleSongStream({@required String songId, @required userId}) =>
       _service.documentStream(
         path: FirestorePath.song(userId, songId),

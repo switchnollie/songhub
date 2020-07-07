@@ -30,8 +30,8 @@ class SongDetailsViewModel {
       Recording recording) async {
     String imageUrl;
     if (recording.creator != null) {
-      imageUrl = await storageService.loadRecordingCreatorImage(
-          'public/profileImgs/${recording.creator}.jpg');
+      imageUrl = await storageService
+          .loadImage('public/profileImgs/${recording.creator}.jpg');
     }
 
     return RecordingWithImages(
@@ -44,8 +44,8 @@ class SongDetailsViewModel {
 
     String authorImgUrl;
     if (message.creator != null) {
-      authorImgUrl = await storageService.loadRecordingCreatorImage(
-          'public/profileImgs/${message.creator}.jpg');
+      authorImgUrl = await storageService
+          .loadImage('public/profileImgs/${message.creator}.jpg');
     }
     bool isMyMessage = user.uid == message.creator;
 

@@ -17,8 +17,8 @@ class EditProfileViewModel {
 
   /// Get recording creator image from Firebase Storage
   Future<UserProfile> _getUserDataWithImageUrl(User user) async {
-    String profileImgUrl = await storageService
-        .loadRecordingCreatorImage('public/profileImgs/${user.id}.jpg');
+    String profileImgUrl =
+        await storageService.loadImage('public/profileImgs/${user.id}.jpg');
     return UserProfile(userDocument: user, profileImgUrl: profileImgUrl);
   }
 
