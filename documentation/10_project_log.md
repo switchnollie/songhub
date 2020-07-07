@@ -62,9 +62,6 @@ In our first wireframing approaches we accomplished:
 * Second iteration of wireframe simplifying layout (reduced hirarchy, removed unnecessary elements, ...)
 * First system run
 
-#### Information architecture
-![information architecture](../InformationArch.png)
-
 ### What hinderances/risks did/do we face?
 * Two Group members left because they chose other modules &rightarrow; Only two participants
 * Different development environments (MacOS, Ubuntu, Sketch, XD, Android studio, VS Code, ...)
