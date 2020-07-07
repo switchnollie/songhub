@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:song_hub/components/avatar.dart';
 
-/// Message content widget
+/// A component to display a message
 class MessageContent extends StatelessWidget {
   final String message;
 
@@ -20,7 +20,7 @@ class MessageContent extends StatelessWidget {
   }
 }
 
-/// Message author image widget
+/// A component to display a message author image
 class MessageAuthor extends StatelessWidget {
   final String authorImage;
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:song_hub/components/custom_app_bar.dart';
 
+/// A component to display screen content
 class ScreenContainer extends StatelessWidget {
   final Color color;
   final CustomAppBar header;

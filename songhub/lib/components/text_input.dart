@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:song_hub/screens/app/song_details/song_details_view_model.dart';
 
+/// A component to input and validate text
 class TextInput extends StatelessWidget {
   final bool obscureText;
   final String label;

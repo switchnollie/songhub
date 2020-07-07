@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 enum CoverSize { LARGE, SMALL }
 
+/// A component to display project covers
 class Cover extends StatelessWidget {
   final String img;
   final CoverSize size;

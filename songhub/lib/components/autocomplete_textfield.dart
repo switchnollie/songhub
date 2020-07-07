@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:song_hub/components/spinner.dart';
 
+/// A component to display an auto completing text field
 class AutocompleteTextField extends StatelessWidget {
   final SuggestionsCallback onChanged;
   final SuggestionSelectionCallback onSelected;

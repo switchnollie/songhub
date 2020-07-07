@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 
 typedef dynamic OnPicked(PickedFile pickedFile);
 
+/// A image picker component to select files from os gallery
 class ImageInput extends StatelessWidget {
   final File imageFile;
   final String imageUrl;

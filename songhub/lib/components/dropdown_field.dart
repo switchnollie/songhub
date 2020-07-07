@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// A dropdown component to selected defined inputs
 class DropdownInput extends StatelessWidget {
   final String label;
   final List<String> items;

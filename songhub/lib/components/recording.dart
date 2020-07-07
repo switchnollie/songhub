@@ -6,7 +6,7 @@ import 'package:song_hub/viewModels/recording_with_images.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 import 'package:video_player/video_player.dart';
 
-/// File input container
+/// A component to display a recording input container
 class RecordingInputItem extends StatelessWidget {
   final SongWithImages song;
   final String index;
@@ -45,7 +45,7 @@ class RecordingInputItem extends StatelessWidget {
   }
 }
 
-/// Container for specific file in grid
+/// A component to display a specific recording item
 class RecordingItem extends StatelessWidget {
   final SongWithImages song;
   final RecordingWithImages recording;
@@ -92,7 +92,7 @@ class RecordingItem extends StatelessWidget {
   }
 }
 
-/// Header of file container
+/// A component to display a header for an recording item
 class RecordingItemHeader extends StatelessWidget {
   final RecordingWithImages recording;
 
@@ -143,7 +143,7 @@ class RecordingItemHeader extends StatelessWidget {
   }
 }
 
-/// Content of file container
+/// A component to display a body for a recording item
 class RecordingItemBody extends StatelessWidget {
   final RecordingWithImages recording;
 
@@ -181,6 +181,7 @@ class RecordingItemBody extends StatelessWidget {
   }
 }
 
+/// A component to display a playback button for a recording item
 class RecordingPlaybackButton extends StatefulWidget {
   final RecordingWithImages recording;
 

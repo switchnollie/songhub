@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Read only container
+/// A component to display read only text
 class ReadOnlyField extends StatelessWidget {
   final String text;
   final String label;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// A component to display alerts
 class AlertWidget extends StatelessWidget {
   final String title, text, option1, option2;
   final Function onTap;

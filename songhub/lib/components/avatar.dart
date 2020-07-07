@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// A component to display an avatar row
 class AvatarRow extends StatelessWidget {
   final List<String> imgs;
 
@@ -20,6 +21,7 @@ class AvatarRow extends StatelessWidget {
   }
 }
 
+/// A component to display a single avatar
 class Avatar extends StatelessWidget {
   final String img;
 
