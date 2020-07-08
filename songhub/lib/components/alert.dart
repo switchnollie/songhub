@@ -1,3 +1,5 @@
+/// Authors: Pascal Schlaak, Tim Weise
+
 import 'package:flutter/material.dart';
 
 /// A component to display alerts

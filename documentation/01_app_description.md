@@ -1,8 +1,10 @@
 # App Description
 
+TIM
+
 ### Problem and Opportunity
 
-#### Undressed problem
+#### Addressed problem
 #### Solution
 * Value of idea
 * What is adresses

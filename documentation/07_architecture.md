@@ -1,5 +1,7 @@
 # Architecture
 
+TIM
+
 ### Information architecture
 
 ### Static architecture
