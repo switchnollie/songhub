@@ -59,7 +59,7 @@ class EditRecordingModal extends StatelessWidget {
             ),
             song.songDocument.id,
             song.songDocument.ownedBy);
-        showSnackBarByContext(context, "Successfully added recording");
+        Navigator.of(context).pop("Successfully updated recording");
       }
     } catch (err) {
       // use 'on' clause and handle errors in more detail
@@ -119,7 +119,7 @@ class EditRecordingModal extends StatelessWidget {
     try {
       database.deleteRecording(recording, song.songDocument.id);
       storageService.deleteFile(recording.storagePath);
-      Navigator.of(context).pop();
+      Navigator.of(context).pop("Successfully deleted recording");
     } catch (e) {
       print(e);
     }

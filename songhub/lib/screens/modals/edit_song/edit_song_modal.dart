@@ -62,9 +62,7 @@ class EditSongModal extends StatelessWidget {
           updatedAt: Timestamp.fromDate(DateTime.now().toUtc()),
         ));
       }
-      // TODO: Error no Scaffold
-      // Navigator.pop(context, "Successfully updated song");
-      Navigator.of(context).pop();
+      Navigator.of(context).pop("Successfully updated song");
     } catch (err) {
       // use 'on' clause and handle errors in more detail
       showSnackBarByContext(context, "Error submitting data");
