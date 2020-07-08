@@ -82,95 +82,96 @@ class _RecordingModalState extends State<RecordingModal> {
   Widget build(BuildContext context) {
     return Container(
       child: SingleChildScrollView(
-          child: Form(
-        key: _formKey,
-        child: Column(
-          children: <Widget>[
-            Stack(
-              children: <Widget>[
-                Hero(
-                  tag: widget.index,
-                  child: Material(
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: <Widget>[
-                        Image.asset("assets/hero_recording.jpg"),
-                        Padding(
-                          padding: const EdgeInsets.only(top: kToolbarHeight),
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.add,
-                              size: 32,
-                              color: Theme.of(context).colorScheme.secondary,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              Stack(
+                children: <Widget>[
+                  Hero(
+                    tag: widget.index,
+                    child: Material(
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: <Widget>[
+                          Image.asset("assets/hero_recording.jpg"),
+                          Padding(
+                            padding: const EdgeInsets.only(top: kToolbarHeight),
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.add,
+                                size: 32,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                              onPressed: getFile,
                             ),
-                            onPressed: getFile,
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
+                  CustomAppBar(
+                      title: widget.appBarTitle,
+                      backIcon: Icons.close,
+                      isHeader: false,
+                      isTransparent: true,
+                      action: widget.appBarAction),
+                ],
+              ),
+              _buildRow(
+                ReadOnlyField(
+                    label: 'File',
+                    icon: Icons.audiotrack,
+                    text: recordingFile != null
+                        ? Path.basename(recordingFile.path).toString()
+                        : widget.recording != null
+                            ? Path.basename(widget.recording.storagePath)
+                                .toString()
+                            : ''),
+              ),
+              _buildRow(
+                DropdownInput(
+                  label: 'Label',
+                  items: labels,
+                  icon: Icons.label,
+                  value: selectedLabel.value,
+                  onChanged: (newVal) {
+                    setState(() {
+                      selectedLabel = mappedLabels[newVal];
+                    });
+                  },
                 ),
-                CustomAppBar(
-                    title: widget.appBarTitle,
-                    backIcon: Icons.close,
-                    isHeader: false,
-                    isTransparent: true,
-                    action: widget.appBarAction),
-              ],
-            ),
-            _buildRow(
-              ReadOnlyField(
-                  label: 'File',
-                  icon: Icons.audiotrack,
-                  text: recordingFile != null
-                      ? Path.basename(recordingFile.path).toString()
-                      : widget.recording != null
-                          ? Path.basename(widget.recording.storagePath)
-                              .toString()
-                          : ''),
-            ),
-            _buildRow(
-              DropdownInput(
-                label: 'Label',
-                items: labels,
-                icon: Icons.label,
-                value: selectedLabel.value,
-                onChanged: (newVal) {
-                  setState(() {
-                    selectedLabel = mappedLabels[newVal];
-                  });
-                },
               ),
-            ),
-            _buildRow(
-              TextInput(
-                controller: _versionDescriptionController,
-                label: "Description",
-                icon: Icons.chat_bubble,
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter an label';
-                  }
-                  return null;
-                },
+              _buildRow(
+                TextInput(
+                  controller: _versionDescriptionController,
+                  label: "Description",
+                  icon: Icons.chat_bubble,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter an label';
+                    }
+                    return null;
+                  },
+                ),
               ),
-            ),
-            _buildRow(
-              PrimaryButton(
-                  text: widget.submitButtonText,
-                  onPressed: () => widget.onSubmit(
-                      context,
-                      _formKey,
-                      recordingFile,
-                      storagePath,
-                      widget.song,
-                      selectedLabel,
-                      _versionDescriptionController.text,
-                      widget.recording)),
-            ),
-          ],
+              _buildRow(
+                PrimaryButton(
+                    text: widget.submitButtonText,
+                    onPressed: () => widget.onSubmit(
+                        context,
+                        _formKey,
+                        recordingFile,
+                        storagePath,
+                        widget.song,
+                        selectedLabel,
+                        _versionDescriptionController.text,
+                        widget.recording)),
+              ),
+            ],
+          ),
         ),
-      )),
+      ),
     );
   }
 }

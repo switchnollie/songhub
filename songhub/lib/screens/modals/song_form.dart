@@ -11,6 +11,7 @@ import 'package:song_hub/components/dropdown_field.dart';
 import 'package:song_hub/components/image_input.dart';
 import 'package:song_hub/components/read_only_field.dart';
 import 'package:song_hub/components/text_input.dart';
+import 'package:song_hub/models/genre.dart';
 import 'package:song_hub/models/user.dart';
 import 'package:song_hub/services/firestore_database.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
@@ -24,7 +25,7 @@ typedef void OnSubmit({
   String mood,
   File imageFile,
   String status,
-  String genre,
+  Genre genre,
   List<String> participants,
 });
 
@@ -59,20 +60,10 @@ class _SongFormState extends State<SongForm> {
       _suggestionsController;
 
   File imageFile;
-  String _selectedStatus, _selectedGenre, _imageUrl;
+  Genre _selectedGenre;
+  String _selectedStatus, _imageUrl;
   List<String> statuses = ['Initiation', 'Idea', 'Demo', 'Release'];
   List<User> selectedParticipants = [];
-  List<String> genres = [
-    'Pop',
-    'Rock',
-    'Electro',
-    'House',
-    'Hip-Hop',
-    'Classic',
-    'R&B',
-    'Soul',
-    'Metal',
-  ];
 
   /// Init state
   @override
@@ -87,7 +78,7 @@ class _SongFormState extends State<SongForm> {
     _selectedStatus =
         widget.song != null ? widget.song.songDocument.status : 'Initiation';
     _selectedGenre =
-        widget.song != null ? widget.song.songDocument.genre : 'Pop';
+        widget.song != null ? widget.song.songDocument.genre : Genre.Pop;
 
     _imageUrl = widget.song?.coverImgUrl;
     Future.delayed(Duration.zero, () async {
@@ -287,10 +278,10 @@ class _SongFormState extends State<SongForm> {
                       label: 'Genre',
                       items: genres,
                       icon: Icons.graphic_eq,
-                      value: _selectedGenre,
+                      value: _selectedGenre.value,
                       onChanged: (newVal) {
                         setState(() {
-                          _selectedGenre = newVal;
+                          _selectedGenre = mappedGenres[newVal];
                         });
                       },
                     ),
