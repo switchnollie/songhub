@@ -80,7 +80,6 @@ class _RecordingModalState extends State<RecordingModal> {
 
   @override
   Widget build(BuildContext context) {
-    final labels = mappedLabels.entries.map((e) => e.key).toList();
     return Container(
       child: SingleChildScrollView(
           child: Form(

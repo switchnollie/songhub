@@ -33,16 +33,6 @@ extension LabelExtension on Label {
   }
 
   String get value => _value(this);
-  List<String> get values => [
-        "Idea",
-        "Voice Memo",
-        "Live Session",
-        "Demo Tape",
-        "Rough Mix",
-        "Intermediate Mix",
-        "Final Mix",
-        "Master",
-      ];
 }
 
 const Map<String, Label> mappedLabels = {
@@ -55,3 +45,14 @@ const Map<String, Label> mappedLabels = {
   "Final Mix": Label.FinalMix,
   "Master": Label.Master,
 };
+
+const List<String> labels = [
+  "Idea",
+  "Voice Memo",
+  "Live Session",
+  "Demo Tape",
+  "Rough Mix",
+  "Intermediate Mix",
+  "Final Mix",
+  "Master",
+];
