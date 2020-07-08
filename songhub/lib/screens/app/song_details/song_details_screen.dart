@@ -82,7 +82,7 @@ class DetailsViewHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Cover(
-            img: song.coverImgUrl,
+            img: song.coverImgUrl ?? "assets/placeholderCover.png",
             size: CoverSize.LARGE,
           ),
           Padding(

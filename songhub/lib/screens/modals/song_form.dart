@@ -273,8 +273,12 @@ class _SongFormState extends State<SongForm> {
                                     label: Text(participant.stageName),
                                     deleteIconColor:
                                         Theme.of(context).primaryColor,
-                                    onDeleted: () =>
-                                        _handleChipDelete(participant.id),
+                                    onDeleted: widget
+                                                .song?.songDocument?.ownedBy ==
+                                            participant.id
+                                        ? null
+                                        : () =>
+                                            _handleChipDelete(participant.id),
                                   ))
                               .toList(),
                         ),

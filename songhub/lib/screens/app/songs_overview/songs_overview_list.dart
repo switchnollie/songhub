@@ -102,7 +102,6 @@ class SongListEntry extends StatelessWidget {
   }
 
   /// Delete song document in Firestore
-  /// TODO: Delete files and messages in Storage too
   void _handleSongDelete(BuildContext context, SongWithImages song) async {
     final database = Provider.of<FirestoreDatabase>(context, listen: false);
     // final storageService = Provider.of<StorageService>(context, listen: false);
