@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 
-void showSnackBarByScaffoldId(
-    GlobalKey<ScaffoldState> scaffoldKey, String text) {
+void showSnackBarByScaffoldId(GlobalKey<ScaffoldState> scaffoldKey, String text,
+    {bool isError = false}) {
   final snackBarContent = SnackBar(
-    content: Text(text),
+    content:
+        Text(text, style: isError ? TextStyle(color: Colors.redAccent) : null),
     action: SnackBarAction(
         label: 'OK', onPressed: scaffoldKey.currentState.hideCurrentSnackBar),
   );
   scaffoldKey.currentState.showSnackBar(snackBarContent);
 }
 
-void showSnackBarByContext(BuildContext context, String text) {
+void showSnackBarByContext(BuildContext context, String text,
+    {bool isError = false}) {
   final currentScaffold = Scaffold.of(context);
   final snackBarContent = SnackBar(
     backgroundColor: Theme.of(context).colorScheme.secondary,
-    content: Text(text),
+    content:
+        Text(text, style: isError ? TextStyle(color: Colors.redAccent) : null),
     action: SnackBarAction(
       label: 'OK',
       onPressed: currentScaffold.hideCurrentSnackBar,

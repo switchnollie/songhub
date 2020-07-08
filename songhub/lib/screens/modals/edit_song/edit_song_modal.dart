@@ -69,7 +69,7 @@ class EditSongModal extends StatelessWidget {
     } catch (err) {
       // use 'on' clause and handle errors in more detail
       print(err);
-      showSnackBarByContext(context, "Error submitting data");
+      showSnackBarByContext(context, "Error submitting data", isError: true);
     }
   }
 

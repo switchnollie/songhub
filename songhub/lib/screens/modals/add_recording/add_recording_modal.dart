@@ -57,7 +57,7 @@ class AddRecordingModal extends StatelessWidget {
       }
     } catch (err) {
       // use 'on' clause and handle errors in more detail
-      showSnackBarByContext(context, "Error submitting data");
+      showSnackBarByContext(context, "Error submitting data", isError: true);
     }
   }
 

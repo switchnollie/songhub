@@ -116,9 +116,11 @@ class _EditProfileFormState extends State<EditProfileForm> {
       print(err);
       if (err is StorageError) {
         showSnackBarByContext(
-            context, "An error occured: profile image upload failed");
+            context, "An error occured: profile image upload failed",
+            isError: true);
       } else {
-        showSnackBarByContext(context, "An error occured: data upload failed");
+        showSnackBarByContext(context, "An error occured: data upload failed",
+            isError: true);
       }
     }
   }
