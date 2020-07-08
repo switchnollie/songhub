@@ -19,8 +19,9 @@ class FirestoreDatabase {
 
   final _service = FirestoreService.instance;
 
-  Future<void> setSong(Song song) async => await _service.setData(
-        path: FirestorePath.song(uid, song.id),
+  Future<void> setSong(Song song, [String userId]) async =>
+      await _service.setData(
+        path: FirestorePath.song(userId ?? uid, song.id),
         data: song.toMap(),
       );
 

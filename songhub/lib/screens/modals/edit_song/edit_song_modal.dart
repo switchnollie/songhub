@@ -45,27 +45,30 @@ class EditSongModal extends StatelessWidget {
             FileUserPermissions(owner: user.uid, participants: participants),
           );
         }
-        await database.setSong(Song(
-          id: args.song.songDocument.id,
-          title: title ?? args.song.songDocument.title,
-          artist: artist ?? args.song.songDocument.artist,
-          coverImg:
-              imageUrl != args.song.songDocument.coverImg && imageUrl != null
+        await database.setSong(
+            Song(
+              id: args.song.songDocument.id,
+              title: title ?? args.song.songDocument.title,
+              artist: artist ?? args.song.songDocument.artist,
+              coverImg: imageUrl != args.song.songDocument.coverImg &&
+                      imageUrl != null
                   ? imageUrl
                   : args.song.songDocument.coverImg,
-          participants: participants,
-          lyrics: lyrics,
-          status: status,
-          genre: genre,
-          mood: mood,
-          ownedBy: args.song.songDocument.ownedBy,
-          createdAt: args.song.songDocument.createdAt,
-          updatedAt: Timestamp.fromDate(DateTime.now().toUtc()),
-        ));
+              participants: participants,
+              lyrics: lyrics,
+              status: status,
+              genre: genre,
+              mood: mood,
+              ownedBy: args.song.songDocument.ownedBy,
+              createdAt: args.song.songDocument.createdAt,
+              updatedAt: Timestamp.fromDate(DateTime.now().toUtc()),
+            ),
+            args.song.songDocument.ownedBy);
       }
       Navigator.of(context).pop("Successfully updated song");
     } catch (err) {
       // use 'on' clause and handle errors in more detail
+      print(err);
       showSnackBarByContext(context, "Error submitting data");
     }
   }
