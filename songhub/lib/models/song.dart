@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:song_hub/models/genre.dart';
 
 /// A model for songs
 class Song {
@@ -12,7 +13,7 @@ class Song {
   final String mood;
   final List<String> participants;
   final String status;
-  final String genre;
+  final Genre genre;
   final String ownedBy;
   final Timestamp updatedAt;
   final Timestamp createdAt;
@@ -45,7 +46,7 @@ class Song {
       participants: List.from(data['participants']),
       lyrics: data['lyrics'] ?? '',
       status: data['status'] ?? '',
-      genre: data['genre'] ?? '',
+      genre: data['genre'] != null ? mappedGenres[data['genre']] : null,
       ownedBy: data['ownedBy'],
       updatedAt: data['updatedAt'],
       createdAt: data['createdAt'],
@@ -76,7 +77,7 @@ class Song {
       'lyrics': lyrics,
       'mood': mood,
       'status': status,
-      'genre': genre,
+      'genre': genre.value,
       'ownedBy': ownedBy,
       'updatedAt': updatedAt,
       'createdAt': createdAt,

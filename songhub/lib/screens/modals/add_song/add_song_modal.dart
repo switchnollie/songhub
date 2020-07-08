@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:song_hub/components/spinner.dart';
+import 'package:song_hub/models/genre.dart';
 import 'package:song_hub/models/song.dart';
 import 'package:song_hub/screens/app/song_details/add_song_view_modal.dart';
 import 'package:uuid/uuid.dart';
@@ -25,7 +26,7 @@ class AddSongModal extends StatelessWidget {
     String mood,
     File imageFile,
     String status,
-    String genre,
+    Genre genre,
     List<String> participants,
   }) async {
     try {
