@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 import 'package:song_hub/components/recording.dart';
+import 'package:song_hub/routing.dart';
 import 'package:song_hub/screens/app/song_details/song_details_view_model.dart';
+import 'package:song_hub/utils/show_snackbar.dart';
 import 'package:song_hub/viewModels/recording_with_images.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 
@@ -34,12 +36,35 @@ class _RecordingsGridState extends State<RecordingsGridTabView> {
           itemBuilder: (BuildContext context, int index) {
             if (index == 0) {
               return RecordingInputItem(
-                  song: widget.song, index: index.toString());
+                  song: widget.song,
+                  heroTag: index.toString(),
+                  onPressed: () {
+                    navigateAndDisplayReturnedMessage(
+                      context,
+                      "/recordings/add",
+                      arguments: RecordingModalRouteParams(
+                        song: widget.song,
+                        recording: null,
+                        index: index.toString(),
+                      ),
+                    );
+                  });
             }
             return RecordingItem(
               song: widget.song,
               recording: snapshot.data[index - 1],
               index: index.toString(),
+              onTap: () {
+                navigateAndDisplayReturnedMessage(
+                  context,
+                  "/recordings/edit",
+                  arguments: RecordingModalRouteParams(
+                    song: widget.song,
+                    recording: snapshot.data[index - 1].recordingDocument,
+                    index: index.toString(),
+                  ),
+                );
+              },
             );
           },
         ),

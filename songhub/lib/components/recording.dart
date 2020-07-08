@@ -1,7 +1,6 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:song_hub/routing.dart';
 import 'package:song_hub/viewModels/recording_with_images.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 import 'package:video_player/video_player.dart';
@@ -9,14 +8,16 @@ import 'package:video_player/video_player.dart';
 /// A component to display a recording input container
 class RecordingInputItem extends StatelessWidget {
   final SongWithImages song;
-  final String index;
+  final String heroTag;
+  final Function onPressed;
 
-  RecordingInputItem({this.song, this.index});
+  RecordingInputItem(
+      {@required this.song, @required this.heroTag, @required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return Hero(
-      tag: "$index",
+      tag: "$heroTag",
       child: Material(
         child: Container(
           color: Theme.of(context).colorScheme.background,
@@ -25,17 +26,7 @@ class RecordingInputItem extends StatelessWidget {
             child: Container(
               color: Theme.of(context).colorScheme.surface,
               child: Center(
-                child: IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      "/recordings/add",
-                      arguments: RecordingModalRouteParams(
-                          song: song, recording: null, index: index),
-                    );
-                  },
-                ),
+                child: IconButton(icon: Icon(Icons.add), onPressed: onPressed),
               ),
             ),
           ),
@@ -50,8 +41,13 @@ class RecordingItem extends StatelessWidget {
   final SongWithImages song;
   final RecordingWithImages recording;
   final String index;
+  final Function onTap;
 
-  RecordingItem({@required this.song, @required this.recording, this.index});
+  RecordingItem(
+      {@required this.song,
+      @required this.recording,
+      @required this.onTap,
+      this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -59,16 +55,7 @@ class RecordingItem extends StatelessWidget {
       tag: index,
       child: Material(
         child: InkWell(
-          onTap: () {
-            Navigator.pushNamed(
-              context,
-              "/recordings/edit",
-              arguments: RecordingModalRouteParams(
-                  song: song,
-                  recording: recording.recordingDocument,
-                  index: index),
-            );
-          },
+          onTap: onTap,
           child: Container(
             color: Theme.of(context).colorScheme.background,
             child: ClipRRect(

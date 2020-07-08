@@ -45,9 +45,10 @@ class FirestoreDatabase {
 
   /// Updates a recording. Updating all associated data with that recording must
   /// not implemented on the client side but in a dedicated cloud function
-  Future<void> setRecording(Recording recording, String songId) async =>
+  Future<void> setRecording(Recording recording, String songId,
+          [String userId]) async =>
       await _service.setData(
-        path: FirestorePath.recording(uid, songId, recording.id),
+        path: FirestorePath.recording(userId ?? uid, songId, recording.id),
         data: recording.toMap(),
       );
 

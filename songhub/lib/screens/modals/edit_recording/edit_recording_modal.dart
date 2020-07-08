@@ -57,7 +57,8 @@ class EditRecordingModal extends StatelessWidget {
                       ? versionDescription
                       : recording.versionDescription,
             ),
-            song.songDocument.id);
+            song.songDocument.id,
+            song.songDocument.ownedBy);
         showSnackBarByContext(context, "Successfully added recording");
       }
     } catch (err) {
