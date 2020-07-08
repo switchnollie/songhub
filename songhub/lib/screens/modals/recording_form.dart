@@ -38,15 +38,15 @@ class _RecordingModalState extends State<RecordingModal> {
   final _formKey = GlobalKey<FormState>();
 
   File recordingFile;
-  String selectedStatus, storagePath;
+  Label selectedLabel;
+  String storagePath;
   TextEditingController _versionDescriptionController;
-  // TODO: Define other labels?
-  final List<String> labels = ["Idea", "Lyrics", "Voice memo", "Demo tape"];
 
   /// Init state
   @override
   void initState() {
-    selectedStatus = widget.recording != null ? widget.recording.label : 'Idea';
+    selectedLabel =
+        widget.recording != null ? widget.recording.label : Label.Idea;
     _versionDescriptionController =
         TextEditingController(text: widget.recording?.versionDescription ?? '');
     super.initState();
@@ -79,6 +79,7 @@ class _RecordingModalState extends State<RecordingModal> {
 
   @override
   Widget build(BuildContext context) {
+    final labels = mappedLabels.entries.map((e) => e.key).toList();
     return Container(
       child: SingleChildScrollView(
           child: Form(
@@ -133,10 +134,10 @@ class _RecordingModalState extends State<RecordingModal> {
                 label: 'Label',
                 items: labels,
                 icon: Icons.label,
-                value: selectedStatus,
+                value: selectedLabel.value,
                 onChanged: (newVal) {
                   setState(() {
-                    selectedStatus = newVal;
+                    selectedLabel = mappedLabels[newVal];
                   });
                 },
               ),
@@ -163,7 +164,7 @@ class _RecordingModalState extends State<RecordingModal> {
                       recordingFile,
                       storagePath,
                       widget.song,
-                      selectedStatus,
+                      selectedLabel,
                       _versionDescriptionController.text,
                       widget.recording)),
             ),

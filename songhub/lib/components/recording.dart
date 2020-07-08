@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:song_hub/viewModels/recording_with_images.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 import 'package:video_player/video_player.dart';
+import 'package:song_hub/models/recording.dart';
 
 /// A component to display a recording input container
 class RecordingInputItem extends StatelessWidget {
@@ -149,7 +150,7 @@ class RecordingItemBody extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(bottom: 4.0),
               child: Text(
-                recording.recordingDocument.label,
+                recording.recordingDocument.label.value,
                 style: TextStyle(
                   color: Theme.of(context).accentColor,
                 ),

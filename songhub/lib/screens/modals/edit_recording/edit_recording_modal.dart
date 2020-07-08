@@ -21,7 +21,7 @@ class EditRecordingModal extends StatelessWidget {
       recordingFile,
       String storagePath,
       SongWithImages song,
-      String selectedStatus,
+      Label selectedLabel,
       String versionDescription,
       Recording recording) async {
     try {
@@ -42,8 +42,8 @@ class EditRecordingModal extends StatelessWidget {
         await database.setRecording(
             Recording(
               id: recording.id,
-              label: selectedStatus != recording.label
-                  ? selectedStatus
+              label: selectedLabel != recording.label
+                  ? selectedLabel
                   : recording.label,
               creator: recording.creator,
               storagePath:
