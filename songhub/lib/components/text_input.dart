@@ -165,6 +165,7 @@ class MessageInput extends StatelessWidget {
       ),
       initialValue: initialValue != null ? initialValue : null,
       obscureText: obscureText ?? false,
+      cursorColor: Theme.of(context).colorScheme.primary,
       decoration: InputDecoration(
         labelText: label,
         filled: true,

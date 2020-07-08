@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 class PrimaryButton extends StatelessWidget {
   final Function onPressed;
   final String text;
+  final bool disabled;
 
-  PrimaryButton({@required this.text, @required this.onPressed});
+  PrimaryButton(
+      {@required this.text, @required this.onPressed, this.disabled = false});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -29,7 +31,8 @@ class PrimaryButton extends StatelessWidget {
             color: Theme.of(context).accentColor,
             shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(8.0)),
-            onPressed: onPressed,
+            onPressed: disabled == true ? null : onPressed,
+            disabledColor: Theme.of(context).accentColor.withAlpha(0x88),
           ),
         ),
       ),

@@ -25,7 +25,6 @@ class AddSongModal extends StatelessWidget {
     String mood,
     File imageFile,
     String status,
-    String songId,
     String genre,
     List<String> participants,
   }) async {

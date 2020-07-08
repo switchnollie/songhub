@@ -13,19 +13,21 @@ class SongList extends StatelessWidget {
   final List<SongWithImages> songs;
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      itemCount: songs != null ? songs.length + 1 : 0,
-      padding: EdgeInsets.zero,
-      itemBuilder: (context, index) {
-        if (index == 0) {
-          return Divider(height: 1);
-        }
-        return SongListEntry(
-          song: songs[index - 1],
-        );
-      },
-    );
+    return Column(children: <Widget>[
+      Divider(height: 1),
+      Expanded(
+        child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount: songs?.length ?? 0,
+          padding: EdgeInsets.zero,
+          itemBuilder: (context, index) {
+            return SongListEntry(
+              song: songs[index],
+            );
+          },
+        ),
+      ),
+    ]);
   }
 }
 
@@ -57,7 +59,7 @@ class SongListEntry extends StatelessWidget {
           ListTile(
             // Song entry widget
             leading: Cover(
-              img: song.coverImgUrl,
+              img: song.coverImgUrl ?? "assets/placeholderCover.png",
               size: CoverSize.SMALL,
             ),
             title: ListTitle(title: song.songDocument.title),

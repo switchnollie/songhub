@@ -24,7 +24,6 @@ typedef void OnSubmit({
   String mood,
   File imageFile,
   String status,
-  String songId,
   String genre,
   List<String> participants,
 });
@@ -60,7 +59,7 @@ class _SongFormState extends State<SongForm> {
       _suggestionsController;
 
   File imageFile;
-  String selectedStatus, selectedGenre, imageUrl, artist;
+  String _selectedStatus, _selectedGenre, _imageUrl;
   List<String> statuses = ['Initiation', 'Idea', 'Demo', 'Release'];
   List<User> selectedParticipants = [];
   List<String> genres = [
@@ -78,9 +77,6 @@ class _SongFormState extends State<SongForm> {
   /// Init state
   @override
   void initState() {
-    artist = widget.song != null
-        ? widget.song.songDocument.artist
-        : widget.stageName;
     _titleController =
         TextEditingController(text: widget.song?.songDocument?.title ?? '');
     _lyricsController =
@@ -88,12 +84,12 @@ class _SongFormState extends State<SongForm> {
     _moodController =
         TextEditingController(text: widget.song?.songDocument?.mood ?? '');
     _suggestionsController = TextEditingController();
-    selectedStatus =
+    _selectedStatus =
         widget.song != null ? widget.song.songDocument.status : 'Initiation';
-    selectedGenre =
+    _selectedGenre =
         widget.song != null ? widget.song.songDocument.genre : 'Pop';
 
-    imageUrl = widget.song?.coverImgUrl;
+    _imageUrl = widget.song?.coverImgUrl;
     Future.delayed(Duration.zero, () async {
       final participants = widget.song?.songDocument?.participants;
       if (participants != null && participants.length > 0) {
@@ -135,17 +131,25 @@ class _SongFormState extends State<SongForm> {
 
   /// Push data to firebase if form fields are valid
   void _handleSubmit(BuildContext context) {
+    final uid = Provider.of<FirestoreDatabase>(context, listen: false).uid;
+    var participantIds = [];
+    if (selectedParticipants.length > 0) {
+      participantIds = selectedParticipants.map((user) => user.id).toList()
+        ..add(uid);
+    }
+
     widget.onSubmit(
       formKey: _formKey,
       title: _titleController.text,
-      artist: artist,
+      artist: widget.song != null
+          ? widget.song.songDocument.artist
+          : widget.stageName,
       imageFile: imageFile,
       lyrics: _lyricsController.text,
-      status: selectedStatus,
+      status: _selectedStatus,
       mood: _moodController.text,
-      genre: selectedGenre,
-      songId: widget.song.songDocument.id,
-      participants: widget.song.songDocument.participants,
+      genre: _selectedGenre,
+      participants: participantIds,
       context: context,
     );
   }
@@ -198,7 +202,7 @@ class _SongFormState extends State<SongForm> {
                         ImageInput(
                             imageFile: imageFile,
                             onPicked: _handleImagePicked,
-                            imageUrl: imageUrl,
+                            imageUrl: _imageUrl,
                             label: 'Cover'),
                         Expanded(
                           child: Column(
@@ -215,12 +219,9 @@ class _SongFormState extends State<SongForm> {
                                 },
                               ),
                               _buildRow(ReadOnlyField(
-                                icon: Icons.face,
-                                label: 'Author',
-                                text: widget.song != null
-                                    ? widget.song.songDocument.artist
-                                    : artist,
-                              )),
+                                  icon: Icons.face,
+                                  label: 'Author',
+                                  text: widget.song?.songDocument?.artist)),
                             ],
                           ),
                         ),
@@ -254,6 +255,8 @@ class _SongFormState extends State<SongForm> {
                             return suggestions;
                           },
                           onSelected: (suggestion) {
+                            // reset text in form field
+                            _suggestionsController.clear();
                             setState(() {
                               selectedParticipants.add(suggestion);
                             });
@@ -283,10 +286,10 @@ class _SongFormState extends State<SongForm> {
                       label: 'Genre',
                       items: genres,
                       icon: Icons.graphic_eq,
-                      value: selectedGenre,
+                      value: _selectedGenre,
                       onChanged: (newVal) {
                         setState(() {
-                          selectedGenre = newVal;
+                          _selectedGenre = newVal;
                         });
                       },
                     ),
@@ -296,10 +299,10 @@ class _SongFormState extends State<SongForm> {
                       label: 'Status',
                       items: statuses,
                       icon: Icons.calendar_today,
-                      value: selectedStatus,
+                      value: _selectedStatus,
                       onChanged: (newVal) {
                         setState(() {
-                          selectedStatus = newVal;
+                          _selectedStatus = newVal;
                         });
                       },
                     ),
