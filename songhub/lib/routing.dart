@@ -16,7 +16,8 @@ import 'package:song_hub/viewModels/song_with_images.dart';
 class SongDetailsScreenRouteParams {
   final String songId;
   final String userId;
-  SongDetailsScreenRouteParams({this.songId, this.userId});
+  final String songOwnedBy;
+  SongDetailsScreenRouteParams({this.songId, this.userId, this.songOwnedBy});
 }
 
 class EditSongModalRouteParams {

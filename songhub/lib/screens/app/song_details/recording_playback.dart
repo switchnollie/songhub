@@ -45,7 +45,7 @@ class _BoxPlaybackState extends State<BoxPlayback> {
     try {
       if (Platform.isIOS) {
         IosDeviceInfo data = await deviceInfoPlugin.iosInfo;
-        isIosSimulator = data.isPhysicalDevice == false ? true : false;
+        isIosSimulator = !data.isPhysicalDevice;
       }
     } on PlatformException {
       print('Error:: Failed to get platform version.');

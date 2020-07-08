@@ -32,7 +32,7 @@ class FirestoreDatabase {
 
   /// Updates a song. Updating all associated data with that song must
   /// not implemented on the client side but in a dedicated cloud function
-  Stream<Song> singleSongStream({@required String songId, @required userId}) =>
+  Stream<Song> songStream({@required String songId, @required userId}) =>
       _service.documentStream(
         path: FirestorePath.song(userId, songId),
         builder: (data, documentId) => Song.fromMap(data, documentId),
@@ -60,15 +60,18 @@ class FirestoreDatabase {
       );
 
   Stream<Recording> recordingStream(
-          {@required String recordingId, @required String songId}) =>
+          {@required String recordingId,
+          @required String songId,
+          String userId}) =>
       _service.documentStream(
-        path: FirestorePath.recording(uid, songId, recordingId),
+        path: FirestorePath.recording(userId ?? uid, songId, recordingId),
         builder: (data, documentId) => Recording.fromMap(data, documentId),
       );
 
-  Stream<List<Recording>> recordingsStream({@required String songId}) =>
+  Stream<List<Recording>> recordingsStream(
+          {@required String songId, String userId}) =>
       _service.collectionStream(
-        path: FirestorePath.recordings(uid, songId),
+        path: FirestorePath.recordings(userId ?? uid, songId),
         queryBuilder: (query) => query.orderBy('createdAt', descending: true),
         builder: (data, documentId) => Recording.fromMap(data, documentId),
       );
@@ -114,15 +117,17 @@ class FirestoreDatabase {
 
   /// Updates a message. Updating all associated data with that message must
   /// not implemented on the client side but in a dedicated cloud function
-  Future<void> setMessage(Message message, String songId) async =>
+  Future<void> setMessage(Message message, String songId,
+          [String userId]) async =>
       await _service.setData(
-        path: FirestorePath.message(uid, songId, message.id),
+        path: FirestorePath.message(userId ?? uid, songId, message.id),
         data: message.toMap(),
       );
 
-  Stream<List<Message>> messagesStream({@required String songId}) =>
+  Stream<List<Message>> messagesStream(
+          {@required String songId, String userId}) =>
       _service.collectionStream(
-        path: FirestorePath.messages(uid, songId),
+        path: FirestorePath.messages(userId ?? uid, songId),
         queryBuilder: (query) => query.orderBy('createdAt'),
         builder: (data, documentId) => Message.fromMap(data, documentId),
       );

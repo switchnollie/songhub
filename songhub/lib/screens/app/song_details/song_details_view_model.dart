@@ -23,6 +23,7 @@ class SongDetailsViewModel {
   final StorageService storageService;
   final FirebaseAuthService authService;
   final String songId;
+  // The id of the user that owns the song, not (necessarily) the viewer's uid
   final String userId;
 
   /// Get recording creator image from Firebase Storage
@@ -57,7 +58,7 @@ class SongDetailsViewModel {
 
   Stream<List<RecordingWithImages>> get recordings {
     return database
-        .recordingsStream(songId: songId)
+        .recordingsStream(songId: songId, userId: userId)
         .switchMap((List<Recording> recordings) {
       final mergedValuesFutures = recordings
           .map((recording) => _getRecordingDataWithImageUrl(recording))
@@ -69,7 +70,9 @@ class SongDetailsViewModel {
 
   /// Messages stream
   Stream<List<MessageWithImages>> get messages {
-    return database.messagesStream(songId: songId).switchMap((messages) {
+    return database
+        .messagesStream(songId: songId, userId: userId)
+        .switchMap((messages) {
       final mergedValuesFuture = messages
           .map((message) => _getMessageDataWithImageUrl(message))
           .toList();
@@ -88,13 +91,13 @@ class SongDetailsViewModel {
       content: content,
       createdAt: Timestamp.fromDate(DateTime.now().toUtc()),
     );
-    database.setMessage(message, songId);
+    database.setMessage(message, songId, userId);
   }
 
   /// Song stream
   Stream<SongWithImages> get song {
     return database
-        .singleSongStream(songId: songId, userId: userId)
+        .songStream(songId: songId, userId: userId)
         .switchMap((song) {
       final mergedValuesFutures = _getSongDataWithImageUrls(song);
       return Stream.fromFuture(mergedValuesFutures);
