@@ -207,10 +207,15 @@ class _SongFormState extends State<SongForm> {
                                   return null;
                                 },
                               ),
-                              _buildRow(ReadOnlyField(
+                              _buildRow(
+                                ReadOnlyField(
                                   icon: Icons.face,
                                   label: 'Author',
-                                  text: widget.song?.songDocument?.artist)),
+                                  text: widget.song != null
+                                      ? widget.song?.songDocument?.artist
+                                      : widget.stageName,
+                                ),
+                              ),
                             ],
                           ),
                         ),

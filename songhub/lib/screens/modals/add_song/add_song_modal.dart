@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:song_hub/components/spinner.dart';
 import 'package:song_hub/models/genre.dart';
 import 'package:song_hub/models/song.dart';
-import 'package:song_hub/screens/app/song_details/add_song_view_modal.dart';
+import 'package:song_hub/screens/modals/add_song/add_song_view_model.dart';
 import 'package:uuid/uuid.dart';
 import 'package:song_hub/screens/modals/song_form.dart';
 import 'package:song_hub/services/firebase_auth_service.dart';
@@ -68,8 +68,8 @@ class AddSongModal extends StatelessWidget {
   static Widget create(BuildContext context) {
     final database = Provider.of<FirestoreDatabase>(context, listen: false);
 
-    return Provider<AddSongViewModal>(
-      create: (_) => AddSongViewModal(
+    return Provider<AddSongViewModel>(
+      create: (_) => AddSongViewModel(
         database: database,
       ),
       child: AddSongModal(),
@@ -78,7 +78,7 @@ class AddSongModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final vm = Provider.of<AddSongViewModal>(context);
+    final vm = Provider.of<AddSongViewModel>(context);
     return StreamBuilder<String>(
       stream: vm.stageName,
       builder: (context, snapshot) => Scaffold(

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:song_hub/services/firestore_database.dart';
 
-/// Add song view modal
-class AddSongViewModal {
-  AddSongViewModal({@required this.database});
+class AddSongViewModel {
+  AddSongViewModel({@required this.database});
 
   final FirestoreDatabase database;
 
