@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:song_hub/models/label.dart';
 import 'package:song_hub/screens/app/song_details/recording_playback.dart';
 
 /// A component to display a recording input container
@@ -38,7 +39,7 @@ class Box extends StatelessWidget {
   final Timestamp updatedAt;
   final String creator;
   final String creatorImgUrl;
-  final String label;
+  final Label label;
   final String versionDescription;
   final String heroTag;
   final String storagePath;
@@ -158,7 +159,7 @@ class BoxHeader extends StatelessWidget {
 
 /// A component to display a body for a recording item
 class BoxBody extends StatelessWidget {
-  final String label;
+  final Label label;
   final String versionDescription;
 
   BoxBody({
@@ -179,7 +180,7 @@ class BoxBody extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(bottom: 4.0),
               child: Text(
-                label,
+                label.value,
                 style: TextStyle(
                   color: Theme.of(context).accentColor,
                 ),
