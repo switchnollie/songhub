@@ -5,6 +5,7 @@ import 'package:song_hub/components/avatar.dart';
 import 'package:song_hub/routing.dart';
 import "package:flutter/material.dart";
 import 'package:song_hub/services/firestore_database.dart';
+import 'package:song_hub/utils/show_snackbar.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 
 class SongList extends StatelessWidget {
@@ -84,8 +85,8 @@ class SongListEntry extends StatelessWidget {
   }
 
   /// Show alert to confirm delete of song project
-  Future<bool> showDeleteAlert(BuildContext context) {
-    return showDialog(
+  Future<bool> showDeleteAlert(BuildContext context) async {
+    bool result = await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
@@ -99,6 +100,10 @@ class SongListEntry extends StatelessWidget {
         );
       },
     );
+    if (result != null && result) {
+      showSnackBarByContext(context, "Song successfully deleted");
+    }
+    return result;
   }
 
   /// Delete song document in Firestore

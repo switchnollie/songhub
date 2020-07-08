@@ -132,11 +132,9 @@ class _SongFormState extends State<SongForm> {
   /// Push data to firebase if form fields are valid
   void _handleSubmit(BuildContext context) {
     final uid = Provider.of<FirestoreDatabase>(context, listen: false).uid;
-    var participantIds = [];
-    if (selectedParticipants.length > 0) {
-      participantIds = selectedParticipants.map((user) => user.id).toList()
-        ..add(uid);
-    }
+    List<String> participantIds = [];
+    participantIds = selectedParticipants.map((user) => user.id).toList()
+      ..insert(0, uid);
 
     widget.onSubmit(
       formKey: _formKey,
@@ -248,7 +246,6 @@ class _SongFormState extends State<SongForm> {
                             final suggestions =
                                 await _getUserSuggestionsByEmailSubstr(
                                     context, pattern);
-                            print(suggestions);
                             if (suggestions == null) {
                               return [];
                             }
