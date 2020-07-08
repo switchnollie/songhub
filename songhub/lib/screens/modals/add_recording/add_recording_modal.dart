@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:song_hub/models/label.dart';
 import 'package:song_hub/models/models.dart';
 import 'package:song_hub/routing.dart';
 import 'package:song_hub/screens/modals/recording_form.dart';
@@ -9,6 +10,7 @@ import 'package:song_hub/services/storage_service.dart';
 import 'package:song_hub/utils/show_snackbar.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 import 'package:uuid/uuid.dart';
+import 'package:song_hub/models/recording.dart';
 
 /// Add recording modal
 class AddRecordingModal extends StatelessWidget {
@@ -21,7 +23,7 @@ class AddRecordingModal extends StatelessWidget {
       recordingFile,
       String storagePath,
       SongWithImages song,
-      String selectedStatus,
+      Label selectedLabel,
       String versionDescription,
       Recording recording) async {
     try {
@@ -42,7 +44,7 @@ class AddRecordingModal extends StatelessWidget {
         }
         final recording = Recording(
           id: recordingId,
-          label: selectedStatus,
+          label: selectedLabel,
           creator: database.uid,
           storagePath: storagePath,
           createdAt: Timestamp.fromDate(DateTime.now().toUtc()),

@@ -1,11 +1,12 @@
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:song_hub/models/label.dart';
 
 /// A model for recordings
 class Recording {
   final String id;
-  final String label;
+  final Label label;
   final String creator;
   final Timestamp createdAt;
   final Timestamp updatedAt;
@@ -28,7 +29,7 @@ class Recording {
     }
     return Recording(
       id: documentId,
-      label: data['label'],
+      label: data['label'] != null ? mappedLabels[data['label']] : null,
       creator: data['creator'],
       createdAt: data['createdAt'],
       versionDescription: data['versionDescription'],
@@ -39,7 +40,7 @@ class Recording {
   /// Serialize recording to update or add in Firestore
   Map<String, dynamic> toMap() {
     return {
-      'label': label,
+      'label': label.value,
       'creator': creator,
       'createdAt': createdAt,
       'updateAt': updatedAt,

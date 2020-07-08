@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:song_hub/components/alert.dart';
+import 'package:song_hub/models/label.dart';
 import 'package:song_hub/models/models.dart';
 import 'package:song_hub/routing.dart';
 import 'package:song_hub/screens/modals/recording_form.dart';
@@ -21,7 +22,7 @@ class EditRecordingModal extends StatelessWidget {
       recordingFile,
       String storagePath,
       SongWithImages song,
-      String selectedStatus,
+      Label selectedLabel,
       String versionDescription,
       Recording recording) async {
     try {
@@ -42,8 +43,8 @@ class EditRecordingModal extends StatelessWidget {
         await database.setRecording(
             Recording(
               id: recording.id,
-              label: selectedStatus != recording.label
-                  ? selectedStatus
+              label: selectedLabel != recording.label
+                  ? selectedLabel
                   : recording.label,
               creator: recording.creator,
               storagePath:
