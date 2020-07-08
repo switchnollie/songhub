@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
+import 'package:song_hub/components/grid_box.dart';
 import 'package:song_hub/components/recording.dart';
 import 'package:song_hub/routing.dart';
 import 'package:song_hub/screens/app/song_details/song_details_view_model.dart';
@@ -35,8 +36,7 @@ class _RecordingsGridState extends State<RecordingsGridTabView> {
           ),
           itemBuilder: (BuildContext context, int index) {
             if (index == 0) {
-              return RecordingInputItem(
-                  song: widget.song,
+              return InputBox(
                   heroTag: index.toString(),
                   onPressed: () {
                     navigateAndDisplayReturnedMessage(
@@ -50,10 +50,17 @@ class _RecordingsGridState extends State<RecordingsGridTabView> {
                     );
                   });
             }
-            return RecordingItem(
-              song: widget.song,
-              recording: snapshot.data[index - 1],
-              index: index.toString(),
+            return Box(
+              creator: snapshot.data[index - 1].recordingDocument.creator,
+              createdAt: snapshot.data[index - 1].recordingDocument.createdAt,
+              label: snapshot.data[index - 1].recordingDocument.label,
+              storagePath:
+                  snapshot.data[index - 1].recordingDocument.storagePath,
+              creatorImgUrl: snapshot.data[index - 1].creatorImgUrl,
+              updatedAt: snapshot.data[index - 1].recordingDocument.updatedAt,
+              versionDescription:
+                  snapshot.data[index - 1].recordingDocument.versionDescription,
+              heroTag: index.toString(),
               onTap: () {
                 navigateAndDisplayReturnedMessage(
                   context,
