@@ -58,7 +58,8 @@ class DetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        CustomAppBar(title: 'Details', isHeader: false, isTransparent: false),
+        CustomAppBar(
+            title: 'Song Details', isHeader: false, isTransparent: false),
         DetailsViewHeader(song: song),
         FeatureTabs(
           song: song,

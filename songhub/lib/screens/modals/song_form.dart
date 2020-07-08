@@ -112,13 +112,17 @@ class _SongFormState extends State<SongForm> {
   Future<List<User>> _getUserSuggestionsByEmailSubstr(
       BuildContext context, String email) async {
     final database = Provider.of<FirestoreDatabase>(context, listen: false);
-    return await database.getUsersByEmail(email);
+    return (await database.getUsersByEmail(email))
+        .where((user) => user.id != database.uid)
+        .toList();
   }
 
   Future<List<User>> _getUsersById(
       BuildContext context, List<String> participantIds) async {
     final database = Provider.of<FirestoreDatabase>(context, listen: false);
-    return await database.getUsersById(participantIds);
+    return (await database.getUsersById(participantIds))
+        .where((user) => user.id != database.uid)
+        .toList();
   }
 
   void _handleImagePicked(PickedFile image) async {
