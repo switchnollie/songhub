@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:song_hub/viewModels/recording_with_images.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 import 'package:video_player/video_player.dart';
-import 'package:song_hub/models/recording.dart';
+import 'package:song_hub/models/label.dart';
 
 /// A component to display a recording input container
 class RecordingInputItem extends StatelessWidget {

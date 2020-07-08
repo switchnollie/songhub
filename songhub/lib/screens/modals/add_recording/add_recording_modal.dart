@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:song_hub/models/label.dart';
 import 'package:song_hub/models/models.dart';
 import 'package:song_hub/routing.dart';
 import 'package:song_hub/screens/modals/recording_form.dart';

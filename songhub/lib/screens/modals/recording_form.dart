@@ -8,6 +8,7 @@ import 'package:song_hub/components/custom_app_bar.dart';
 import 'package:song_hub/components/dropdown_field.dart';
 import 'package:song_hub/components/read_only_field.dart';
 import 'package:song_hub/components/text_input.dart';
+import 'package:song_hub/models/label.dart';
 import 'package:song_hub/models/models.dart';
 import 'package:song_hub/models/recording.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
