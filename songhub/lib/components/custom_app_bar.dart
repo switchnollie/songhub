@@ -1,9 +1,16 @@
-// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'package:flutter/material.dart';
 
-/// Custom app bar; Can be used as Screen Header too
+/// A widget that builds a custom app bar.
+///
+/// [title] defines the app bars header text. [backIcon] defines an IconData to
+/// display at the start of this app bar. Its IconButton will pop the top-most
+/// route. [action] declares an optinal IconButton with onTap action to be
+/// displayed at the end of the app bar. [isHeader] is used to define the app
+/// bars [title] font size. [isTransparent] is used so define this app bars
+/// background color.
 class CustomAppBar extends StatelessWidget {
   final String title;
   final IconData backIcon;

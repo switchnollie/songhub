@@ -1,10 +1,14 @@
-// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'package:flutter/material.dart';
 import 'package:song_hub/components/custom_app_bar.dart';
 
-/// A component to display screen content
+/// A widget that builds this apps screen containers.
+///
+/// [color] describes the background color of this widget. [header] defines text
+/// to be displayed in this screen container. [body] should define this widgets
+/// childs.
 class ScreenContainer extends StatelessWidget {
   final Color color;
   final CustomAppBar header;

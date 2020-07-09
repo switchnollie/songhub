@@ -1,9 +1,13 @@
-// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'package:flutter/material.dart';
 
-/// A component to display read only text
+/// A widget that builds an read only text field.
+///
+/// [text] will be displayed inside this widget. [label] will be rendered above
+/// the text container and includes some description text. [icon] defines an
+/// icon to be displayed next to this [text].
 class ReadOnlyField extends StatelessWidget {
   final String text;
   final String label;

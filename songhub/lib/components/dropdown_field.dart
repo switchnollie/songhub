@@ -1,9 +1,16 @@
-// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'package:flutter/material.dart';
 
-/// A dropdown component to selected defined inputs
+/// A widget that builds an drop down menu in the style of an [TextInput].
+///
+/// [label] defines the above text to describe this input form. [items] are
+/// items to be displayed as options inside this drop down menu. A [icon] can
+/// be displayed inside this menu. [value] defines the value of the selected
+/// item. [onChanged] should be an function to handle changes in selection.
+/// [initialValue] holds an initial value of this menu. It will be used if no
+/// selection is made.
 class DropdownInput extends StatelessWidget {
   final String label;
   final List<String> items;

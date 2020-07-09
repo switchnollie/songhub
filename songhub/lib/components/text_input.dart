@@ -5,22 +5,28 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:song_hub/screens/app/song_details/song_details_view_model.dart';
 
-/// A component to input and validate text
+/// A widget that builds a text input form field.
+///
+/// [obscureText] defines this widgets obscure text. [label] defines a text to
+/// be displayed aboce this text form. [hintText] defines text that can be used
+/// to describe this widgets input. [controller] will handle this widgets text
+/// input. [icon] describes an icon that can be displayed inside this text form.
+/// [validator] defines funcionality to validate this text form. [initialValue]
+/// describes text to be displayed when initializing this widget. [isMultiline]
+/// defines the layout of this widget by making it expandable.
 class TextInput extends StatelessWidget {
   final bool obscureText;
   final String label;
   final String hintText;
   final TextEditingController controller;
-  final Function onChanged;
   final IconData icon;
   final Function validator;
   final String initialValue;
   final bool isMultiline;
 
   TextInput({
-    this.controller,
+    @required this.controller,
     @required this.label,
-    this.onChanged,
     this.obscureText = false,
     this.icon,
     this.hintText,
@@ -80,8 +86,11 @@ class TextInput extends StatelessWidget {
   }
 }
 
+/// A widget that builds a text input customized as an message input.
+///
+/// [controller] will handle this widgets text input. [formKey] defines a state
+/// associated with this form widget.
 class MessageForm extends StatelessWidget {
-  // final Function onPressed;
   final TextEditingController controller;
   final GlobalKey<FormState> formKey;
   final BuildContext context;
@@ -137,24 +146,25 @@ class MessageForm extends StatelessWidget {
   }
 }
 
+/// A widget that builds a text form field for [MessageInput].
+///
+/// [obscureText] defines this widgets obscure text. [label] defines a text to
+/// be displayed aboce this text form. [hintText] defines text that can be used
+/// to describe this widgets input. [controller] will handle this widgets text
+/// input. [validator] defines funcionality to validate this text form.
+/// [initialValue] describes text to be displayed when initializing this widget.
 class MessageInput extends StatelessWidget {
   final bool obscureText;
   final String label;
   final String hintText;
   final TextEditingController controller;
-  final String placeholder;
-  final Function onChanged;
-  final IconData icon;
   final Function validator;
   final String initialValue;
 
   MessageInput({
     this.controller,
     this.label,
-    this.placeholder,
-    this.onChanged,
     this.obscureText,
-    this.icon,
     this.hintText,
     this.validator,
     this.initialValue,

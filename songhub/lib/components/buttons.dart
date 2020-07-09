@@ -1,9 +1,13 @@
-// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'package:flutter/material.dart';
 
-/// A button component
+/// A widget that builds this apps primary button.
+///
+/// A [text] will be needed to describe the buttons action. [onPressed] should
+/// be an function to be executed on tap of this button. [disabled] will change
+/// the buttons color to look disabled.
 class PrimaryButton extends StatelessWidget {
   final Function onPressed;
   final String text;

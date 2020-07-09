@@ -1,5 +1,5 @@
-// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -7,7 +7,17 @@ import 'package:image_picker/image_picker.dart';
 
 typedef dynamic OnPicked(PickedFile pickedFile);
 
-/// A image picker component to select files from os gallery
+/// A widget that builds an image picker.
+///
+/// [imageFile] contains a image file to be picked. [imageUrl] can define a
+/// image url to be displayed when no file was selected and a previously
+/// defined url exists. [isAvatar] is used to differ the image pickers style.
+/// [onPicked] should include a [OnPicked] to be executed when a file is picked.
+/// [onPickedError] can be defined to be executed if an error occurs. [maxWidth]
+/// and [maxHeight] defines the max resolution of an picked image. [quality]
+/// restricts the picked images quality. [source] will define the source of
+/// where images should be selected on the OS. [label] will be displayed above
+/// the image picker.
 class ImageInput extends StatelessWidget {
   final File imageFile;
   final String imageUrl;

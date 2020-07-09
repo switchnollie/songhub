@@ -1,12 +1,15 @@
-// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:song_hub/models/label.dart';
 
-/// A component to display a recording input container
+/// A widgets that builds a recording grid item to add a new recording.
+///
+/// [heroTag] defines this widgets hero tag. [onPressed] includes a function to
+/// be executed at IconButton press.
 class RecordingGridInputItem extends StatelessWidget {
   final String heroTag;
   final Function onPressed;
@@ -35,7 +38,11 @@ class RecordingGridInputItem extends StatelessWidget {
   }
 }
 
-/// A component to display a specific recording item
+/// A widget that builds an existing recording in the recording grid.
+///
+/// [heroTag] defines this widgets hero tag. [onTap] includes a function to
+/// be executed at container press. [childrens] should be a list of widgets to
+/// be displayed inside this widget.
 class RecordingGridItem extends StatelessWidget {
   final String heroTag;
   final Function onTap;
@@ -73,7 +80,11 @@ class RecordingGridItem extends StatelessWidget {
   }
 }
 
-/// A component to display a header for an recording item
+/// A widget that builds a header inside a [RecordingsGridItem].
+///
+/// [createdAt] and [updatedAt] are timestamps. Only [createdAt] will be
+/// displayed inside the widget. [imageUrl] defines a url to an network image
+/// that can be displayed at the end of this header.
 class RecordingGridItemHeader extends StatelessWidget {
   final Timestamp createdAt;
   final Timestamp updatedAt;
@@ -129,7 +140,10 @@ class RecordingGridItemHeader extends StatelessWidget {
   }
 }
 
-/// A component to display a body for a recording item
+/// A widget that builds a body inside a [RecordingsGridItem].
+///
+/// [title] can include text to be displayed as an title. [text] defines text
+/// to be displayed below this title.
 class RecordingGridItemBody extends StatelessWidget {
   final Label title;
   final String text;
@@ -173,7 +187,10 @@ class RecordingGridItemBody extends StatelessWidget {
   }
 }
 
-/// A component to render audio playback
+/// A widget that builds a playback icon inside a [RecordingsGridItem].
+///
+/// [isDisabled], [isPlaying], [loaded] are values to change this widgets icons.
+/// [onTap] defines a function to be executed on this container press.
 class RecordingGridItemPlayback extends StatelessWidget {
   final bool isDisabled, isPlaying, loaded;
   final Function onTap;

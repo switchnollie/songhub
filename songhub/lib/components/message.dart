@@ -1,10 +1,12 @@
-// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'package:flutter/material.dart';
 import 'package:song_hub/components/avatar.dart';
 
-/// A component to display a message
+/// A widget that builds a messages content.
+///
+/// [message] includes text to be displayed inside this widget.
 class MessageContent extends StatelessWidget {
   final String message;
 
@@ -23,7 +25,9 @@ class MessageContent extends StatelessWidget {
   }
 }
 
-/// A component to display a message author image
+/// A widget that builds an messages author image.
+///
+/// [authorImage] holds an url of a network image.
 class MessageAuthor extends StatelessWidget {
   final String authorImage;
 

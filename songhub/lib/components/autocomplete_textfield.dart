@@ -1,11 +1,19 @@
-// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:song_hub/components/spinner.dart';
 
-/// A component to display an auto completing text field
+/// A widget that builds an autocompleting text field.
+///
+/// [label] displays text above to declare this text field input. [hintText]
+/// describes what to enter in this text field. [onChanged] and [onSelected]
+/// are callbacks to handle the synchronized suggestions. [controller] will
+/// handle the text being edited. [validator] handles text form validation.
+/// [initialValue] will display an initial value inside the text form.
+/// [itemBuilder] builts all suggestions. [notFoundText] will be displayed if
+/// no suited entry found.
 class AutocompleteTextField extends StatelessWidget {
   final SuggestionsCallback onChanged;
   final SuggestionSelectionCallback onSelected;
