@@ -1,11 +1,12 @@
-// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'package:flutter/material.dart';
 import 'package:song_hub/routing.dart';
 import 'package:song_hub/utils/show_snackbar.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 
+/// A widget to build a sheet overlay.
 class EditSongSheet extends StatelessWidget {
   final SongWithImages song;
 

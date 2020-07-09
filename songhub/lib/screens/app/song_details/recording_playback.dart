@@ -10,6 +10,10 @@ import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 import 'package:song_hub/components/recording_grid_items.dart';
 
+/// A widgets that builds and handles all audio playbacks.
+///
+/// This widget builds a [RecordingGridItemPlayback] widget to allow audio
+/// playback defined in this widgets methods.
 class RecordingPlayback extends StatefulWidget {
   final String recordingUrl;
 

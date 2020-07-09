@@ -1,5 +1,5 @@
-// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'package:provider/provider.dart';
 import 'package:song_hub/components/avatar.dart';
@@ -17,6 +17,11 @@ import 'package:song_hub/services/storage_service.dart';
 import 'package:song_hub/utils/show_snackbar.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 
+/// A view model to build this apps song details screen.
+///
+/// On create this view initializes [Provider]s to feed its childs with cloud
+/// data. Stream builder functionality will update [DetaislView] if data changes
+/// occur.
 class SongDetailsScreen extends StatelessWidget {
   static const routeId = "/songs/details";
 
@@ -52,6 +57,11 @@ class SongDetailsScreen extends StatelessWidget {
   }
 }
 
+/// A view to display all song details widgets.
+///
+/// [CustomAppBar] is used as app bar to navigate back to project overview.
+/// [DetailsViewHeader] includes general information about a song. [FeatureTabs]
+/// builds a songs features.
 class DetailsView extends StatelessWidget {
   final SongWithImages song;
 
@@ -72,6 +82,9 @@ class DetailsView extends StatelessWidget {
   }
 }
 
+/// A widget that builds this song details header.
+///
+/// [song] includes all information of a song fetched by a database stream.
 class DetailsViewHeader extends StatelessWidget {
   final SongWithImages song;
 
@@ -119,6 +132,7 @@ class DetailsViewHeader extends StatelessWidget {
   }
 }
 
+/// A widget that builds a songs title.
 class SongTitle extends StatelessWidget {
   final String titleText;
   SongTitle({
@@ -139,6 +153,7 @@ class SongTitle extends StatelessWidget {
   }
 }
 
+/// A widgets that builds a songs artist.
 class Artist extends StatelessWidget {
   final String artist;
 

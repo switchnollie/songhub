@@ -1,11 +1,14 @@
-// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'package:flutter/material.dart';
 import 'package:song_hub/screens/app/song_details/discussion_tab_view.dart';
 import 'package:song_hub/screens/app/song_details/recordings_grid_tab_view.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 
+/// A widget that builds tabs with content inside songs details screen.
+///
+/// This tabs include [RecordingGridTabView] and [DiscussionTabView].
 class FeatureTabs extends StatelessWidget {
   final SongWithImages song;
 

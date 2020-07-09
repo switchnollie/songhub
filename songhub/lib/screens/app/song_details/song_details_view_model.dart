@@ -15,6 +15,14 @@ import 'package:song_hub/services/storage_service.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:uuid/uuid.dart';
 
+/// A view model to handle all song details data.
+///
+/// This view model requires song specific data as well as service instances for
+/// Firebase Firestore, Storage and Authentication. Getters are defined to
+/// receive events specific to data used in this view. Streams are initialized
+/// for [Song], [Recording]s, [Message]s. When fetching data, further
+/// functionality is used to fetch Storage specific data. All data is mapped
+/// into view models.
 class SongDetailsViewModel {
   SongDetailsViewModel(
       {@required this.songId,
@@ -62,6 +70,7 @@ class SongDetailsViewModel {
         isMyMessage: isMyMessage);
   }
 
+  /// Recording stream
   Stream<List<RecordingWithImages>> get recordings {
     return database
         .recordingsStream(songId: songId, userId: userId)

@@ -12,6 +12,12 @@ import 'package:song_hub/utils/show_snackbar.dart';
 import 'package:song_hub/viewModels/recording_with_images.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 
+/// A view to build this apps recordings file feature.
+///
+/// [SongDetailsViewModel] is used to handle this views data. A StreamBuilder is
+/// used to build all recordings fetched from Firebase FireStore and Storage.
+/// Recordings are build as [RecordingGridItem]s. [RecordinGridInputItem] is
+/// used as recording input.
 class RecordingsGridTabView extends StatefulWidget {
   final SongWithImages song;
 

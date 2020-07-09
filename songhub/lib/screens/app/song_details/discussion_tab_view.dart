@@ -1,5 +1,5 @@
-// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -10,6 +10,11 @@ import 'package:song_hub/screens/app/song_details/song_details_view_model.dart';
 import 'package:song_hub/viewModels/message_with_images.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 
+/// A view to build this apps discussion feature.
+///
+/// [SongDetailsViewModel] is used to handle this views data. A StreamBuilder is
+/// used to build all messages fetched from Firebase FireStore. Messages are
+/// build as [MessageContainer]s. [MessageForm] is used as text input.
 class DiscussionTabView extends StatelessWidget {
   final SongWithImages song;
 
