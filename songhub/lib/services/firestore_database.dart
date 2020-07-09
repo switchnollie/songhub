@@ -1,3 +1,6 @@
+// Copyright 2020 Tim Weise, Pascal Schlaak. Use of this source 
+// code is governed by an MIT-style license that can be found in 
+// the LICENSE file or at https://opensource.org/licenses/MIT.
 // Following bizz84's provider based architecture for flutter and firebase (https://github.com/bizz84/starter_architecture_flutter_firebase)
 import 'package:meta/meta.dart';
 import 'package:song_hub/models/message.dart';

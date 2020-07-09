@@ -1,3 +1,6 @@
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source 
+// code is governed by an MIT-style license that can be found in 
+// the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';

@@ -1,3 +1,6 @@
+// Copyright 2020 Tim Weise, Pascal Schlaak. Use of this source 
+// code is governed by an MIT-style license that can be found in 
+// the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
