@@ -1,5 +1,5 @@
-// Copyright 2020 Tim Weise, Pascal Schlaak. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Tim Weise, Pascal Schlaak. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'package:song_hub/models/recording.dart';
 import 'package:song_hub/screens/app/song_details/song_details_screen.dart';
@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:song_hub/screens/authentication/sign_up/sign_up_screen.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 
+@immutable
 class SongDetailsScreenRouteParams {
   final String songId;
   final String userId;
@@ -23,11 +24,13 @@ class SongDetailsScreenRouteParams {
   SongDetailsScreenRouteParams({this.songId, this.userId, this.songOwnedBy});
 }
 
+@immutable
 class EditSongModalRouteParams {
   final SongWithImages song;
   EditSongModalRouteParams({this.song});
 }
 
+@immutable
 class RecordingModalRouteParams {
   final SongWithImages song;
   final Recording recording;
@@ -35,6 +38,7 @@ class RecordingModalRouteParams {
   RecordingModalRouteParams({this.song, this.recording, this.index});
 }
 
+/// The application's top-level routing table.
 Map<String, Widget Function(BuildContext)> routes = {
   SongsOverviewScreen.routeId: SongsOverviewScreen.create,
   SongDetailsScreen.routeId: SongDetailsScreen.create,
