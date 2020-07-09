@@ -37,7 +37,7 @@ class SongDetailsViewModel {
       imageUrl = await storageService.loadProfileImage(recording.creator);
     }
     if (recording.storagePath != null) {
-      fileUrl = await storageService.loadImage(recording.storagePath);
+      fileUrl = await storageService.loadRecording(recording.storagePath);
     }
 
     return RecordingWithImages(

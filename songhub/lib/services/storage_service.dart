@@ -41,6 +41,11 @@ class StorageService {
     return await getFileUrl(imgPath);
   }
 
+  /// Returns the download url for the recording that is stored under [recordingPath]
+  Future<String> loadRecording(String recordingPath) async {
+    return await getFileUrl(recordingPath);
+  }
+
   /// Preprocesses an [imgFile] on a [path] which should be temporary.
   ///
   /// Crops the image to square ratio, resizes it to [croppedWidth]
