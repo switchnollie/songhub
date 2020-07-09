@@ -69,7 +69,9 @@ class _RecordingFormState extends State<RecordingForm> {
 
   /// Gets a file from [FilePicker]
   void getFile() async {
-    final File file = await FilePicker.getFile();
+    final File file = await FilePicker.getFile(
+        type: FileType.custom,
+        allowedExtensions: ['jpg', 'png', 'mp3', 'wav', 'txt']);
     if (file != null) {
       setState(() {
         _recordingFile = File(file.path);
