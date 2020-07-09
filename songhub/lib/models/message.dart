@@ -1,8 +1,13 @@
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
+// code is governed by an MIT-style license that can be found in
+// the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
 /// A model for messages
+@immutable
 class Message {
   final String id;
   final String creator;
@@ -11,7 +16,7 @@ class Message {
 
   Message({this.id, this.creator, this.content, this.createdAt});
 
-  /// Create message by deserializing a Firestore DocumentSnapshot
+  /// Creates a message by deserializing a Firestore DocumentSnapshot
   factory Message.fromMap(Map<String, dynamic> data, String documentId) {
     if (data == null) {
       return null;
@@ -24,7 +29,7 @@ class Message {
     );
   }
 
-  /// Serialize message to update or add in Firestore
+  /// Serializes the message to update or add in Firestore
   Map<String, dynamic> toMap() {
     return {
       'creator': creator,

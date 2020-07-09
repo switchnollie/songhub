@@ -1,10 +1,12 @@
+// Copyright 2020 Tim Weise, Pascal Schlaak. Use of this source
+// code is governed by an MIT-style license that can be found in
+// the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:song_hub/components/buttons.dart';
-// import 'package:song_hub/components/custom_app_bar.dart';
 import 'package:song_hub/components/dropdown_field.dart';
 import 'package:song_hub/components/image_input.dart';
 import 'package:song_hub/components/spinner.dart';
@@ -17,6 +19,10 @@ import 'package:song_hub/services/storage_service.dart';
 import 'package:song_hub/utils/show_snackbar.dart';
 import 'package:song_hub/viewModels/user_profile.dart';
 
+/// A modal that wraps an [EditProfileForm] widget.
+///
+/// Provides the app state that is exposed by the
+/// [EditProfileViewModel] to its descendants.
 class EditProfileModal extends StatelessWidget {
   static const routeId = "/profile/edit";
 
@@ -49,6 +55,8 @@ class EditProfileModal extends StatelessWidget {
   }
 }
 
+/// Widget that wraps a form to edit the profile of the user that
+/// is currently signed.
 class EditProfileForm extends StatefulWidget {
   final UserProfile user;
   EditProfileForm({this.user});
@@ -57,6 +65,8 @@ class EditProfileForm extends StatefulWidget {
   _EditProfileFormState createState() => _EditProfileFormState();
 }
 
+/// The mutable form state for the [EditProfileForm] widget to
+/// edit a user profile.
 class _EditProfileFormState extends State<EditProfileForm> {
   final _formKey = GlobalKey<FormState>();
 

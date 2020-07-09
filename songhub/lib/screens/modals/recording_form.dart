@@ -1,3 +1,6 @@
+// Copyright 2020 Tim Weise, Pascal Schlaak. Use of this source
+// code is governed by an MIT-style license that can be found in
+// the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -13,7 +16,9 @@ import 'package:song_hub/models/models.dart';
 import 'package:song_hub/models/recording.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 
-class RecordingModal extends StatefulWidget {
+/// Widget that wraps a form with input fields to configure
+/// a recording that is either to be added or to be edited.
+class RecordingForm extends StatefulWidget {
   final SongWithImages song;
   final Recording recording;
   final String submitButtonText;
@@ -22,7 +27,7 @@ class RecordingModal extends StatefulWidget {
   final String appBarTitle;
   final IconButton appBarAction;
 
-  RecordingModal(
+  RecordingForm(
       {@required this.song,
       @required this.recording,
       @required this.submitButtonText,
@@ -32,21 +37,23 @@ class RecordingModal extends StatefulWidget {
       this.appBarAction});
 
   @override
-  _RecordingModalState createState() => _RecordingModalState();
+  _RecordingFormState createState() => _RecordingFormState();
 }
 
-class _RecordingModalState extends State<RecordingModal> {
+class _RecordingFormState extends State<RecordingForm> {
   final _formKey = GlobalKey<FormState>();
 
-  File recordingFile;
-  Label selectedLabel;
+  File _recordingFile;
+  Label _selectedLabel;
   String storagePath;
   TextEditingController _versionDescriptionController;
 
-  /// Init state
+  /// Initialize form state either to empty values if no recording is provided
+  /// (which means the form is used to _add_ a recording) or with the values provided
+  /// (which means the form is used to _edit_ a recording)
   @override
   void initState() {
-    selectedLabel =
+    _selectedLabel =
         widget.recording != null ? widget.recording.label : Label.Idea;
     _versionDescriptionController =
         TextEditingController(text: widget.recording?.versionDescription ?? '');
@@ -60,17 +67,17 @@ class _RecordingModalState extends State<RecordingModal> {
     super.dispose();
   }
 
-  /// Get file from picker
+  /// Gets a file from [FilePicker]
   void getFile() async {
     final File file = await FilePicker.getFile();
     if (file != null) {
       setState(() {
-        recordingFile = File(file.path);
+        _recordingFile = File(file.path);
       });
     }
   }
 
-  /// Build form row
+  /// Wraps the [wrappedWidget] to build a form row with paddings.
   Widget _buildRow(Widget wrappedWidget) {
     return Padding(
       padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
@@ -122,8 +129,8 @@ class _RecordingModalState extends State<RecordingModal> {
                 ReadOnlyField(
                     label: 'File',
                     icon: Icons.audiotrack,
-                    text: recordingFile != null
-                        ? Path.basename(recordingFile.path).toString()
+                    text: _recordingFile != null
+                        ? Path.basename(_recordingFile.path).toString()
                         : widget.recording != null
                             ? Path.basename(widget.recording.storagePath)
                                 .toString()
@@ -134,10 +141,10 @@ class _RecordingModalState extends State<RecordingModal> {
                   label: 'Label',
                   items: labels,
                   icon: Icons.label,
-                  value: selectedLabel.value,
+                  value: _selectedLabel.value,
                   onChanged: (newVal) {
                     setState(() {
-                      selectedLabel = mappedLabels[newVal];
+                      _selectedLabel = mappedLabels[newVal];
                     });
                   },
                 ),
@@ -161,10 +168,10 @@ class _RecordingModalState extends State<RecordingModal> {
                     onPressed: () => widget.onSubmit(
                         context,
                         _formKey,
-                        recordingFile,
+                        _recordingFile,
                         storagePath,
                         widget.song,
-                        selectedLabel,
+                        _selectedLabel,
                         _versionDescriptionController.text,
                         widget.recording)),
               ),

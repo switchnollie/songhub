@@ -1,5 +1,8 @@
-import 'dart:async';
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
+// code is governed by an MIT-style license that can be found in
+// the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'dart:io';
+import 'dart:async';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';

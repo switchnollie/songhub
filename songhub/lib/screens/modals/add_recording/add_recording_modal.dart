@@ -1,3 +1,6 @@
+// Copyright 2020 Tim Weise, Pascal Schlaak. Use of this source
+// code is governed by an MIT-style license that can be found in
+// the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +15,11 @@ import 'package:song_hub/viewModels/song_with_images.dart';
 import 'package:uuid/uuid.dart';
 import 'package:song_hub/models/recording.dart';
 
-/// Add recording modal
+/// A modal that wraps a [RecordingForm].
+///
+/// Defines a submit handler that calls the [setRecording] method
+/// on the database service to add the new recording as a document to
+/// Cloud Firestore.
 class AddRecordingModal extends StatelessWidget {
   static const routeId = "/recordings/add";
 
@@ -67,7 +74,7 @@ class AddRecordingModal extends StatelessWidget {
         ModalRoute.of(context).settings.arguments;
     return Scaffold(
       extendBodyBehindAppBar: true,
-      body: RecordingModal(
+      body: RecordingForm(
         song: args.song,
         recording: null,
         submitButtonText: 'CREATE',

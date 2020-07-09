@@ -1,17 +1,18 @@
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
+// code is governed by an MIT-style license that can be found in
+// the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 
-enum UserRole { Artist, Producer }
-
 /// A model for users
+@immutable
 class User {
   final String id;
   final String firstName;
   final String lastName;
   final String stageName;
   final String email;
-  // final UserRole role;
   final String role;
 
   User({
@@ -23,7 +24,7 @@ class User {
     this.role,
   });
 
-  /// Create user by deserializing a Firestore DocumentSnapshot
+  /// Creates a user by deserializing a Firestore DocumentSnapshot
   factory User.fromMap(Map<String, dynamic> data, String documentId) {
     if (data == null) {
       return null;
@@ -38,7 +39,7 @@ class User {
     );
   }
 
-  /// Serialize user to update or add in Firestore
+  /// Serializes the user to update or add in Firestore
   Map<String, dynamic> toMap() {
     return {
       'firstName': firstName,

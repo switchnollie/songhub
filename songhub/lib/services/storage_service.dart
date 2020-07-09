@@ -1,3 +1,6 @@
+// Copyright 2020 Tim Weise, Pascal Schlaak. Use of this source
+// code is governed by an MIT-style license that can be found in
+// the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image/image.dart';
@@ -10,6 +13,8 @@ class FileUserPermissions {
   FileUserPermissions({this.owner, this.participants});
 }
 
+/// A Singleton Service that exposes pure functions to download and upload
+/// binary files like images or audio files from/to Firebase Storage.
 class StorageService {
   static final FirebaseStorage _storage = FirebaseStorage.instance;
 
@@ -24,7 +29,10 @@ class StorageService {
     return result;
   }
 
-  /// Preprocessing on the image file (crop to square, resize, convert to jpg)
+  /// Preprocesses an [imgFile] on a [path] which should be temporary.
+  ///
+  /// Crops the image to square ratio, resizes it to [croppedWidth]
+  /// and converts it to jpg.
   Future<File> _preprocessImgThumbnail(File imgFile, String path,
       [int croppedWidth = 1000]) async {
     Image image = decodeImage(imgFile.readAsBytesSync());
@@ -39,7 +47,7 @@ class StorageService {
     File resizedCroppedFile =
         await _preprocessImgThumbnail(file, "$tempPath/$fileName");
     final String uploadPath = await uploadFile(
-        bucketPath: "profileImgs",
+        filePath: "profileImgs",
         fileName: fileName,
         file: resizedCroppedFile,
         isPublic: true);
@@ -51,7 +59,7 @@ class StorageService {
   Future<String> uploadCoverImg(
       String songId, File file, FileUserPermissions fileUserPermissions) {
     return uploadFile(
-        bucketPath: "covers",
+        filePath: "covers",
         userPermissions: fileUserPermissions,
         file: file,
         fileName: songId);
@@ -60,15 +68,19 @@ class StorageService {
   Future<String> uploadRecording(String songId, String recordingId, File file,
       FileUserPermissions fileUserPermissions) {
     return uploadFile(
-        bucketPath: "recordings/$songId",
+        filePath: "recordings/$songId",
         userPermissions: fileUserPermissions,
         file: file,
         fileName: recordingId);
   }
 
-  /// Upload file to Firebase Storage
+  /// Uploads a [file] with the name [fileName] to the [filePath] in Firebase Storage
+  /// and returns the upload path.
+  ///
+  /// If [isPublic] is set, the file will be uploaded inside the public folder.
+  /// If not, meta data describing the permissions is created using [userPermissions].
   Future<String> uploadFile(
-      {String bucketPath,
+      {String filePath,
       File file,
       String fileName,
       bool isPublic = false,
@@ -76,11 +88,10 @@ class StorageService {
     StorageReference ref;
 
     if (isPublic) {
-      ref = _storage.ref().child("public/$bucketPath/$fileName");
+      ref = _storage.ref().child("public/$filePath/$fileName");
     } else {
-      ref = _storage
-          .ref()
-          .child("${userPermissions.owner}/$bucketPath/$fileName");
+      ref =
+          _storage.ref().child("${userPermissions.owner}/$filePath/$fileName");
     }
 
     StorageMetadata meta = userPermissions != null
@@ -94,7 +105,7 @@ class StorageService {
     return await ref.getPath();
   }
 
-  /// Create metadata based on uids
+  /// Creates file metadata based on the uids of the [owner] and all [participants]
   StorageMetadata createMetadata(String owner, List<String> participants) {
     Map<String, String> data = participants.fold({}, (dataMap, participant) {
       if (participant == owner) {

@@ -1,3 +1,6 @@
+// Copyright 2020 Tim Weise, Pascal Schlaak. Use of this source
+// code is governed by an MIT-style license that can be found in
+// the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -29,6 +32,8 @@ typedef void OnSubmit({
   List<String> participants,
 });
 
+/// Widget that wraps a form with input fields to configure
+/// a song that is either to be added or to be edited.
 class SongForm extends StatefulWidget {
   final String appBarTitle;
   final IconButton appBarAction;
@@ -65,7 +70,9 @@ class _SongFormState extends State<SongForm> {
   List<String> statuses = ['Initiation', 'Idea', 'Demo', 'Release'];
   List<User> selectedParticipants = [];
 
-  /// Init state
+  /// Initialize form state either to empty values if no song is provided
+  /// (which means the form is used to _add_ a song) or with the values provided
+  /// (which means the form is used to _edit_ a song)
   @override
   void initState() {
     _titleController =
@@ -151,6 +158,7 @@ class _SongFormState extends State<SongForm> {
     super.dispose();
   }
 
+  /// Wraps the [wrappedWidget] to build a form row with paddings.
   Widget _buildRow(Widget wrappedWidget) {
     return Padding(
       padding: const EdgeInsets.only(top: 16.0),

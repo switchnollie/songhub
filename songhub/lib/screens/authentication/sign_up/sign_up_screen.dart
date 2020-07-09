@@ -1,3 +1,6 @@
+// Copyright 2020 Tim Weise, Pascal Schlaak. Use of this source
+// code is governed by an MIT-style license that can be found in
+// the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:song_hub/components/buttons.dart';
@@ -8,6 +11,13 @@ import 'package:song_hub/screens/authentication/sign_in/sign_in_screen.dart';
 import 'package:song_hub/screens/authentication/sign_up/sign_up_view_model.dart';
 import 'package:song_hub/services/firebase_auth_service.dart';
 
+/// Wrapper for the SignUpScreen widget, that exposes app state and
+/// service methods in the view model [SignUpViewModel].
+///
+/// Uses the [ChangeNotifierProvider] widget of the provider package
+/// to provide an instance of the ChangeNotifier to the [SignInScreen] widget
+/// and a [Consumer] widget to consume the change notifier instance
+/// with its current state and service methods.
 class SignUpScreenBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -22,6 +32,7 @@ class SignUpScreenBuilder extends StatelessWidget {
   }
 }
 
+/// Sign up screen that wraps a sign up form.
 class SignUpScreen extends StatefulWidget {
   static const String routeId = "/signup";
   const SignUpScreen._({Key key, this.viewModel}) : super(key: key);
@@ -30,6 +41,7 @@ class SignUpScreen extends StatefulWidget {
   _SignUpScreenState createState() => _SignUpScreenState();
 }
 
+/// The mutable form state for the [SignUpScreen] widget.
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   // global form state
