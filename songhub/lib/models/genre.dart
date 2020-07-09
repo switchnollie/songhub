@@ -1,5 +1,5 @@
-// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 enum Genre {
   Pop,
@@ -13,6 +13,7 @@ enum Genre {
   Metal,
 }
 
+/// A structure that holds [Genres] to be displayed in this apps song modals.
 extension GenreExtension on Genre {
   static String _value(Genre val) {
     switch (val) {

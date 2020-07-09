@@ -6,7 +6,12 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
-/// A model for messages
+/// A modal to describe messages.
+///
+/// [id] defines an unique identifier every [Message] has. [creator]
+/// describes a [User] by its id who created this message. [content] defines
+/// this messages text. [createdAt] includes a timestamp this message was
+/// created.
 @immutable
 class Message {
   final String id;

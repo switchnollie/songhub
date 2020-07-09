@@ -7,7 +7,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:song_hub/models/genre.dart';
 
-/// A model for songs
+/// A model to describe this apps songs.
+///
+/// [id] defines an unique identifier every [Song] has. [title] defines this
+/// songs title text. [lyrics] can be defined to include this songs lyrics.
+/// [artist] decribes this songs creator by artist name. [coverImg] defines a
+/// image used as this songs cover. [mood] can be used to describe this songs
+/// mood as text. [participants] defines all [Users]s to be allowed to
+/// participate on this song project. [status] describes this songs development
+/// progress. [genre] can be used to define this songs genre. [ownedBy] defines
+/// the creator of this song by his id. [createdAt] includes a timestamp this
+/// song was created. [updatedAt] includes a timestamp this song was updated.
 @immutable
 class Song {
   final String id;

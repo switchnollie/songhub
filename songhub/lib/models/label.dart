@@ -1,5 +1,5 @@
-// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 enum Label {
   Idea,
@@ -12,6 +12,7 @@ enum Label {
   Master
 }
 
+/// A structure to hold [Label] to be displayed in this apps recording modals.
 extension LabelExtension on Label {
   static String _value(Label val) {
     switch (val) {

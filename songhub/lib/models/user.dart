@@ -5,7 +5,12 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 
-/// A model for users
+/// A model to describe this songs users.
+///
+/// [id] defines an unique identifier every [User] has. [firstName] and
+/// [lastName] define this user name. [stageName] includes this users name as
+/// an artist. [email] defines this users email. [role] defines this users role
+/// in song projects.
 @immutable
 class User {
   final String id;

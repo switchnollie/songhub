@@ -7,7 +7,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:song_hub/models/label.dart';
 
-/// A model for recordings
+/// A model to describe this apps recordings.
+///
+/// [id] defines an unique identifier every [Recording] has. [label] defines
+/// text to describe a recordings label. [creator] describes a [User] by its id
+/// who created this recording. [createdAt] includes a timestamp this message
+/// was created. [updatedAt] includes a timestamp this recording was updated.
+/// [versionDescription] serves as a textual description of this upload.
+/// [storagePath] defines this recordings path in Firebase Storage.
 @immutable
 class Recording {
   final String id;
