@@ -13,19 +13,7 @@ class FileUserPermissions {
 class StorageService {
   static final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  // Future<String> loadImage(String image) async {
-  //   var result;
-  //   print(image);
-  //   try {
-  //     result = await _storage.ref().child(image).getDownloadURL();
-  //   } catch (err) {
-  //     print(err);
-  //     result = 'assets/placeholderCover.png';
-  //   }
-  //   return result;
-  // }
-
-  // TODO: Redundant but would like to return null if error; Placeholder wont load ether as network image!
+  /// Get download url from file in Storage
   Future<String> loadImage(String image) async {
     var result;
     try {

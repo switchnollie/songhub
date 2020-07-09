@@ -2,14 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:song_hub/models/label.dart';
-import 'package:song_hub/screens/app/song_details/recording_playback.dart';
 
 /// A component to display a recording input container
-class InputBox extends StatelessWidget {
+class RecordingGridInputItem extends StatelessWidget {
   final String heroTag;
   final Function onPressed;
 
-  InputBox({@required this.heroTag, @required this.onPressed});
+  RecordingGridInputItem({@required this.heroTag, @required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -34,27 +33,15 @@ class InputBox extends StatelessWidget {
 }
 
 /// A component to display a specific recording item
-class Box extends StatelessWidget {
-  final Timestamp createdAt;
-  final Timestamp updatedAt;
-  final String creator;
-  final String creatorImgUrl;
-  final Label label;
-  final String versionDescription;
+class RecordingGridItem extends StatelessWidget {
   final String heroTag;
-  final String storagePath;
   final Function onTap;
+  final List<Widget> children;
 
-  Box({
-    @required this.creator,
-    @required this.createdAt,
-    @required this.label,
+  RecordingGridItem({
     @required this.onTap,
     @required this.heroTag,
-    @required this.storagePath,
-    this.creatorImgUrl,
-    this.updatedAt,
-    this.versionDescription,
+    @required this.children,
   });
 
   @override
@@ -72,23 +59,7 @@ class Box extends StatelessWidget {
                 color: Theme.of(context).colorScheme.surface,
                 padding: EdgeInsets.all(16.0),
                 child: Column(
-                  children: <Widget>[
-                    BoxHeader(
-                      creator: creator,
-                      createdAt: createdAt,
-                      creatorImgUrl:
-                          creatorImgUrl != null ? creatorImgUrl : null,
-                      updatedAt: updatedAt != null ? updatedAt : null,
-                    ),
-                    BoxBody(
-                      label: label,
-                      versionDescription: versionDescription != null
-                          ? versionDescription
-                          : null,
-                    ),
-                    // TODO: No component
-                    BoxPlayback(storagePath: storagePath),
-                  ],
+                  children: children,
                 ),
               ),
             ),
@@ -100,16 +71,14 @@ class Box extends StatelessWidget {
 }
 
 /// A component to display a header for an recording item
-class BoxHeader extends StatelessWidget {
+class RecordingGridItemHeader extends StatelessWidget {
   final Timestamp createdAt;
   final Timestamp updatedAt;
-  final String creator;
-  final String creatorImgUrl;
+  final String imageUrl;
 
-  BoxHeader({
-    @required this.creator,
+  RecordingGridItemHeader({
     @required this.createdAt,
-    this.creatorImgUrl,
+    this.imageUrl,
     this.updatedAt,
   });
 
@@ -139,10 +108,10 @@ class BoxHeader extends StatelessWidget {
               ),
             ],
           ),
-          creator != null
+          imageUrl != null
               ? CircleAvatar(
                   child: ClipOval(
-                    child: Image.network(creatorImgUrl),
+                    child: Image.network(imageUrl),
                   ),
                   radius: 14,
                 )
@@ -158,13 +127,13 @@ class BoxHeader extends StatelessWidget {
 }
 
 /// A component to display a body for a recording item
-class BoxBody extends StatelessWidget {
-  final Label label;
-  final String versionDescription;
+class RecordingGridItemBody extends StatelessWidget {
+  final Label title;
+  final String text;
 
-  BoxBody({
-    @required this.label,
-    this.versionDescription,
+  RecordingGridItemBody({
+    @required this.title,
+    this.text,
   });
 
   @override
@@ -180,15 +149,15 @@ class BoxBody extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(bottom: 4.0),
               child: Text(
-                label.value,
+                title.value,
                 style: TextStyle(
                   color: Theme.of(context).accentColor,
                 ),
               ),
             ),
-            versionDescription != null
+            text != null
                 ? Text(
-                    versionDescription,
+                    text,
                     style: TextStyle(
                       fontSize: 16,
                     ),
@@ -196,6 +165,37 @@ class BoxBody extends StatelessWidget {
                 : SizedBox.shrink()
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// A component to render audio playback
+class RecordingGridItemPlayback extends StatelessWidget {
+  final bool isDisabled, isPlaying, loaded;
+  final Function onTap;
+
+  RecordingGridItemPlayback(
+      {this.isDisabled, @required this.isPlaying, this.onTap, this.loaded});
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.bottomRight,
+      child: InkWell(
+        onTap: onTap,
+        child: loaded != null && loaded
+            ? Icon(
+                isDisabled
+                    ? Icons.block
+                    : isPlaying ? Icons.pause : Icons.play_arrow,
+                color: Theme.of(context).colorScheme.onSurface,
+              )
+            : SizedBox(
+                height: 24,
+                width: 24,
+                child: CircularProgressIndicator(),
+              ),
       ),
     );
   }

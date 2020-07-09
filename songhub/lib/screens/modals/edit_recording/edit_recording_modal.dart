@@ -70,23 +70,25 @@ class EditRecordingModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final database = Provider.of<FirestoreDatabase>(context, listen: false);
     final RecordingModalRouteParams args =
         ModalRoute.of(context).settings.arguments;
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: RecordingModal(
-        song: args.song,
-        recording: args.recording,
-        submitButtonText: 'SAVE',
-        onSubmit: _handleSubmit,
-        index: args.index,
-        appBarTitle: 'Edit recording',
-        appBarAction: IconButton(
-          icon: Icon(Icons.delete_outline,
-              color: Theme.of(context).colorScheme.secondary),
-          onPressed: () => _showDeleteAlert(context, args),
-        ),
-      ),
+          song: args.song,
+          recording: args.recording,
+          submitButtonText: 'SAVE',
+          onSubmit: _handleSubmit,
+          index: args.index,
+          appBarTitle: 'Edit recording',
+          appBarAction: database.uid == args.recording.creator
+              ? IconButton(
+                  icon: Icon(Icons.delete_outline,
+                      color: Theme.of(context).colorScheme.secondary),
+                  onPressed: () => _showDeleteAlert(context, args),
+                )
+              : null),
       backgroundColor: Theme.of(context).colorScheme.primary,
     );
   }
