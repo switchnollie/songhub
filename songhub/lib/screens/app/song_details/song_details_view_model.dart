@@ -1,5 +1,5 @@
-// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'package:song_hub/models/message.dart';
 import 'package:song_hub/models/models.dart';
@@ -34,8 +34,7 @@ class SongDetailsViewModel {
       Recording recording) async {
     String imageUrl;
     if (recording.creator != null) {
-      imageUrl = await storageService
-          .loadImage('public/profileImgs/${recording.creator}.jpg');
+      imageUrl = await storageService.loadProfileImage(recording.creator);
     }
 
     return RecordingWithImages(
@@ -48,8 +47,7 @@ class SongDetailsViewModel {
 
     String authorImgUrl;
     if (message.creator != null) {
-      authorImgUrl = await storageService
-          .loadImage('public/profileImgs/${message.creator}.jpg');
+      authorImgUrl = await storageService.loadProfileImage(message.creator);
     }
     bool isMyMessage = user.uid == message.creator;
 
@@ -109,12 +107,11 @@ class SongDetailsViewModel {
 
   /// Get song with image urls
   Future<String> _getParticipantImageUrl(String participant) async {
-    return await storageService
-        .loadImage('public/profileImgs/$participant.jpg');
+    return await storageService.loadProfileImage(participant);
   }
 
   Future<SongWithImages> _getSongDataWithImageUrls(Song song) async {
-    final coverImgUrl = await storageService.loadImage(song.coverImg);
+    final coverImgUrl = await storageService.loadCoverImage(song.coverImg);
     final participantImgUrlFutures = song.participants
         .map<Future<String>>(
             (participant) async => await _getParticipantImageUrl(participant))
