@@ -1,5 +1,5 @@
-// Copyright 2020 Tim Weise, Pascal Schlaak. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Tim Weise, Pascal Schlaak. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'package:song_hub/routing.dart';
 import "package:flutter/material.dart";
@@ -12,6 +12,9 @@ import 'package:song_hub/screens/app/app.dart';
 import "constants.dart";
 import 'package:provider/provider.dart';
 
+/// starts the [SongHub] app with builder functions for the top level services.
+/// The top level services are only created once and are provided on the
+/// root so that all widgets have access to them.
 void main() => runApp(SongHub(
       authServiceBuilder: (_) => FirebaseAuthService(),
       databaseBuilder: (_, uid) => FirestoreDatabase(uid: uid),
@@ -25,8 +28,6 @@ class SongHub extends StatelessWidget {
       this.databaseBuilder,
       this.storageServiceBuilder})
       : super(key: key);
-  // Expose builders for 3rd party services at the root of the widget tree
-  // This is useful when mocking services while testing
   final FirebaseAuthService Function(BuildContext context) authServiceBuilder;
   final FirestoreDatabase Function(BuildContext context, String uid)
       databaseBuilder;

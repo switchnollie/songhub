@@ -22,8 +22,7 @@ class EditProfileViewModel {
 
   /// Gets the profile image of the [user] from Firebase Storage
   Future<UserProfile> _getUserDataWithImageUrl(User user) async {
-    String profileImgUrl =
-        await storageService.loadImage('public/profileImgs/${user.id}.jpg');
+    String profileImgUrl = await storageService.loadProfileImage(user.id);
     return UserProfile(userDocument: user, profileImgUrl: profileImgUrl);
   }
 

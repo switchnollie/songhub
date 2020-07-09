@@ -3,9 +3,11 @@
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:image/image.dart';
 import 'package:path_provider/path_provider.dart';
 
+@immutable
 class FileUserPermissions {
   final String owner;
   final List<String> participants;
@@ -14,19 +16,34 @@ class FileUserPermissions {
 }
 
 /// A Singleton Service that exposes pure functions to download and upload
-/// binary files like images or audio files from/to Firebase Storage.
+/// binary files like images or audio files from/to a Firebase Storage bucket.
 class StorageService {
   static final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  /// Get download url from file in Storage
-  Future<String> loadImage(String image) async {
+  /// Returns the download url for a given [path].
+  Future<String> getFileUrl(String path) async {
     var result;
     try {
-      result = await _storage.ref().child(image).getDownloadURL();
+      result = await _storage.ref().child(path).getDownloadURL();
     } catch (err) {
       result = null;
     }
     return result;
+  }
+
+  /// Returns the download url for the profile image of a given user with [uid].
+  Future<String> loadProfileImage(String userId) async {
+    return await getFileUrl("public/profileImgs/$userId.jpg");
+  }
+
+  /// Returns the download url for the cover image that is stored under [imgPath]
+  Future<String> loadCoverImage(String imgPath) async {
+    return await getFileUrl(imgPath);
+  }
+
+  /// Returns the download url for the recording that is stored under [recordingPath]
+  Future<String> loadRecording(String recordingPath) async {
+    return await getFileUrl(recordingPath);
   }
 
   /// Preprocesses an [imgFile] on a [path] which should be temporary.
@@ -40,6 +57,8 @@ class StorageService {
     return await File(path).writeAsBytes(encodeJpg(thumbnail));
   }
 
+  /// Uploads a preprocessed version of [file] as a profile image
+  /// to Storage and returns the storage path.
   Future<String> uploadProfileImg(String uid, File file) async {
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = tempDir.path;
@@ -56,15 +75,25 @@ class StorageService {
     return uploadPath;
   }
 
+  /// Uploads a preprocessed version of [file] under the filename [songId].jpg
+  /// as the song cover image to Storage and returns the storage path.
   Future<String> uploadCoverImg(
-      String songId, File file, FileUserPermissions fileUserPermissions) {
+      String songId, File file, FileUserPermissions fileUserPermissions) async {
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    File resizedCroppedFile =
+        await _preprocessImgThumbnail(file, "$tempPath/$songId");
+
     return uploadFile(
         filePath: "covers",
         userPermissions: fileUserPermissions,
-        file: file,
+        file: resizedCroppedFile,
         fileName: songId);
   }
 
+  /// Uploads a recording [file] under the path
+  /// [userId]/recordings/[songId]/[recordingId] to Storage and returns
+  /// the storage path.
   Future<String> uploadRecording(String songId, String recordingId, File file,
       FileUserPermissions fileUserPermissions) {
     return uploadFile(
@@ -105,7 +134,7 @@ class StorageService {
     return await ref.getPath();
   }
 
-  /// Creates file metadata based on the uids of the [owner] and all [participants]
+  /// Creates [StorageMetadata] based on the uids of the [owner] and all [participants]
   StorageMetadata createMetadata(String owner, List<String> participants) {
     Map<String, String> data = participants.fold({}, (dataMap, participant) {
       if (participant == owner) {
@@ -119,6 +148,7 @@ class StorageService {
     return StorageMetadata(customMetadata: data);
   }
 
+  /// Deletes the File that is located under [path] from Storage
   Future<void> deleteFile(String path) async {
     StorageReference ref = _storage.ref().child(path);
     try {

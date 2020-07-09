@@ -1,8 +1,9 @@
-// Copyright 2020 Tim Weise, Pascal Schlaak. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Tim Weise, Pascal Schlaak. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
-/// takes a substring and returns the start and endcode to use in
-/// firestory Query filters
+
+/// takes a substring under [startsWithSubstr] and returns the start and end
+/// code to use in firestory Query filters
 List<String> getCodesStartsWith(String startsWithSubstr) {
   final strlength = startsWithSubstr.length;
   final strFrontCode = startsWithSubstr.substring(0, strlength - 1);

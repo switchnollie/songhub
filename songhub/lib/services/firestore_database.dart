@@ -73,6 +73,8 @@ class FirestoreDatabase {
         path: FirestorePath.recording(uid, songId, recording.id),
       );
 
+  /// Gets a Stream of the recording with [recordingId] related to a specific
+  /// song with [songId] under the user with [userId] using a documentStream.
   Stream<Recording> recordingStream(
           {@required String recordingId,
           @required String songId,
@@ -82,6 +84,8 @@ class FirestoreDatabase {
         builder: (data, documentId) => Recording.fromMap(data, documentId),
       );
 
+  /// Gets a Stream of all recordings related to a specific song with [songId]
+  /// under the user with [userId] using a collectionStream.
   Stream<List<Recording>> recordingsStream(
           {@required String songId, String userId}) =>
       _service.collectionStream(
@@ -125,6 +129,7 @@ class FirestoreDatabase {
                 isLessThan: substrCodes[1]);
           });
 
+  /// Gets a list of users by their [ids]
   Future<List<User>> getUsersById(List<String> ids) async {
     final userQueries = ids
         .map((uid) => _service.getDocumentData(

@@ -1,5 +1,5 @@
-// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'package:song_hub/models/song.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
@@ -14,12 +14,11 @@ class SongsOverviewViewModel {
   final StorageService storageService;
 
   Future<String> _getParticipantImageUrl(String participant) async {
-    return await storageService
-        .loadImage('public/profileImgs/$participant.jpg');
+    return await storageService.loadProfileImage(participant);
   }
 
   Future<SongWithImages> _getSongDataWithImageUrls(Song song) async {
-    final coverImgUrl = await storageService.loadImage(song.coverImg);
+    final coverImgUrl = await storageService.loadCoverImage(song.coverImg);
     final participantImgUrlFutures = song.participants
         .map<Future<String>>(
             (participant) async => await _getParticipantImageUrl(participant))
