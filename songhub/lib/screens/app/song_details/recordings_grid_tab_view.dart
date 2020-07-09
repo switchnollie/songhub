@@ -1,11 +1,10 @@
-// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 import 'package:song_hub/components/grid_box.dart';
-import 'package:song_hub/components/recording.dart';
 import 'package:song_hub/routing.dart';
 import 'package:song_hub/screens/app/song_details/song_details_view_model.dart';
 import 'package:song_hub/utils/show_snackbar.dart';

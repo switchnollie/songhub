@@ -1,12 +1,14 @@
-// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:song_hub/models/label.dart';
 
 /// A model for recordings
+@immutable
 class Recording {
   final String id;
   final Label label;
@@ -25,7 +27,7 @@ class Recording {
       this.versionDescription,
       this.storagePath});
 
-  /// Create recording by deserializing a Firestore DocumentSnapshot
+  /// Creates a recording by deserializing a Firestore DocumentSnapshot
   factory Recording.fromMap(Map<String, dynamic> data, String documentId) {
     if (data == null) {
       return null;
@@ -40,7 +42,7 @@ class Recording {
     );
   }
 
-  /// Serialize recording to update or add in Firestore
+  /// Serializes the recording to update or add in Firestore
   Map<String, dynamic> toMap() {
     return {
       'label': label.value,

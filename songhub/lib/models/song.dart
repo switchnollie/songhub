@@ -1,12 +1,14 @@
-// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:song_hub/models/genre.dart';
 
 /// A model for songs
+@immutable
 class Song {
   final String id;
   final String title;
@@ -36,7 +38,7 @@ class Song {
     this.createdAt,
   });
 
-  /// Create song by deserializing a Firestore DocumentSnapshot
+  /// Creates a song by deserializing a Firestore DocumentSnapshot
   factory Song.fromMap(Map<String, dynamic> data, String documentId) {
     if (data == null) {
       return null;
@@ -70,7 +72,7 @@ class Song {
     ''';
   }
 
-  /// Serialize song to update or add in Firestore
+  /// Serializes the song to update or add in Firestore
   Map<String, dynamic> toMap() {
     return {
       'title': title,
