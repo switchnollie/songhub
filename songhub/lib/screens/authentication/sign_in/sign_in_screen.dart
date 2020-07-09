@@ -1,5 +1,5 @@
-// Copyright 2020 Tim Weise, Pascal Schlaak. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Tim Weise, Pascal Schlaak. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +11,13 @@ import 'package:song_hub/screens/authentication/sign_up/sign_up_screen.dart';
 import 'package:song_hub/screens/authentication/sign_in/sign_in_view_model.dart';
 import 'package:song_hub/services/firebase_auth_service.dart';
 
+/// Wrapper for the SignInScreen widget, that exposes app state and
+/// service methods in the view model [SignInViewModel].
+///
+/// Uses the [ChangeNotifierProvider] widget of the provider package
+/// to provide an instance of the ChangeNotifier to the [SignInScreen] widget
+/// and a [Consumer] widget to consume the change notifier instance
+/// with its current state and service methods.
 class SignInScreenBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -25,6 +32,7 @@ class SignInScreenBuilder extends StatelessWidget {
   }
 }
 
+/// Sign in screen that wraps a sign in form.
 class SignInScreen extends StatefulWidget {
   static const String routeId = "/login";
   const SignInScreen._({Key key, this.viewModel}) : super(key: key);
@@ -33,6 +41,7 @@ class SignInScreen extends StatefulWidget {
   _SignInScreenState createState() => _SignInScreenState();
 }
 
+/// Widget that holds mutable sign in form state
 class _SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
   // global form state
