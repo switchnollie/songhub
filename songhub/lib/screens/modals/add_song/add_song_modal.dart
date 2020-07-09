@@ -1,5 +1,5 @@
-// Copyright 2020 Tim Weise, Pascal Schlaak. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Tim Weise, Pascal Schlaak. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'dart:io';
 
@@ -17,6 +17,11 @@ import 'package:song_hub/services/firestore_database.dart';
 import 'package:song_hub/services/storage_service.dart';
 import 'package:song_hub/utils/show_snackbar.dart';
 
+/// A modal that wraps a [SongForm].
+///
+/// Defines a submit handler that calls the [setSong] method
+/// on the database service to add the new song as a document to
+/// Cloud Firestore.
 class AddSongModal extends StatelessWidget {
   static const routeId = "/songs/add";
 

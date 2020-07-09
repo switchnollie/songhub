@@ -41,7 +41,7 @@ class SignInScreen extends StatefulWidget {
   _SignInScreenState createState() => _SignInScreenState();
 }
 
-/// Widget that holds mutable sign in form state
+/// The mutable form state for the [SignInScreen] widget.
 class _SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
   // global form state
