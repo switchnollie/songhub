@@ -2,13 +2,13 @@
 // code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'dart:io';
-import 'dart:async';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 import 'package:song_hub/components/recording_grid_items.dart';
+import 'package:path/path.dart' as Path;
 
 /// A widgets that builds and handles all audio playbacks.
 ///
@@ -26,47 +26,61 @@ class RecordingPlayback extends StatefulWidget {
 class _RecordingPlaybackState extends State<RecordingPlayback> {
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   VideoPlayerController _controller;
-  bool isSimulator = false;
+  bool isDisabled = false;
   bool isPlaying = false;
   bool loaded = true;
   String fileUrl;
 
+  void initState() {
+    super.initState();
+    checkForPlaybackDisable();
+  }
+
+  /// Check if device is simulator or file is no audio format
+  void checkForPlaybackDisable() async {
+    bool isIosSimulator = false;
+    try {
+      if (Platform.isIOS) {
+        IosDeviceInfo data = await deviceInfoPlugin.iosInfo;
+        isIosSimulator = !data.isPhysicalDevice;
+      }
+    } on PlatformException {
+      print('Error:: Failed to get platform version.');
+    }
+
+    setState(() {
+      isDisabled =
+          isIosSimulator || !['.mp3', '.wav'].contains(getFileExtension());
+    });
+  }
+
+  /// Get file extension of recording file download url
+  String getFileExtension() {
+    final String fileExtension = Path.extension(widget.recordingUrl);
+    final List subStrings = fileExtension.split('?');
+    return subStrings[0];
+  }
+
   /// Initialize audio playback
   void initRecordingPlayback(String fileUrl) async {
-    bool isIosSimulator = false;
     setState(() {
       loaded = false;
     });
 
-    Timer(Duration(milliseconds: 200), () async {
+    if (!isDisabled) {
       try {
-        if (Platform.isIOS) {
-          IosDeviceInfo data = await deviceInfoPlugin.iosInfo;
-          isIosSimulator = !data.isPhysicalDevice;
-        }
-      } on PlatformException {
-        print('Error:: Failed to get platform version.');
+        _controller = VideoPlayerController.network(fileUrl);
+        _controller.setLooping(true);
+        _controller.initialize();
+        setState(() {
+          loaded = true;
+          isPlaying = true;
+          _controller.play();
+        });
+      } catch (e) {
+        print('Couldn\'t get audio from Storage! $e');
       }
-
-      setState(() {
-        isSimulator = isIosSimulator;
-      });
-
-      if (!isSimulator) {
-        try {
-          _controller = VideoPlayerController.network(fileUrl);
-          _controller.setLooping(true);
-          _controller.initialize();
-          setState(() {
-            loaded = true;
-            isPlaying = true;
-            _controller.play();
-          });
-        } catch (e) {
-          print('Couldn\'t get audio from Storage! $e');
-        }
-      }
-    });
+    }
   }
 
   /// onTap function for grid playback box footer
@@ -90,7 +104,7 @@ class _RecordingPlaybackState extends State<RecordingPlayback> {
   Widget build(BuildContext context) {
     return RecordingGridItemPlayback(
       onTap: () => onRecordingPlayback(widget.recordingUrl),
-      isDisabled: isSimulator,
+      isDisabled: isDisabled,
       isPlaying: isPlaying,
       loaded: loaded,
     );

@@ -203,7 +203,7 @@ class RecordingGridItemPlayback extends StatelessWidget {
     return Align(
       alignment: Alignment.bottomRight,
       child: InkWell(
-        onTap: onTap,
+        onTap: isDisabled ? () {} : onTap,
         child: loaded != null && loaded
             ? Icon(
                 isDisabled

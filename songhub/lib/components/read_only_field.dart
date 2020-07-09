@@ -42,12 +42,16 @@ class ReadOnlyField extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Icon(icon, color: Theme.of(context).colorScheme.onBackground),
-              Padding(
-                padding: const EdgeInsets.only(left: 12.0),
-                child: Text(
-                  '${text ?? ''}',
-                  overflow: TextOverflow.fade,
-                  style: TextStyle(fontSize: 16),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: Text(
+                    '${text ?? ''}',
+                    overflow: TextOverflow.fade,
+                    maxLines: 1,
+                    softWrap: false,
+                    style: TextStyle(fontSize: 16),
+                  ),
                 ),
               ),
             ],

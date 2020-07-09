@@ -14,6 +14,7 @@ import 'package:song_hub/utils/show_snackbar.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 import 'package:uuid/uuid.dart';
 import 'package:song_hub/models/recording.dart';
+import 'package:path/path.dart' as Path;
 
 /// A modal that wraps a [RecordingForm].
 ///
@@ -43,7 +44,7 @@ class AddRecordingModal extends StatelessWidget {
         if (recordingFile != null) {
           storagePath = await storageService.uploadRecording(
               song.songDocument.id,
-              recordingId,
+              recordingId + Path.extension(recordingFile.path),
               recordingFile,
               FileUserPermissions(
                   owner: database.uid,
