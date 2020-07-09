@@ -87,18 +87,20 @@ class EditRecordingModal extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: RecordingForm(
-        song: args.song,
-        recording: args.recording,
-        submitButtonText: 'SAVE',
-        onSubmit: _handleSubmit,
-        index: args.index,
-        appBarTitle: 'Edit recording',
-        appBarAction: IconButton(
-          icon: Icon(Icons.delete_outline,
-              color: Theme.of(context).colorScheme.secondary),
-          onPressed: () => _showDeleteAlert(context, args.song, args.recording),
-        ),
-      ),
+          song: args.song,
+          recording: args.recording,
+          submitButtonText: 'SAVE',
+          onSubmit: _handleSubmit,
+          index: args.index,
+          appBarTitle: 'Edit recording',
+          appBarAction: database.uid == args.recording.creator
+              ? IconButton(
+                  icon: Icon(Icons.delete_outline,
+                      color: Theme.of(context).colorScheme.secondary),
+                  onPressed: () =>
+                      _showDeleteAlert(context, args.song, args.recording),
+                )
+              : null),
       backgroundColor: Theme.of(context).colorScheme.primary,
     );
   }
