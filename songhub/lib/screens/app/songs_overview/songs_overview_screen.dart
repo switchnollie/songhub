@@ -1,5 +1,5 @@
-// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'package:provider/provider.dart';
 import 'package:song_hub/components/custom_app_bar.dart';
@@ -12,6 +12,11 @@ import 'package:song_hub/services/firestore_database.dart';
 import 'package:song_hub/services/storage_service.dart';
 import 'package:song_hub/utils/show_snackbar.dart';
 
+/// A view to build this apps songs overview.
+///
+/// On create this view initializes [Provider]s to feed its childs with cloud
+/// data. Stream builder functionality will update [SongList] if data changes
+/// occur.
 class SongsOverviewScreen extends StatelessWidget {
   static const routeId = "/songs";
 

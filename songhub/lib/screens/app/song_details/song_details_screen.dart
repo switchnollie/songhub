@@ -17,10 +17,10 @@ import 'package:song_hub/services/storage_service.dart';
 import 'package:song_hub/utils/show_snackbar.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 
-/// A view model to build this apps song details screen.
+/// A view to build this apps song details screen.
 ///
 /// On create this view initializes [Provider]s to feed its childs with cloud
-/// data. Stream builder functionality will update [DetaislView] if data changes
+/// data. Stream builder functionality will update [DetailsView] if data changes
 /// occur.
 class SongDetailsScreen extends StatelessWidget {
   static const routeId = "/songs/details";

@@ -1,5 +1,5 @@
-// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 //import 'package:song_hub/constants.dart';
 import 'package:song_hub/screens/app/placeholder.dart';
@@ -7,6 +7,10 @@ import 'package:song_hub/screens/app/songs_overview/songs_overview_screen.dart';
 import 'package:song_hub/screens/app/user_settings/user_settings_screen.dart';
 import 'package:flutter/material.dart';
 
+/// A view that builds this apps navigation bar as well as the selected screen.
+///
+/// Provided screens are: [SongOverviewScreen], [Placeholder] screen for future
+/// notifications feautre and [UserSettingsScreen].
 class App extends StatefulWidget {
   App({Key key}) : super(key: key);
   _AppState createState() => _AppState();

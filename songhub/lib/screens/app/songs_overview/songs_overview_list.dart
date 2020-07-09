@@ -11,6 +11,10 @@ import 'package:song_hub/services/firestore_database.dart';
 import 'package:song_hub/utils/show_snackbar.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 
+/// A widget to build the project overviews song list.
+///
+/// [songs] are required to build in an list view. Each song will be rendered
+/// in a [SongListEntry] widget.
 class SongList extends StatelessWidget {
   SongList({this.songs});
 
@@ -35,6 +39,12 @@ class SongList extends StatelessWidget {
   }
 }
 
+/// A widget that wraps a ListeTile to display general song informations.
+///
+/// A [song] is required to fill this widgets liste tile. A Dismissible widget
+/// is used for song delete operation. SongListEntry icnludes [ListTitle] to
+/// display song title, [ListSubtitle] to display a songs artist and
+/// [AvatorRow] to display a songs participants.
 class SongListEntry extends StatelessWidget {
   final SongWithImages song;
 
@@ -122,6 +132,9 @@ class SongListEntry extends StatelessWidget {
   }
 }
 
+/// A widget that builds a lists subtitle.
+///
+/// A [artist]s name is required as text.
 class ListSubtitle extends StatelessWidget {
   final String artist;
 
@@ -136,6 +149,9 @@ class ListSubtitle extends StatelessWidget {
   }
 }
 
+//// A widget that builds a lists title.
+///
+/// A [title] needs to be specified as text.
 class ListTitle extends StatelessWidget {
   final String title;
 
