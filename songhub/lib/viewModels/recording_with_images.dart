@@ -5,7 +5,8 @@ import 'package:song_hub/models/recording.dart';
 
 class RecordingWithImages {
   final Recording recordingDocument;
-  final String creatorImgUrl;
+  final String creatorImgUrl, fileUrl;
 
-  RecordingWithImages({this.recordingDocument, this.creatorImgUrl});
+  RecordingWithImages(
+      {this.recordingDocument, this.creatorImgUrl, this.fileUrl});
 }

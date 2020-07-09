@@ -4,8 +4,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
-import 'package:song_hub/components/grid_box.dart';
+import 'package:song_hub/components/recording_grid_items.dart';
 import 'package:song_hub/routing.dart';
+import 'package:song_hub/screens/app/song_details/recording_playback.dart';
 import 'package:song_hub/screens/app/song_details/song_details_view_model.dart';
 import 'package:song_hub/utils/show_snackbar.dart';
 import 'package:song_hub/viewModels/recording_with_images.dart';
@@ -38,7 +39,7 @@ class _RecordingsGridState extends State<RecordingsGridTabView> {
           ),
           itemBuilder: (BuildContext context, int index) {
             if (index == 0) {
-              return InputBox(
+              return RecordingGridInputItem(
                   heroTag: index.toString(),
                   onPressed: () {
                     navigateAndDisplayReturnedMessage(
@@ -52,16 +53,23 @@ class _RecordingsGridState extends State<RecordingsGridTabView> {
                     );
                   });
             }
-            return Box(
-              creator: snapshot.data[index - 1].recordingDocument.creator,
-              createdAt: snapshot.data[index - 1].recordingDocument.createdAt,
-              label: snapshot.data[index - 1].recordingDocument.label,
-              storagePath:
-                  snapshot.data[index - 1].recordingDocument.storagePath,
-              creatorImgUrl: snapshot.data[index - 1].creatorImgUrl,
-              updatedAt: snapshot.data[index - 1].recordingDocument.updatedAt,
-              versionDescription:
-                  snapshot.data[index - 1].recordingDocument.versionDescription,
+            return RecordingGridItem(
+              children: [
+                RecordingGridItemHeader(
+                  createdAt:
+                      snapshot.data[index - 1].recordingDocument.createdAt,
+                  imageUrl: snapshot.data[index - 1].creatorImgUrl,
+                  updatedAt:
+                      snapshot.data[index - 1].recordingDocument.updatedAt,
+                ),
+                RecordingGridItemBody(
+                  title: snapshot.data[index - 1].recordingDocument.label,
+                  text: snapshot
+                      .data[index - 1].recordingDocument.versionDescription,
+                ),
+                RecordingPlayback(
+                    recordingUrl: snapshot.data[index - 1].fileUrl),
+              ],
               heroTag: index.toString(),
               onTap: () {
                 navigateAndDisplayReturnedMessage(

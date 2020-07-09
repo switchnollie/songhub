@@ -1,129 +1,94 @@
-// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'dart:io';
+import 'dart:async';
 
 import 'package:device_info/device_info.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
+import 'package:song_hub/components/recording_grid_items.dart';
 
-/// A component to display a playback button for a recording item
-class BoxPlayback extends StatefulWidget {
-  final String storagePath;
+class RecordingPlayback extends StatefulWidget {
+  final String recordingUrl;
 
-  BoxPlayback({@required this.storagePath});
+  RecordingPlayback({this.recordingUrl});
 
   @override
-  _BoxPlaybackState createState() => _BoxPlaybackState();
+  _RecordingPlaybackState createState() => _RecordingPlaybackState();
 }
 
-class _BoxPlaybackState extends State<BoxPlayback> {
-  VideoPlayerController _controller;
-  Future<void> _initializeVideoPlayerFuture;
-  String fileUrl;
+class _RecordingPlaybackState extends State<RecordingPlayback> {
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-  bool _isIosSimulator = false;
-  // VoidCallback listener;
-  // bool _isPlaying;
+  VideoPlayerController _controller;
+  bool isSimulator = false;
+  bool isPlaying = false;
+  bool loaded = true;
+  String fileUrl;
 
-  @override
-  void initState() {
-    super.initState();
-    // listener = () {
-    //   final bool isPlaying = _controller.value.isPlaying;
-    //   if (isPlaying != _isPlaying) {
-    //     setState(() {
-    //       _isPlaying = isPlaying;
-    //     });
-    //   }
-    // };
-    initAudioPlayback(widget.storagePath);
-  }
-
-  Future<void> checkIfSimulator() async {
+  /// Initialize audio playback
+  void initRecordingPlayback(String fileUrl) async {
     bool isIosSimulator = false;
-
-    try {
-      if (Platform.isIOS) {
-        IosDeviceInfo data = await deviceInfoPlugin.iosInfo;
-        isIosSimulator = !data.isPhysicalDevice;
-      }
-    } on PlatformException {
-      print('Error:: Failed to get platform version.');
-    }
-
     setState(() {
-      _isIosSimulator = isIosSimulator;
+      loaded = false;
+    });
+
+    Timer(Duration(milliseconds: 200), () async {
+      try {
+        if (Platform.isIOS) {
+          IosDeviceInfo data = await deviceInfoPlugin.iosInfo;
+          isIosSimulator = !data.isPhysicalDevice;
+        }
+      } on PlatformException {
+        print('Error:: Failed to get platform version.');
+      }
+
+      setState(() {
+        isSimulator = isIosSimulator;
+      });
+
+      if (!isSimulator) {
+        try {
+          _controller = VideoPlayerController.network(fileUrl);
+          _controller.setLooping(true);
+          _controller.initialize();
+          setState(() {
+            loaded = true;
+            isPlaying = true;
+            _controller.play();
+          });
+        } catch (e) {
+          print('Couldn\'t get audio from Storage! $e');
+        }
+      }
     });
   }
 
-  /// Initialize video player and fetch downloadUrl of file
-  void initAudioPlayback(String storagePath) async {
-    await checkIfSimulator();
-
-    if (!_isIosSimulator) {
-      try {
-        FirebaseStorage _storage = FirebaseStorage.instance;
-        final String currentUrl =
-            await _storage.ref().child(storagePath).getDownloadURL();
-
-        setState(() {
-          fileUrl = currentUrl;
-        });
-        _controller = VideoPlayerController.network(fileUrl);
-        _controller.setLooping(true);
-        // ..addListener(listener);
-        _initializeVideoPlayerFuture = _controller.initialize();
-      } catch (e) {
-        print('Couldn\'t get audio from Storage! $e');
-      }
+  /// onTap function for grid playback box footer
+  void onRecordingPlayback(fileUrl) {
+    if (_controller == null) {
+      initRecordingPlayback(fileUrl);
+    } else {
+      setState(() {
+        if (_controller.value.isPlaying) {
+          isPlaying = false;
+          _controller.pause();
+        } else {
+          isPlaying = true;
+          _controller.play();
+        }
+      });
     }
   }
 
-  @override
-  void dispose() {
-    if (_controller != null) {
-      _controller.dispose();
-    }
-    super.dispose();
-  }
-
-  // TODO: Move functionality out of component
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.bottomRight,
-      child: !_isIosSimulator
-          ? FutureBuilder(
-              future: _initializeVideoPlayerFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return InkWell(
-                    onTap: () {
-                      setState(() {
-                        _controller.value.isPlaying
-                            ? _controller.pause()
-                            : _controller.play();
-                      });
-                    },
-                    child: Icon(
-                      _controller.value.isPlaying
-                          ? Icons.pause
-                          : Icons.play_arrow,
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                  );
-                } else {
-                  return SizedBox(
-                    height: 24,
-                    width: 24,
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              })
-          : Icon(Icons.block, color: Theme.of(context).colorScheme.onSurface),
+    return RecordingGridItemPlayback(
+      onTap: () => onRecordingPlayback(widget.recordingUrl),
+      isDisabled: isSimulator,
+      isPlaying: isPlaying,
+      loaded: loaded,
     );
   }
 }

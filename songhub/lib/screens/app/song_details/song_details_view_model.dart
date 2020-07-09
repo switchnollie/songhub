@@ -32,13 +32,18 @@ class SongDetailsViewModel {
   /// Get recording creator image from Firebase Storage
   Future<RecordingWithImages> _getRecordingDataWithImageUrl(
       Recording recording) async {
-    String imageUrl;
+    String imageUrl, fileUrl;
     if (recording.creator != null) {
       imageUrl = await storageService.loadProfileImage(recording.creator);
     }
+    if (recording.storagePath != null) {
+      fileUrl = await storageService.loadImage(recording.storagePath);
+    }
 
     return RecordingWithImages(
-        recordingDocument: recording, creatorImgUrl: imageUrl);
+        recordingDocument: recording,
+        creatorImgUrl: imageUrl,
+        fileUrl: fileUrl);
   }
 
   /// Get Message creator image from Firebase Storage
