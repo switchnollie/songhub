@@ -13,6 +13,7 @@ import 'package:song_hub/services/firestore_database.dart';
 import 'package:song_hub/services/storage_service.dart';
 import 'package:song_hub/utils/show_snackbar.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
+import 'package:path/path.dart' as Path;
 
 /// A modal that wraps a [RecordingForm].
 ///
@@ -40,12 +41,13 @@ class EditRecordingModal extends StatelessWidget {
       final database = Provider.of<FirestoreDatabase>(context, listen: false);
       final storageService =
           Provider.of<StorageService>(context, listen: false);
+      String newStoragePath;
 
       if (formKey.currentState.validate()) {
         if (recordingFile != null) {
-          storagePath = await storageService.uploadRecording(
+          newStoragePath = await storageService.uploadRecording(
               song.songDocument.id,
-              recording.id,
+              recording.id + Path.extension(recordingFile.path),
               recordingFile,
               FileUserPermissions(
                   owner: database.uid,
@@ -58,10 +60,10 @@ class EditRecordingModal extends StatelessWidget {
                   ? selectedLabel
                   : recording.label,
               creator: recording.creator,
-              storagePath:
-                  storagePath != recording.storagePath && storagePath != null
-                      ? storagePath
-                      : recording.storagePath,
+              storagePath: newStoragePath != recording.storagePath &&
+                      newStoragePath != null
+                  ? newStoragePath
+                  : recording.storagePath,
               createdAt: recording.createdAt,
               updatedAt: Timestamp.fromDate(DateTime.now().toUtc()),
               versionDescription:

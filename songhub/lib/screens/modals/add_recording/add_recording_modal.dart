@@ -42,6 +42,7 @@ class AddRecordingModal extends StatelessWidget {
       if (formKey.currentState.validate()) {
         final recordingId = Uuid().v4();
         if (recordingFile != null) {
+          // Push currently selected file to Firebase Storage and retrieve path
           storagePath = await storageService.uploadRecording(
               song.songDocument.id,
               recordingId + Path.extension(recordingFile.path),
