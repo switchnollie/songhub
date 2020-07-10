@@ -77,4 +77,3 @@ A user should have the possibility to upload and manage different stands or part
 #### Discussion feature
 
 A user should be able to exchange information with other members of the project. In Auddly this aspect was already addressed by a comment function, but in our opinion it was not well solved. A chat feature should allow members to exchange ideas, rate current files and progress, and plan how to proceed. This way all members can be kept up to date on the current state of affairs. Questions and explanations of ideas become possible. In our opinion, an extended exchange of ideas can significantly improve the experience of music creation.
-
