@@ -49,8 +49,8 @@ class _RecordingPlaybackState extends State<RecordingPlayback> {
     }
 
     setState(() {
-      isDisabled =
-          isIosSimulator || !['.mp3', '.wav'].contains(getFileExtension());
+      isDisabled = isIosSimulator ||
+          !['.mp3', '.wav', '.aiff'].contains(getFileExtension());
     });
   }
 
