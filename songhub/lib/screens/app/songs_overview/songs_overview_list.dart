@@ -11,9 +11,9 @@ import 'package:song_hub/services/firestore_database.dart';
 import 'package:song_hub/utils/show_snackbar.dart';
 import 'package:song_hub/viewModels/song_with_images.dart';
 
-/// A widget to build the project overviews song list.
+/// A widget that builds this project overviews song list.
 ///
-/// [songs] are required to build in an list view. Each song will be rendered
+/// [songs] are required to be build in an list view. Each song will be rendered
 /// in a [SongListEntry] widget.
 class SongList extends StatelessWidget {
   SongList({this.songs});
@@ -52,6 +52,7 @@ class SongListEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final database = Provider.of<FirestoreDatabase>(context, listen: false);
     return Dismissible(
       key: Key(song.songDocument.id),
       background: Container(
@@ -65,6 +66,9 @@ class SongListEntry extends StatelessWidget {
           ),
         ),
       ),
+      direction: database.uid == song.songDocument.ownedBy
+          ? DismissDirection.endToStart
+          : null,
       confirmDismiss: (DismissDirection direction) async {
         return await showDeleteAlert(context);
       },
