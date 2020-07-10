@@ -20,7 +20,7 @@ Containing files created while brainstorming project ideas and research competit
 
 Containing our application created with Flutter. To open this application one needs to navigate to this directory and execute `flutter run` or run it from a flutter capable editor like [Visual Studio Code](https://code.visualstudio.com/). Reminder: One needs a emulator (Android or iOS) to display the app.
 
-### Setup ###
+### Setup App ###
 
 To run our application one needs to clone this repository:
 
@@ -66,6 +66,8 @@ firebase_storage: ^3.1.6
 provider: ^4.1.2
 rxdart: ^0.24.1
 flutter_spinkit: "^4.1.2"
+# The following adds the Cupertino Icons font to your application.
+# Use with the CupertinoIcons class for iOS style icons.
 cupertino_icons: ^0.1.3
 image_picker: ^0.6.7
 file_picker: ^1.11.0
@@ -76,6 +78,7 @@ uuid: ^2.1.0
 path_provider: ^1.6.11
 flutter_typeahead: ^1.8.5
 video_player: ^0.10.11+2
+device_info: ^0.4.2+4
 ```
 
 4. Start app
@@ -84,7 +87,11 @@ video_player: ^0.10.11+2
 flutter run
 ```
 
-**To access cloud resources deployed at [Firebase](https://firebase.google.com/) you need to contact us and provide an registered e-mail address. We can then invite you as a participant to our project. You should then be able to view all of our used resources:**
+### Setup Backend
+
+Since our complete backend functionality is hosted and run on [Google Firebase](https://firebase.google.com/), there are no additional local backend instances to start.
+
+**To access cloud resources deployed at Firebase you need to contact us and provide an registered e-mail address. We can then invite you as a participant to our project. You should afterwards be able to view all of our used resources:**
 
 * Authentication
 * Database
