@@ -95,29 +95,37 @@ class StorageService {
   /// [userId]/recordings/[songId]/[recordingId] to Storage and returns
   /// the storage path.
   Future<String> uploadRecording(String songId, String recordingId, File file,
-      FileUserPermissions fileUserPermissions) {
+      FileUserPermissions fileUserPermissions,
+      [String songOwnerId]) {
     return uploadFile(
         filePath: "recordings/$songId",
         userPermissions: fileUserPermissions,
         file: file,
-        fileName: recordingId);
+        fileName: recordingId,
+        ownerId: songOwnerId);
   }
 
   /// Uploads a [file] with the name [fileName] to the [filePath] in Firebase Storage
   /// and returns the upload path.
   ///
   /// If [isPublic] is set, the file will be uploaded inside the public folder.
-  /// If not, meta data describing the permissions is created using [userPermissions].
+  /// If not, by default the file is uploaded under the user that is assigned as owner in [userPermissions].
+  /// The user under which the file is uploaded can also be set explicitly to a different user than the
+  /// owner of the file (which applies to the use case that a participant adds a recording to a song of a
+  /// different artist).
   Future<String> uploadFile(
       {String filePath,
       File file,
       String fileName,
       bool isPublic = false,
-      FileUserPermissions userPermissions}) async {
+      FileUserPermissions userPermissions,
+      String ownerId}) async {
     StorageReference ref;
 
     if (isPublic) {
       ref = _storage.ref().child("public/$filePath/$fileName");
+    } else if (ownerId != null) {
+      ref = _storage.ref().child("$ownerId/$filePath/$fileName");
     } else {
       ref =
           _storage.ref().child("${userPermissions.owner}/$filePath/$fileName");

@@ -44,12 +44,14 @@ class AddRecordingModal extends StatelessWidget {
         if (recordingFile != null) {
           // Push currently selected file to Firebase Storage and retrieve path
           storagePath = await storageService.uploadRecording(
-              song.songDocument.id,
-              recordingId + Path.extension(recordingFile.path),
-              recordingFile,
-              FileUserPermissions(
-                  owner: database.uid,
-                  participants: song.songDocument.participants));
+            song.songDocument.id,
+            recordingId + (Path.extension(recordingFile.path) ?? ""),
+            recordingFile,
+            FileUserPermissions(
+                owner: database.uid,
+                participants: song.songDocument.participants),
+            song.songDocument.ownedBy,
+          );
         }
         final recording = Recording(
           id: recordingId,
