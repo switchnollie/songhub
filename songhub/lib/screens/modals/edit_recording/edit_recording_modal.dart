@@ -135,8 +135,9 @@ class EditRecordingModal extends StatelessWidget {
     final storageService = Provider.of<StorageService>(context, listen: false);
 
     try {
-      database.deleteRecording(recording, song.songDocument.id);
-      storageService.deleteFile(recording.storagePath);
+      await database.deleteRecording(
+          recording, song.songDocument.id, song.songDocument.ownedBy);
+      await storageService.deleteFile(recording.storagePath);
       Navigator.of(context).pop("Successfully deleted recording");
     } catch (e) {
       print(e);

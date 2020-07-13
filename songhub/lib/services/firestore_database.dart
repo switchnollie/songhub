@@ -68,9 +68,10 @@ class FirestoreDatabase {
 
   /// Deletes a recording. Deleting all associated data with that recording must
   /// not implemented on the client side but in a dedicated cloud function
-  Future<void> deleteRecording(Recording recording, String songId) async =>
+  Future<void> deleteRecording(Recording recording, String songId,
+          [String userId]) async =>
       await _service.deleteData(
-        path: FirestorePath.recording(uid, songId, recording.id),
+        path: FirestorePath.recording(userId ?? uid, songId, recording.id),
       );
 
   /// Gets a Stream of the recording with [recordingId] related to a specific

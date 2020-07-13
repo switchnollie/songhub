@@ -10,6 +10,7 @@ final appTheme = ThemeData(
   hintColor: colorScheme.secondary,
   fontFamily: "Roboto",
   colorScheme: colorScheme,
+  cursorColor: colorScheme.onSecondary,
   buttonTheme: ButtonThemeData(
     buttonColor: colorScheme.primary,
     textTheme: ButtonTextTheme.primary,

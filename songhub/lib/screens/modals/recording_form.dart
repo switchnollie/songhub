@@ -69,7 +69,10 @@ class _RecordingFormState extends State<RecordingForm> {
 
   /// Gets a file from [FilePicker]
   void getFile() async {
-    final File file = await FilePicker.getFile(type: FileType.audio);
+    final File file = await FilePicker.getFile(
+      type: FileType.custom,
+      allowedExtensions: ['mp3', 'wav'],
+    );
     if (file != null) {
       setState(() {
         _recordingFile = File(file.path);
@@ -156,7 +159,7 @@ class _RecordingFormState extends State<RecordingForm> {
                   icon: Icons.chat_bubble,
                   validator: (value) {
                     if (value.isEmpty) {
-                      return 'Please enter an label';
+                      return 'Please enter a label';
                     }
                     return null;
                   },
