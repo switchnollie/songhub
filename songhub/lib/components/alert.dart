@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 /// A widget that wraps an [AlertDialog].
 ///
-/// Builds an container with a [title], [text] to describe consequences and
+/// Builds a container with a [title], [text] to describe consequences and
 /// [option1], [option2] to describe actions of Buttons. [onTap] defines a
 /// function to execute when [option2] button is pressed. [option1] button will
 /// pop the top-most view.

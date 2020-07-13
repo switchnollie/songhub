@@ -85,6 +85,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return widget.viewModel.isLoading
         ? Spinner()
         : Scaffold(
+            resizeToAvoidBottomPadding: false,
             backgroundColor: Colors.white,
             body: Padding(
                 padding: EdgeInsets.all(24.0),
