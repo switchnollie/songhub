@@ -22,7 +22,7 @@ class SongList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: <Widget>[
-      Divider(height: 1),
+      Divider(height: 1.5),
       Expanded(
         child: ListView.builder(
           scrollDirection: Axis.vertical,
