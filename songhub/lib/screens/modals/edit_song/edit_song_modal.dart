@@ -1,5 +1,5 @@
-// Copyright 2020 Tim Weise, Pascal Schlaak. Use of this source 
-// code is governed by an MIT-style license that can be found in 
+// Copyright 2020 Tim Weise, Pascal Schlaak. Use of this source
+// code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'dart:io';
 
@@ -14,6 +14,7 @@ import 'package:song_hub/services/firebase_auth_service.dart';
 import 'package:song_hub/services/firestore_database.dart';
 import 'package:song_hub/services/storage_service.dart';
 import 'package:song_hub/utils/show_snackbar.dart';
+import 'package:path/path.dart' as Path;
 
 class EditSongModal extends StatelessWidget {
   static const routeId = "/songs/edit";
@@ -43,7 +44,7 @@ class EditSongModal extends StatelessWidget {
         String imageUrl;
         if (imageFile != null) {
           imageUrl = await storageService.uploadCoverImg(
-            args.song.songDocument.id,
+            args.song.songDocument.id + (Path.extension(imageFile.path) ?? ""),
             imageFile,
             FileUserPermissions(owner: user.uid, participants: participants),
           );

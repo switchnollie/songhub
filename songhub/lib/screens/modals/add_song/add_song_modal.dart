@@ -16,6 +16,7 @@ import 'package:song_hub/services/firebase_auth_service.dart';
 import 'package:song_hub/services/firestore_database.dart';
 import 'package:song_hub/services/storage_service.dart';
 import 'package:song_hub/utils/show_snackbar.dart';
+import 'package:path/path.dart' as Path;
 
 /// A modal that wraps a [SongForm].
 ///
@@ -48,7 +49,9 @@ class AddSongModal extends StatelessWidget {
         final String songId = Uuid().v4();
         String imageUrl;
         if (imageFile != null) {
-          imageUrl = await storageService.uploadCoverImg(songId, imageFile,
+          imageUrl = await storageService.uploadCoverImg(
+              songId + (Path.extension(imageFile.path) ?? ""),
+              imageFile,
               FileUserPermissions(owner: user.uid, participants: participants));
         }
         await database.setSong(Song(

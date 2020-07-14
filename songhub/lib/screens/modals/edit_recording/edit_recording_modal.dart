@@ -47,7 +47,7 @@ class EditRecordingModal extends StatelessWidget {
         if (recordingFile != null) {
           newStoragePath = await storageService.uploadRecording(
               song.songDocument.id,
-              recording.id + Path.extension(recordingFile.path),
+              recording.id + (Path.extension(recordingFile.path) ?? ''),
               recordingFile,
               FileUserPermissions(
                   owner: database.uid,
