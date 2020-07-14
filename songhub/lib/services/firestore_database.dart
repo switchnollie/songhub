@@ -169,7 +169,7 @@ class FirestoreDatabase {
   Stream<List<Song>> songsStreamAll() => _service.collectionGroupStream(
         path: FirestorePath.songsAll(),
         queryBuilder: (query) =>
-            query.where('participants', arrayContains: uid).orderBy("artist"),
+            query.where('participants', arrayContains: uid).orderBy("title"),
         builder: (data, documentId) => Song.fromMap(data, documentId),
       );
 }
