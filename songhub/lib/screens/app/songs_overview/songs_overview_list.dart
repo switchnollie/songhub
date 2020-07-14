@@ -95,7 +95,7 @@ class SongListEntry extends StatelessWidget {
               );
             },
           ),
-          Divider(height: 1),
+          Divider(height: 1.5),
         ],
       ),
     );
