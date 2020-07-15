@@ -19,9 +19,7 @@ In this section we want to give a short but detailed overview of each competitor
 
 [Auddly](https://auddly.com/) is a data hub to store songs, control its content and rights. A user can add songs, recordings, memos and lyrics in the app. Member invitations and split shares are also possible. A user can add and update songs by adding different progresses and write song specific comments.
 
-| ![auddly_1](.\imgs\competitive_analysis\auddly_1.png) | ![auddly_2](.\imgs\competitive_analysis\auddly_2.png) | ![auddly_3](.\imgs\competitive_analysis\auddly_3.png) |
-| ----------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- |
-|                                                       |                                                       |                                                       |
+![auddly](.\imgs\competitive_analysis\auddly.png)
 
 However, a user can not set recording specific descriptions. Therefore users can't express to other members what his/her thoughts were while creating the recording. Comments can be written on the respective recordings. There is no possibility to communicate on song level. This app also focuses on the commercial aspects of music creation. The primary goal is to manage the data and to define split shares. The app's user interface is very well done, modern and up-to-date. All functions are intuitive to use.
 
@@ -29,9 +27,7 @@ However, a user can not set recording specific descriptions. Therefore users can
 
 [Songspace](https://songspace.com/) is a data hub to store music, lyrics, collaborations and information around ones music. Like Auddly, users can keep track of ideas and songs. One can import voice memos and write lyrics.
 
-| ![auddly_1](.\imgs\competitive_analysis\songspace_1.png) | ![auddly_2](.\imgs\competitive_analysis\songspace_2.png) | ![songspace_3](.\imgs\competitive_analysis\songspace_3.png) |
-| -------------------------------------------------------- | -------------------------------------------------------- | ----------------------------------------------------------- |
-|                                                          |                                                          |                                                             |
+![songspace](C:\Users\schla\OneDrive - bwedu\mld\semester_1\app_development\project\20s-ad-teamf\documentation\imgs\competitive_analysis\songspace.png)
 
 In contrast to Auddly, songs are included in projects. Playing and sharing songs is possible but there is no feature that allows the upload of different versions or parts of a song. In our opinion the user interface is less modern and more conservative than Auddly. At certain points features are not intuitive enough and therefore actions are difficult to understand, too. This app focuses on the management of song projects on a centralized platform.
 
@@ -76,5 +72,5 @@ An artist should have the possibility to upload and manage different versions or
 
 #### Discussion feature
 
-A user should be able to exchange information with other members of the project. In Auddly this aspect has already been addressed by a comment function, but in our opinion the featurs is not well solved. A chat feature should allow members to exchange ideas, rate current files and progress and plan how to proceed. This way all members can be kept up to date on the current state of affairs. Questions and explanations of ideas become possible. In our opinion, an extended exchange of ideas can significantly improve the experience of music creation.
+A user should be able to exchange information with other members of the project. In Auddly this aspect has already been addressed by a comment function, but in our opinion the feature is not well solved. A chat feature should allow members to exchange ideas, rate current files and progress and plan how to proceed. This way all members can be kept up to date on the current state of affairs. Questions and explanations of ideas become possible. In our opinion, an extended exchange of ideas can significantly improve the experience of music creation.
 
