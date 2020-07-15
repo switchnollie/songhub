@@ -2,6 +2,18 @@
 
 As a high fidelity wireframing tool we used [Adobe XD](https://www.adobe.com/de/products/xd.html?sdid=88X75SKP&mv=search&ef_id=EAIaIQobChMI182Z_6e76gIV2-vtCh3WjQufEAAYASAAEgLvkvD_BwE:G:s&s_kwcid=AL!3085!3!340667133503!e!!). It is a free to use UI- and UX-prototyping tool, which allows us to create app wireframes for various devices. Individual components can be defined and reused which resembles the UI component approach that can is used in development. In a prototyping environment the individual screens can be linked, animations can be defined and tested in a simulator. We used [Sketch](https://www.sketch.com/) to design documentation elements and to sketch out diagrams for our architecture and user research results.
 
+### First Iteration: User Flows
+
+As it is common in User Centered Design, we started prototyping on a conceptual level and refined our prototypes after an evaluation stage. 
+
+The first iteration on prototypes was a wireframe that described just the user flow through the application without user interface elements. This was done using Sketch as a prototyping tool.
+
+![User Flows Prototype](./imgs/user_flows/all.png)
+
+
+
+### Second Iteration: High Fidelity Prototype
+
 **License note**: All image assets were downloaded from [Unsplash](https://unsplash.com/) and are copyright free. The used icons are part of the [Google Material Icon Set](https://github.com/google/material-design-icons) which is licensed under a Apache 2.0 License. Our design system is heavily inspired by the [Google Material](https://material.io/) and [Apple Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/).
 
 In general, we have tried to keep everything relatively minimalistic in the UI and UX. The app should be intuitive to use and contain common conventions. Our design language is more in line with Apple's guidelines, whereby we have tried to adapt the material components.
