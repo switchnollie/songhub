@@ -36,3 +36,4 @@ The App currently offers user authentication with email and password, a song pro
 #### Backlog
 
 Our next steps would be filtering and pagination for song projects and recording versions, push notification support and a dedicated feed view.
+
