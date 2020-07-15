@@ -2,6 +2,7 @@
 // code is governed by an MIT-style license that can be found in
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:song_hub/components/avatar.dart';
 
 /// A widget that builds a messages content.
@@ -9,8 +10,10 @@ import 'package:song_hub/components/avatar.dart';
 /// [message] includes text to be displayed inside this widget.
 class MessageContent extends StatelessWidget {
   final String message;
+  final String createdAt;
+  final Alignment alignment;
 
-  MessageContent({this.message});
+  MessageContent({this.message, this.createdAt, this.alignment});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +22,23 @@ class MessageContent extends StatelessWidget {
       color: Theme.of(context).colorScheme.surface,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Text(message),
+        child: Column(
+          children: <Widget>[
+            Align(alignment: Alignment.centerLeft, child: Text(message)),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Align(
+                alignment: alignment,
+                child: Text(
+                  createdAt,
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontSize: 12),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -42,7 +42,7 @@ We have tried to integrate as much as possible of the presented concepts and gui
 
 ##### Lecture notes 5, page 8
 
-We have developed our application according to the user-centered design.
+We have developed our application according to the user-centered design. In a research phase we defined our target group, personas, user requirements for the app and the environment.
 
 ##### Lecture notes 5, page 9 - 42
 

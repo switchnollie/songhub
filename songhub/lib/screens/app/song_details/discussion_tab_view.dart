@@ -3,6 +3,7 @@
 // the LICENSE file or at https://opensource.org/licenses/MIT.
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:song_hub/components/message.dart';
 import 'package:song_hub/components/text_input.dart';
@@ -91,7 +92,12 @@ Widget defineMessageLayout(BuildContext context, MessageWithImages data) {
               topLeft: const Radius.circular(14.0),
               topRight: const Radius.circular(14.0),
               bottomLeft: const Radius.circular(14.0)),
-          child: MessageContent(message: data.messageDocument.content),
+          child: MessageContent(
+            message: data.messageDocument.content,
+            createdAt: DateFormat('yyyy-MM-dd kk:mm')
+                .format(data.messageDocument.createdAt.toDate()),
+            alignment: Alignment.bottomRight,
+          ),
         ),
       ],
     );
@@ -109,6 +115,9 @@ Widget defineMessageLayout(BuildContext context, MessageWithImages data) {
                 bottomRight: const Radius.circular(14.0)),
             child: MessageContent(
               message: data.messageDocument.content,
+              createdAt: DateFormat('yyyy-MM-dd kk:mm')
+                  .format(data.messageDocument.createdAt.toDate()),
+              alignment: Alignment.bottomLeft,
             ),
           ),
         ),
