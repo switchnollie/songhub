@@ -1,7 +1,5 @@
 # App Principles
 
-
-
 ##### Lecture notes 2, page 24
 
 We have tried to consistently apply the Confirm/Acknowledge concept presented here to dialogs in our app.

@@ -4,9 +4,33 @@ This repository contains all files created for our project in *App Development* 
 
 ### Content
 
-##### /prototyping
+##### /bin
 
-Contains all files created during the prototyping stage. All assets were downloaded from [Unsplash](https://unsplash.com/) and are copyright free. We used [Adobe XD](https://www.adobe.com/de/products/xd.html?sdid=88X75SKP&mv=search&ef_id=EAIaIQobChMI182Z_6e76gIV2-vtCh3WjQufEAAYASAAEgLvkvD_BwE:G:s&s_kwcid=AL!3085!3!340667133503!e!!) and [Sketch](https://www.sketch.com/) as prototyping and wireframing tools.
+Contains binary files of our application.
+
+##### /documentation
+
+Contains our project documentation including:
+
+* App Description
+* Competitive Analysis
+* Wireframes
+* Personas
+* Color scheme
+* Font
+* Architecture
+* App principles
+* Lessons learned
+* Project log
+* Author and Tasks
+
+##### /logo
+
+Contains our custom designed app logo.
+
+##### /poster
+
+Contains an A0 formatted poster as `ppt` and `pdf`.
 
 ##### /reports
 
@@ -16,9 +40,23 @@ Contains all four sprint reports as markdown files.
 
 Contains files created while brainstorming project ideas and research competitors. This also includes user stories as well as possible use cases.
 
+##### /screenshots
+
+Contains screenshots of our apps frontend and backend data of Firestore and Storage.
+
 ##### /songhub
 
-Contains our application created with Flutter. To open this application, navigate to this directory and execute `flutter run` or run it from a flutter capable editor/IDE like [Visual Studio Code](https://code.visualstudio.com/). Reminder: An emulator (Android or iOS) is required to run the app.
+Contains our application (source code) created with Flutter. To open this application, navigate to this directory and execute `flutter run` or run it from a flutter capable editor/IDE like [Visual Studio Code](https://code.visualstudio.com/). Reminder: An emulator (Android or iOS) is required to run the app.
+
+##### /video
+
+Contains a walkthrough of our app used on iOS and Android.
+
+##### /wireframe
+
+Contains all files created during the prototyping stage. All assets were downloaded from [Unsplash](https://unsplash.com/) and are copyright free. We used [Adobe XD](https://www.adobe.com/de/products/xd.html?sdid=88X75SKP&mv=search&ef_id=EAIaIQobChMI182Z_6e76gIV2-vtCh3WjQufEAAYASAAEgLvkvD_BwE:G:s&s_kwcid=AL!3085!3!340667133503!e!!) and [Sketch](https://www.sketch.com/) as prototyping and wireframing tools.
+
+
 
 ### Setup App ###
 
