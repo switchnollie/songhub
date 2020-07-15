@@ -33,7 +33,7 @@ After getting our idea approved, we started to set up our development environmen
 | Information architecture      | In Progress |
 
 #### Discuss competitive analysis
-In our competitive analysis, we found following competitors:
+In our competitive analysis, we found the following competitors:
 
 * Songspace
 * Jammber
@@ -50,8 +50,8 @@ Pain points:
 
 Our unique selling points:
 
-* We want to focus on creative point of view
-* Feature to dicuss current version of song/components of song with participants
+* We want to focus on the creative perspective
+* Feature to dicuss the current version of song/components of song with participants
 * More detailed versioning of songs/components
 
 
@@ -63,7 +63,7 @@ In our first wireframing approaches we accomplished:
 * First system run
 
 ### What hinderances/risks did/do we face?
-* Two Group members left because they chose other modules &rightarrow; Only two participants
+* Two Group members left because the other students chose different courses &rightarrow; Only two participants
 * Different development environments (MacOS, Ubuntu, Sketch, XD, Android studio, VS Code, ...)
 
 
@@ -129,7 +129,7 @@ Compared features of competitors to clarify our added value.
 ### What hinderances/risks did/do we face?
 
 * Multi-platform development often resulted in errors after pulling changes and building for other os.
-* Build process for iOS takes much longer than expected.
+* Build process for iOS takes much longer than expected which is a document bug in Flutter Fire.
 
 
 ### What do we plan to tackle in the next sprint?
@@ -155,7 +155,7 @@ Demo core functionality:
 
 ### What did we accomplish?
 
-We integrated user authentication to later allow multi user collaborations. Songs are now mapped to a user/owner. We added security rules in Firestore and Storage to restrict access.  A user can now register or sign in to the app by email and password. A user can now add new song projects and edit existing songs projects.  While editing a song a user can enter required files and add an cover image from device gallery. We also refactored the general data stream to fetch song objects. Details of a song now contain files, which are also fetched from dummy data in Firestore. Several front end components for the discussion feature were added too. 
+We integrated user authentication to later allow multi user collaborations. Songs are now mapped to a user/owner. We added security rules in Firestore and Storage to restrict access.  A user can now register or sign in to the app by email and password. A user can now add new song projects and edit existing songs projects.  While editing a song a user can enter required files and add a cover image from the OS device gallery. We also refactored the data stream to fetch song objects. Details of a song now contain files, which are also fetched from dummy data in Firestore. Several front end components for the discussion feature were added too. 
 
 #### Backlog tasks
 
@@ -209,7 +209,7 @@ Feature complete:
 
 ### What did we accomplish? 
 
-We decided to refactor our Firestore database model again due to improvement opportunities. We generally added error handling especially for features where we initiate connections to Firebase. Integrated snackbars can now show status in many features.
+We decided to refactor our Firestore database model again due to improvement opportunities. We added error handling especially for features where we initiate connections to Firebase. Integrated snackbars can now show the status in many features.
 
 #### Backlog general tasks
 
@@ -220,7 +220,7 @@ We decided to refactor our Firestore database model again due to improvement opp
 | Error handling of firebase functionality with snackbar status | Done       |
 | Cloud functions to handle database entry updates and recursive deletion | Done       |
 
-We refactored user access to display only granted information. Added user settings feature in Account view to add and update user data.
+We refactored user access to display only granted information. Furthermore, we added the user settings feature in the account view to add and update user data.
 
 #### Backlog users feature
 
@@ -231,7 +231,7 @@ We refactored user access to display only granted information. Added user settin
 | Add database functionality to add and update user data       | Done       |
 | Complete users feature                                       | Done       |
 
-Complete refactoring of app architecture to allow easy upscaling if required later. Refactored backend service APIs based on new view models.
+Completed the refactoring of the app architecture to allow easy upscaling if required later. Refactored backend service APIs based on new view models.
 
 #### Backlog app architecture
 
@@ -242,7 +242,7 @@ Complete refactoring of app architecture to allow easy upscaling if required lat
 | Add view models layer for models                             | Done       |
 | Refactored app architecture for easy upscaling               | Done       |
 
-Refactored song modals to get functionality back working with ne app structure. Added image processing to uploading image. Added validation of song modal forms. Currently implementing participant invitation feature we decided to integrate if we have time as a team of only two members.
+Refactored song modals to get functionality back working with new app structure. Added image processing to uploading image. Added validation of song modal forms. Currently implementing participant invitation feature we decided to integrate if we have time as a team of only two members.
 
 #### Backlog songs/project feature
 
@@ -292,7 +292,7 @@ Refactored and redesigned components of discussion features (message container, 
 
 * Due to our team constellation, we had much afford to realize full feature functionality 
 * Poor Flutter Firebase documentation for specific features
-* Difficult to extend app architecture without suiting Firebase guidelines
+* Difficulties in extending the app architecture for use cases that are not fully standard use cases intended by the Firebase APIs
 
 
 ### What do we plan to tackle in the next sprint?

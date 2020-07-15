@@ -1,6 +1,8 @@
 # Authors and Tasks
 
-Since we are a group of only two people, we both worked on pretty much every file in the app. This applies to research, implementation and follow-up. We described in all relevant files of the app who was author and who was co-author (see *songhub* folder in main directory) like this:
+Since we are a group of only two people, we both worked on pretty much every file in the app. This applies to research, implementation and follow-up.
+
+This is documented in the licence header that is used in every source code file that was written by us:
 
 ~~~
 // Copyright 2020 Pascal Schlaak, Tim Weise. Use of this source
@@ -9,7 +11,7 @@ Since we are a group of only two people, we both worked on pretty much every fil
 /// Authors: Pascal Schlaak, Tim Weise
 ~~~
 
-In the following we have tried to roughly divide who initiated which functionality. 
+The following is an attempt to roughly sketch out the main competencies by person:
 
 ### App Tasks
 ##### Tim Weise
