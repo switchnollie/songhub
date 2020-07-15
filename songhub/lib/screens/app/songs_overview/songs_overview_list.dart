@@ -50,55 +50,58 @@ class SongListEntry extends StatelessWidget {
 
   SongListEntry({@required this.song});
 
+  Widget _renderListItemContent(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        ListTile(
+          // Song entry widget
+          leading: Cover(
+            img: song.coverImgUrl ?? "assets/placeholderCover.png",
+            size: CoverSize.SMALL,
+          ),
+          title: ListTitle(title: song.songDocument.title),
+          subtitle: ListSubtitle(artist: song.songDocument.artist),
+          trailing: AvatarRow(imgs: song.participantImgUrls),
+          contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              "/songs/details",
+              arguments: SongDetailsScreenRouteParams(
+                  songId: song.songDocument.id,
+                  userId: song.songDocument.ownedBy),
+            );
+          },
+        ),
+        Divider(height: 1.5),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final database = Provider.of<FirestoreDatabase>(context, listen: false);
-    return Dismissible(
-      key: Key(song.songDocument.id),
-      background: Container(
-        alignment: AlignmentDirectional.centerEnd,
-        color: Theme.of(context).colorScheme.error,
-        child: Padding(
-          padding: const EdgeInsets.only(right: 31),
-          child: Icon(
-            Icons.delete,
-            color: Theme.of(context).colorScheme.primary,
-          ),
-        ),
-      ),
-      direction: database.uid == song.songDocument.ownedBy
-          ? DismissDirection.endToStart
-          : null,
-      confirmDismiss: (DismissDirection direction) async {
-        return await showDeleteAlert(context);
-      },
-      child: Column(
-        children: <Widget>[
-          ListTile(
-            // Song entry widget
-            leading: Cover(
-              img: song.coverImgUrl ?? "assets/placeholderCover.png",
-              size: CoverSize.SMALL,
+    return database.uid == song.songDocument.ownedBy
+        ? Dismissible(
+            key: Key(song.songDocument.id),
+            background: Container(
+              alignment: AlignmentDirectional.centerEnd,
+              color: Theme.of(context).colorScheme.error,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 31),
+                child: Icon(
+                  Icons.delete,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
             ),
-            title: ListTitle(title: song.songDocument.title),
-            subtitle: ListSubtitle(artist: song.songDocument.artist),
-            trailing: AvatarRow(imgs: song.participantImgUrls),
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                "/songs/details",
-                arguments: SongDetailsScreenRouteParams(
-                    songId: song.songDocument.id,
-                    userId: song.songDocument.ownedBy),
-              );
+            direction: DismissDirection.endToStart,
+            confirmDismiss: (DismissDirection direction) async {
+              return await showDeleteAlert(context);
             },
-          ),
-          Divider(height: 1.5),
-        ],
-      ),
-    );
+            child: _renderListItemContent(context),
+          )
+        : _renderListItemContent(context);
   }
 
   /// Show alert to confirm delete of song project
