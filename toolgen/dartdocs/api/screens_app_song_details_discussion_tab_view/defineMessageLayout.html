@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the defineMessageLayout function from the discussion_tab_view library, for the Dart programming language.">
+  <title>defineMessageLayout function - discussion_tab_view library - Dart API</title>
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="../static-assets/github.css">
+  <link rel="stylesheet" href="../static-assets/styles.css">
+  <link rel="icon" href="../static-assets/favicon.png">
+
+</head>
+
+<body data-base-href="../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">song_hub</a></li>
+    <li><a href="../screens_app_song_details_discussion_tab_view/screens_app_song_details_discussion_tab_view-library.html">discussion_tab_view</a></li>
+    <li class="self-crumb">defineMessageLayout function</li>
+  </ol>
+  <div class="self-name">defineMessageLayout</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+  <div id="dartdoc-sidebar-left" class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+      <form class="search-sidebar" role="search">
+        <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+      </form>
+    </header>
+    
+    <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+      <li><a href="../index.html">song_hub</a></li>
+      <li><a href="../screens_app_song_details_discussion_tab_view/screens_app_song_details_discussion_tab_view-library.html">discussion_tab_view</a></li>
+      <li class="self-crumb">defineMessageLayout function</li>
+    </ol>
+    
+    <h5>discussion_tab_view library</h5>
+    <ol>
+      <li class="section-title"><a href="../screens_app_song_details_discussion_tab_view/screens_app_song_details_discussion_tab_view-library.html#classes">Classes</a></li>
+      <li><a href="../screens_app_song_details_discussion_tab_view/DiscussionTabView-class.html">DiscussionTabView</a></li>
+      <li><a href="../screens_app_song_details_discussion_tab_view/MessageContainer-class.html">MessageContainer</a></li>
+    
+    
+    
+    
+    
+      <li class="section-title"><a href="../screens_app_song_details_discussion_tab_view/screens_app_song_details_discussion_tab_view-library.html#functions">Functions</a></li>
+      <li><a href="../screens_app_song_details_discussion_tab_view/defineMessageLayout.html">defineMessageLayout</a></li>
+    
+    
+    
+    </ol>
+  </div><!--/.sidebar-offcanvas-left-->
+
+  <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
+      <div><h1><span class="kind-function">defineMessageLayout</span> function  </h1></div>
+
+    <section class="multi-line-signature">
+        <span class="returntype"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a></span>
+                <span class="name ">defineMessageLayout</span>
+(<wbr><ol class="parameter-list"><li><span class="parameter" id="defineMessageLayout-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span>, </span></li>
+<li><span class="parameter" id="defineMessageLayout-param-data"><span class="type-annotation"><a href="../viewModels_message_with_images/MessageWithImages-class.html">MessageWithImages</a></span> <span class="parameter-name">data</span></span></li>
+</ol>)
+    </section>
+    <section class="desc markdown">
+      <p>Create message layout</p>
+    </section>
+    
+    <section class="summary source-code" id="source">
+      <h2><span>Implementation</span></h2>
+      <pre class="language-dart"><code class="language-dart">Widget defineMessageLayout(BuildContext context, MessageWithImages data) {
+  if (data.isMyMessage) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: &lt;Widget&gt;[
+        ClipRRect(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(14.0),
+              topRight: const Radius.circular(14.0),
+              bottomLeft: const Radius.circular(14.0)),
+          child: MessageContent(message: data.messageDocument.content),
+        ),
+      ],
+    );
+  } else {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: &lt;Widget&gt;[
+        MessageAuthor(authorImage: data.authorImgUrl),
+        Padding(
+          padding: const EdgeInsets.only(left: 12.0),
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(14.0),
+                topRight: const Radius.circular(14.0),
+                bottomRight: const Radius.circular(14.0)),
+            child: MessageContent(
+              message: data.messageDocument.content,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}</code></pre>
+    </section>
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    song_hub
+      1.0.0+1
+  </span>
+
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="../static-assets/typeahead.bundle.min.js"></script>
+<script src="../static-assets/highlight.pack.js"></script>
+<script src="../static-assets/URI.js"></script>
+<script src="../static-assets/script.js"></script>
+
+
+</body>
+
+</html>

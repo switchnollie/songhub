@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the Recording class from the recording library, for the Dart programming language.">
+  <title>Recording class - recording library - Dart API</title>
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="../static-assets/github.css">
+  <link rel="stylesheet" href="../static-assets/styles.css">
+  <link rel="icon" href="../static-assets/favicon.png">
+
+</head>
+
+<body data-base-href="../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">song_hub</a></li>
+    <li><a href="../models_recording/models_recording-library.html">recording</a></li>
+    <li class="self-crumb">Recording class</li>
+  </ol>
+  <div class="self-name">Recording</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+  <div id="dartdoc-sidebar-left" class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+      <form class="search-sidebar" role="search">
+        <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+      </form>
+    </header>
+    
+    <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+      <li><a href="../index.html">song_hub</a></li>
+      <li><a href="../models_recording/models_recording-library.html">recording</a></li>
+      <li class="self-crumb">Recording class</li>
+    </ol>
+    
+    <h5>recording library</h5>
+    <ol>
+      <li class="section-title"><a href="../models_recording/models_recording-library.html#classes">Classes</a></li>
+      <li><a href="../models_recording/Recording-class.html">Recording</a></li>
+    
+    
+    
+    
+    
+    
+    
+    
+    </ol>
+  </div>
+
+  <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
+      <div><h1><span class="kind-class">Recording</span> class  </h1></div>
+
+    <section class="desc markdown">
+      <p>A model to describe this apps recordings.</p>
+<p><a href="../models_recording/Recording/id.html">id</a> defines an unique identifier every <a href="../models_recording/Recording-class.html">Recording</a> has. <a href="../models_recording/Recording/label.html">label</a> defines
+text to describe a recordings label. <a href="../models_recording/Recording/creator.html">creator</a> describes a <a href="../models_user/User-class.html">User</a> by its id
+who created this recording. <a href="../models_recording/Recording/createdAt.html">createdAt</a> includes a timestamp this message
+was created. <a href="../models_recording/Recording/updatedAt.html">updatedAt</a> includes a timestamp this recording was updated.
+<a href="../models_recording/Recording/versionDescription.html">versionDescription</a> serves as a textual description of this upload.
+<a href="../models_recording/Recording/storagePath.html">storagePath</a> defines this recordings path in Firebase Storage.</p>
+    </section>
+    
+    <section>
+      <dl class="dl-horizontal">
+
+
+
+
+
+        <dt>Annotations</dt>
+        <dd><ul class="annotation-list clazz-relationships">
+          <li>@immutable</li>
+        </ul></dd>
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="constructors">
+      <h2>Constructors</h2>
+
+      <dl class="constructor-summary-list">
+        <dt id="Recording" class="callable">
+          <span class="name"><a href="../models_recording/Recording/Recording.html">Recording</a></span><span class="signature">(<span class="parameter" id="-param-id">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span>, </span><wbr><span class="parameter" id="-param-label"><span class="type-annotation"><a href="../models_label/Label-class.html">Label</a></span> <span class="parameter-name">label</span>, </span><wbr><span class="parameter" id="-param-creator"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">creator</span>, </span><wbr><span class="parameter" id="-param-updatedAt"><span class="type-annotation"><a href="https://pub.dev/documentation/cloud_firestore_platform_interface/1.1.0/cloud_firestore_platform_interface/Timestamp-class.html">Timestamp</a></span> <span class="parameter-name">updatedAt</span>, </span><wbr><span class="parameter" id="-param-createdAt"><span class="type-annotation"><a href="https://pub.dev/documentation/cloud_firestore_platform_interface/1.1.0/cloud_firestore_platform_interface/Timestamp-class.html">Timestamp</a></span> <span class="parameter-name">createdAt</span>, </span><wbr><span class="parameter" id="-param-versionDescription"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">versionDescription</span>, </span><wbr><span class="parameter" id="-param-storagePath"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">storagePath</span>}</span><wbr>)</span>
+        </dt>
+        <dd>
+           
+        </dd>
+        <dt id="Recording.fromMap" class="callable">
+          <span class="name"><a href="../models_recording/Recording/Recording.fromMap.html">Recording.fromMap</a></span><span class="signature">(<span class="parameter" id="fromMap-param-data"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">data</span>, </span><wbr><span class="parameter" id="fromMap-param-documentId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">documentId</span></span><wbr>)</span>
+        </dt>
+        <dd>
+          Creates a recording by deserializing a Firestore DocumentSnapshot 
+          <div class="constructor-modifier features">factory</div>
+        </dd>
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="instance-properties">
+      <h2>Properties</h2>
+
+      <dl class="properties">
+        <dt id="createdAt" class="property">
+          <span class="name"><a href="../models_recording/Recording/createdAt.html">createdAt</a></span>
+          <span class="signature">&#8594; <a href="https://pub.dev/documentation/cloud_firestore_platform_interface/1.1.0/cloud_firestore_platform_interface/Timestamp-class.html">Timestamp</a></span>         
+        </dt>
+        <dd>
+           
+                  <div class="features">final</div>
+</dd>
+        <dt id="creator" class="property">
+          <span class="name"><a href="../models_recording/Recording/creator.html">creator</a></span>
+          <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>         
+        </dt>
+        <dd>
+           
+                  <div class="features">final</div>
+</dd>
+        <dt id="hashCode" class="property">
+          <span class="name"><a href="../models_recording/Recording/hashCode.html">hashCode</a></span>
+          <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>         
+        </dt>
+        <dd>
+          The hash code for this object. <a href="../models_recording/Recording/hashCode.html">[...]</a>
+                  <div class="features">read-only, override</div>
+</dd>
+        <dt id="id" class="property">
+          <span class="name"><a href="../models_recording/Recording/id.html">id</a></span>
+          <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>         
+        </dt>
+        <dd>
+           
+                  <div class="features">final</div>
+</dd>
+        <dt id="label" class="property">
+          <span class="name"><a href="../models_recording/Recording/label.html">label</a></span>
+          <span class="signature">&#8594; <a href="../models_label/Label-class.html">Label</a></span>         
+        </dt>
+        <dd>
+           
+                  <div class="features">final</div>
+</dd>
+        <dt id="runtimeType" class="property inherited">
+          <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+          <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span>         
+        </dt>
+        <dd class="inherited">
+          A representation of the runtime type of the object. 
+                  <div class="features">read-only, inherited</div>
+</dd>
+        <dt id="storagePath" class="property">
+          <span class="name"><a href="../models_recording/Recording/storagePath.html">storagePath</a></span>
+          <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>         
+        </dt>
+        <dd>
+           
+                  <div class="features">final</div>
+</dd>
+        <dt id="updatedAt" class="property">
+          <span class="name"><a href="../models_recording/Recording/updatedAt.html">updatedAt</a></span>
+          <span class="signature">&#8594; <a href="https://pub.dev/documentation/cloud_firestore_platform_interface/1.1.0/cloud_firestore_platform_interface/Timestamp-class.html">Timestamp</a></span>         
+        </dt>
+        <dd>
+           
+                  <div class="features">final</div>
+</dd>
+        <dt id="versionDescription" class="property">
+          <span class="name"><a href="../models_recording/Recording/versionDescription.html">versionDescription</a></span>
+          <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>         
+        </dt>
+        <dd>
+           
+                  <div class="features">final</div>
+</dd>
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="instance-methods">
+      <h2>Methods</h2>
+      <dl class="callables">
+        <dt id="noSuchMethod" class="callable inherited">
+          <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span><wbr>)
+            <span class="returntype parameter">&#8594; dynamic</span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Invoked when a non-existent method or property is accessed. <a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="toMap" class="callable">
+          <span class="name"><a href="../models_recording/Recording/toMap.html">toMap</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Serializes the recording to update or add in Firestore 
+                  
+</dd>
+        <dt id="toString" class="callable inherited">
+          <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Returns a string representation of this object. 
+                  <div class="features">inherited</div>
+</dd>
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="operators">
+      <h2>Operators</h2>
+      <dl class="callables">
+        <dt id="operator ==" class="callable">
+          <span class="name"><a href="../models_recording/Recording/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation">dynamic</span> <span class="parameter-name">other</span></span><wbr>)
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+          </span>
+                  </dt>
+        <dd>
+          The equality operator. <a href="../models_recording/Recording/operator_equals.html">[...]</a>
+                  <div class="features">override</div>
+</dd>
+      </dl>
+    </section>
+
+
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+    <ol>
+    
+      <li class="section-title"><a href="../models_recording/Recording-class.html#constructors">Constructors</a></li>
+      <li><a href="../models_recording/Recording/Recording.html">Recording</a></li>
+      <li><a href="../models_recording/Recording/Recording.fromMap.html">fromMap</a></li>
+    
+      <li class="section-title">
+        <a href="../models_recording/Recording-class.html#instance-properties">Properties</a>
+      </li>
+      <li><a href="../models_recording/Recording/createdAt.html">createdAt</a></li>
+      <li><a href="../models_recording/Recording/creator.html">creator</a></li>
+      <li><a href="../models_recording/Recording/hashCode.html">hashCode</a></li>
+      <li><a href="../models_recording/Recording/id.html">id</a></li>
+      <li><a href="../models_recording/Recording/label.html">label</a></li>
+      <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
+      <li><a href="../models_recording/Recording/storagePath.html">storagePath</a></li>
+      <li><a href="../models_recording/Recording/updatedAt.html">updatedAt</a></li>
+      <li><a href="../models_recording/Recording/versionDescription.html">versionDescription</a></li>
+    
+      <li class="section-title"><a href="../models_recording/Recording-class.html#instance-methods">Methods</a></li>
+      <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+      <li><a href="../models_recording/Recording/toMap.html">toMap</a></li>
+      <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
+    
+      <li class="section-title"><a href="../models_recording/Recording-class.html#operators">Operators</a></li>
+      <li><a href="../models_recording/Recording/operator_equals.html">operator ==</a></li>
+    
+    
+    
+    
+    </ol>
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    song_hub
+      1.0.0+1
+  </span>
+
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="../static-assets/typeahead.bundle.min.js"></script>
+<script src="../static-assets/highlight.pack.js"></script>
+<script src="../static-assets/URI.js"></script>
+<script src="../static-assets/script.js"></script>
+
+
+</body>
+
+</html>
